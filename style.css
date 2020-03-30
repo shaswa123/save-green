@@ -1,0 +1,92 @@
+/*Google font*/
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
+
+* {
+	box-sizing: border-box;
+}
+
+header,
+section {
+	overflow-x: hidden;
+}
+
+.navigation-bar {
+	background-color: transparent;
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	z-index: 9999;
+}
+.header a {
+	font-family: 'Roboto Mono', monospace;
+	font-size: 0.9em;
+	color: black;
+}
+
+.header {
+	background: whitesmoke;
+}
+
+.nav-link {
+	color: white;
+}
+
+.navbar-brand {
+	color: white;
+}
+
+.nav-link:hover {
+	color: white;
+}
+
+.nav-item:hover {
+	border-bottom: 2px solid #aa0000 !important;
+}
+
+.carousel-home-page,
+.carousel-item,
+.carousel-home-page div,
+.carousel-inner {
+	max-height: 700px;
+}
+
+.carousel-caption {
+	top: 25%;
+	left: 15%;
+	right: 50%;
+}
+
+.carousel-caption h1 {
+	text-shadow: 1px 1px 1px white;
+	animation: fade-in 1s ease-out 0.2s 1 forwards;
+}
+
+.carousel-caption p {
+	text-shadow: 1px 1px 1px white;
+	opacity: 0;
+	animation: fade-in 1s ease-in 1.2s 1 forwards;
+}
+
+.carousel-caption button {
+	opacity: 0;
+	animation: fade-in 0.5s ease 2.2s 1 forwards;
+}
+
+/*  Animations  */
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes slide-in-right {
+	0% {
+		top: 250px !important;
+	}
+	100% {
+		top: 0px !important;
+	}
+}
