@@ -10,12 +10,17 @@ section {
 	overflow-x: hidden;
 }
 
+section {
+	margin-top: 3em;
+}
+
 .navigation-bar {
 	background-color: transparent;
 	position: fixed;
 	top: 0px;
 	width: 100%;
-	z-index: 9999;
+	z-index: 9998;
+	transition: 0.5s ease-in;
 }
 .header a {
 	font-family: 'Roboto Mono', monospace;
@@ -27,12 +32,16 @@ section {
 	background: whitesmoke;
 }
 
+/*  Navbar CSS  */
+
 .nav-link {
 	color: white;
+	font-weight: bold;
 }
 
 .navbar-brand {
 	color: white;
+	font-weight: bolder;
 }
 
 .nav-link:hover {
@@ -54,22 +63,180 @@ section {
 	top: 25%;
 	left: 15%;
 	right: 50%;
+	text-align: left;
 }
 
 .carousel-caption h1 {
+	font-size: 50px;
 	text-shadow: 1px 1px 1px white;
+	text-align: left;
 	animation: fade-in 1s ease-out 0.2s 1 forwards;
 }
 
 .carousel-caption p {
+	position: absolute;
+	font-size: 20px;
+	margin-top: 1em;
 	text-shadow: 1px 1px 1px white;
 	opacity: 0;
-	animation: fade-in 1s ease-in 1.2s 1 forwards;
+	animation: slide-in-from-below 0.5s ease-in 1.2s 1 forwards;
 }
 
 .carousel-caption button {
+	position: absolute;
+	top: 200px;
+	left: 5%;
+	padding: 15px 50px;
+	border-radius: 50px;
+	font-size: 25px;
+	font-weight: bold;
+}
+
+.carousel-caption element::selection {
+	background-color: wheat;
+}
+
+.promo-container {
+	width: 25%;
+	border-radius: 5px;
+	position: absolute;
+	background-color: white;
+	bottom: -25px;
+	right: 5%;
+	z-index: 9997;
+	height: 400px;
+}
+
+.promo-container .video-container {
+	width: 95%;
+	margin: auto;
+	border-radius: 5px;
+	background-color: black;
+	height: 200px;
+	margin-top: 0.5em;
+}
+
+.promo-container .title {
+	font-size: 25px;
+	font-weight: bold;
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+	color: rgba(0, 0, 0, 0.7);
+}
+
+.promo-container .desc {
+	color: rgba(0, 0, 0, 0.7);
+	font-size: 20px;
+	margin-left: 0.5em;
+}
+
+.navbar-brand img {
+	width: 25%;
+}
+
+/*  Section 1 CSS  */
+
+.section-1 {
+	margin-top: 5em;
+}
+
+.section-title {
+	font-weight: bolder;
+	font-size: xx-large;
+	color: rgba(0, 0, 0, 0.7);
+	margin-bottom: 1em;
+}
+
+.section-title::selection {
+	background-color: wheat;
+}
+
+.card:hover {
+	box-shadow: rgba(0, 0, 0, 0.15) 0px 8px 16px 0px;
+}
+
+/*  Section 2  */
+.section-2 {
 	opacity: 0;
-	animation: fade-in 0.5s ease 2.2s 1 forwards;
+	transition: 0.3s ease-in;
+}
+
+.section-2 div .section-title {
+	margin-bottom: 0.25em;
+}
+
+.section-2 div h6 {
+	color: rgba(0, 0, 0, 0.7);
+	font-size: 20px;
+}
+
+.steps {
+	margin-top: 10em;
+}
+
+.flowchart img {
+	height: 700px;
+	margin-left: 5em;
+}
+
+/*  Section 3  */
+.section-3 div div div .section-title {
+	margin-bottom: 0.25em;
+}
+
+.section-3 div div div h6 {
+	color: rgba(0, 0, 0, 0.7);
+	font-size: 20px;
+}
+
+.section-3-img div {
+	width: 25%;
+	height: 150px;
+	margin-left: 0.5em;
+	margin-bottom: 0.5em;
+	position: relative;
+}
+
+.section-3-img div img {
+	max-width: 100%;
+	min-width: 100%;
+	min-height: 100%;
+	max-height: 100%;
+}
+
+.img-text {
+	width: 275px !important;
+	top: -150px;
+	margin-left: 0em !important;
+	left: 0;
+	margin-bottom: 0 !important;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+	opacity: 0.3;
+	z-index: 99;
+}
+
+.img-text p {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	margin-top: 2em;
+	font-size: 25px;
+	color: white;
+	font-weight: bold;
+	z-index: 100;
+}
+
+/*  Lower Navbar*/
+.lowerNav {
+	position: fixed;
+	bottom: 0px;
+	text-align: center;
+	padding-top: 1em;
+	padding-bottom: 2em;
+	background-color: wheat;
+	z-index: 9999;
+	transition: 0.5s ease-in;
 }
 
 /*  Animations  */
@@ -82,11 +249,19 @@ section {
 	}
 }
 
-@keyframes slide-in-right {
+@keyframes slide-in-from-below {
 	0% {
-		top: 250px !important;
+		opacity: 0;
+		top: 90px;
+	}
+	25% {
+		opacity: 0.2;
+	}
+	50% {
+		opacity: 0.5;
 	}
 	100% {
-		top: 0px !important;
+		opacity: 1;
+		top: 75px;
 	}
 }
