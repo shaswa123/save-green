@@ -13,6 +13,12 @@ let navBg = () => {
 			for (let i = 0; i < navLinks.length; i++) {
 				navLinks[i].style.color = 'black';
 			}
+			let navToggleLines = document.getElementsByClassName('lines');
+			for (let i = 0; i < navToggleLines.length; i++) {
+				navToggleLines[i].style.backgroundColor = 'black';
+			}
+			let navToggle = document.getElementsByClassName('navbar-toggler')[0];
+			navToggle.style.borderColor = 'black';
 		} else if ($(window).scrollTop() < oTop + 200) {
 			flagNav = false;
 			navBar.style.backgroundColor = 'transparent';
@@ -21,6 +27,12 @@ let navBg = () => {
 			for (let i = 0; i < navLinks.length; i++) {
 				navLinks[i].style.color = 'white';
 			}
+			let navToggleLines = document.getElementsByClassName('lines');
+			for (let i = 0; i < navToggleLines.length; i++) {
+				navToggleLines[i].style.backgroundColor = 'white';
+			}
+			let navToggle = document.getElementsByClassName('navbar-toggler')[0];
+			navToggle.style.borderColor = 'white';
 		}
 	});
 	navBar.addEventListener('mouseover', () => {
@@ -31,6 +43,12 @@ let navBg = () => {
 			for (let i = 0; i < navLinks.length; i++) {
 				navLinks[i].style.color = 'black';
 			}
+			let navToggleLines = document.getElementsByClassName('lines');
+			for (let i = 0; i < navToggleLines.length; i++) {
+				navToggleLines[i].style.backgroundColor = 'black';
+			}
+			let navToggle = document.getElementsByClassName('navbar-toggler')[0];
+			navToggle.style.borderColor = 'black';
 		}
 	});
 	navBar.addEventListener('mouseout', () => {
@@ -41,24 +59,16 @@ let navBg = () => {
 			for (let i = 0; i < navLinks.length; i++) {
 				navLinks[i].style.color = 'white';
 			}
+			let navToggleLines = document.getElementsByClassName('lines');
+			for (let i = 0; i < navToggleLines.length; i++) {
+				navToggleLines[i].style.backgroundColor = 'white';
+			}
+			let navToggle = document.getElementsByClassName('navbar-toggler')[0];
+			navToggle.style.borderColor = 'white';
 		}
 	});
 };
 
-// let sectionTwo = () => {
-// 	let bottom = $('.section-3');
-// 	let section2 = document.getElementsByClassName('section-2')[0];
-// 	$(window).scroll(() => {
-// 		let oTop = $('.section-2').offset().top - window.innerHeight;
-// 		if ($(window).scrollTop() > oTop + 400 && $(window).scrollTop() <= $('.section-3').offset().top + 50) {
-// 			section2.style.opacity = '1';
-// 		} else {
-// 			section2.style.opacity = '0';
-// 		}
-// 	});
-// };
-
 $(window).on('load', () => {
 	navBg();
-	// sectionTwo();
 });
