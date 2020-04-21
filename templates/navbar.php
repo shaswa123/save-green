@@ -1,7 +1,7 @@
          <!-- The Navigation Bar -->
          <div class="navigation-bar">
             <nav class="navbar navbar-expand-lg">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="/save-green/index.php">
                   <img src="./images/Save-Green-logo-PNG.png" alt="">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
