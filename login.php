@@ -1,13 +1,31 @@
 <?php 
-    require "db.php";
+    require "util/db.php";
+    require "util/util.php";
+    session_start();
     $db = new DB;
     $db_obj = $db->create_db(3306,"fundraising","root","");
     if(isset($_POST["email"]) && isset($_POST["password"]))
     {
         // CHECK email and password from the DB
-        
+        $user = $db->get_one_user($_POST["email"],get_encrypt_pass($_POST["password"]));
+        if(isset($user["userID"])){
+            // SUCCESSFUL
+            // $_SESSION["userid"] = $row["userID"];
+            print($user["userID"]);
+            header("Location: index.php");
+            return;
+        }else{
+            // FAIL
+            header("Location: login.php");
+            return;
+        }
     }
-
+    if(isset($_SESSION["userid"])){
+        // IF user ID is set then no need to come to LOGIN redirect
+        // For now log out
+        header("Location: loggout.php");
+        return;
+    }
 ?>
 
 
@@ -18,8 +36,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Login</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/style1.css">
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/style1.css">
     <script src="https://kit.fontawesome.com/f0c4100b26.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
@@ -62,7 +80,7 @@
     <div class="loginbox">
         
         <h1>Login</h1>
-        <form>
+        <form method="post">
             <div class="emailContainer">
                 <p id="email">Email Address</p>
                 <input type="text" id="emailInput" onfocusout="loginOut(this.id)" onfocus="login(this.id)" name="email">

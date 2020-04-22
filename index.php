@@ -12,7 +12,7 @@
         </ol>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img src="images/planting.jpg" class="d-block w-100" alt="...">
+            <img src="public/images/planting.jpg" class="d-block w-100" alt="...">
             <div class="carousel-caption d-none d-md-block">
               <h1>First slide label</h1>
               <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
@@ -20,7 +20,7 @@
             </div>
           </div>
           <div class="carousel-item">
-            <img src="images/education.jpg" class="d-block w-100" alt="...">
+            <img src="public/images/education.jpg" class="d-block w-100" alt="...">
             <div class="carousel-caption d-none d-md-block">
               <h1>Second slide label</h1>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
@@ -28,7 +28,7 @@
             </div>
           </div>
           <div class="carousel-item">
-            <img src="images/other.jpg" class="d-block w-100" alt="...">
+            <img src="public/images/other.jpg" class="d-block w-100" alt="...">
             <div class="carousel-caption d-none d-md-block">
               <h1>Third slide label</h1>
               <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
@@ -63,7 +63,7 @@
                         <div class="carousel-item">
                           <div class="d-flex justify-content-around">
                             <div class="card" style="width: 18rem;">
-                              <img src="images/education.jpg" class="card-img-top" alt="...">
+                              <img src="public/images/education.jpg" class="card-img-top" alt="...">
                               <div class="card-body">
                                 <h5 class="card-title">Card title</h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -79,7 +79,7 @@
                           <div class="carousel-item">
                             <div class="d-flex justify-content-around">
                               <div class="card" style="width: 18rem;">
-                                <img src="images/study.jpg" class="card-img-top" alt="...">
+                                <img src="public/images/study.jpg" class="card-img-top" alt="...">
                                 <div class="card-body">
                                   <h5 class="card-title">Card title</h5>
                                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -95,7 +95,7 @@
                       <div class="carousel-item active">
                         <div class="d-flex justify-content-around">
                             <div class="card" style="width: 18rem;">
-                                <img src="images/education.jpg" class="card-img-top" alt="...">
+                                <img src="public/images/education.jpg" class="card-img-top" alt="...">
                                 <div class="card-body">
                                   <h5 class="card-title">Card title</h5>
                                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -107,7 +107,7 @@
                                 </div>
                             </div>
                             <div class="card" style="width: 18rem;">
-                                <img src="images/study.jpg" class="card-img-top" alt="...">
+                                <img src="public/images/study.jpg" class="card-img-top" alt="...">
                                 <div class="card-body">
                                   <h5 class="card-title">Card title</h5>
                                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -119,7 +119,7 @@
                                 </div>
                             </div>
                             <div class="card" style="width: 18rem;">
-                                <img src="images/charity.jpg" class="card-img-top" alt="...">
+                                <img src="public/images/charity.jpg" class="card-img-top" alt="...">
                                 <div class="card-body">
                                   <h5 class="card-title">Card title</h5>
                                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -158,7 +158,7 @@
                 <div class="rows">
                   <div class="d-flex justify-content-around">
                     <div class="card" style="width: 18rem;">
-                        <img src="images/education.jpg" class="card-img-top" alt="...">
+                        <img src="public/images/education.jpg" class="card-img-top" alt="...">
                         <div class="card-body">
                           <h5 class="card-title">Card title</h5>
                           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -190,7 +190,7 @@
                         </div>
                     </div>
                     <div class="card" style="width: 18rem;">
-                        <img src="images/study.jpg" class="card-img-top" alt="...">
+                        <img src="public/images/study.jpg" class="card-img-top" alt="...">
                         <div class="card-body">
                           <h5 class="card-title">Card title</h5>
                           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -227,7 +227,7 @@
                     <div class="rows">
                       <div class="d-flex justify-content-around">
                         <div class="card" style="width: 18rem;">
-                            <img src="images/charity.jpg" class="card-img-top" alt="...">
+                            <img src="public/images/charity.jpg" class="card-img-top" alt="...">
                             <div class="card-body">
                               <h5 class="card-title">Card title</h5>
                               <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -277,7 +277,7 @@
           <div class="row-text-left">
             <div class="d-flex pt-3">
               <div class="col-md-3">
-                  <img src="./images/Save-Green-logo-PNG.png" style="width: 50%;" alt="">
+                  <img src="./public/images/Save-Green-logo-PNG.png" style="width: 50%;" alt="">
                   <p class="text-muted">100K+ Followers</p>
                   <div class="column text-light">
                     <i class="fab fa-facebook-f"></i>

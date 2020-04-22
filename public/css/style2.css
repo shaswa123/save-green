@@ -29,7 +29,6 @@ body {
 .signupbox {
 	width: 320px;
 	height: 520px;
-	background: whitesmoke;
 	color: black;
 	top: 50%;
 	left: 50%;
@@ -58,6 +57,14 @@ body {
 }
 
 .signupbox input[type="text"] {
+	border: none;
+	border-bottom: 1px solid black;
+	background: transparent;
+	outline: none;
+	height: 40px;
+}
+
+#emailInput {
 	border: none;
 	border-bottom: 1px solid black;
 	background: transparent;
