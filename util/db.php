@@ -7,9 +7,10 @@
             return $this->pdo;
         }
         public function get_all_users(){
-            $sql = "SELECT * FROM users";
-            $stml = $this->pdo->query($sql);
-            return $stml;
+            $stmt = $this->pdo->prepare("SELECT * FROM users");
+            $stmt->execute(); 
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
         }
 
         public function insert_user($firstName, $lastName, $emailId, $pass)
@@ -34,14 +35,20 @@
             ));
         }
 
-        public function get_one_user($emailId){
-            $sql = "SELECT * FROM users WHERE emailId = :email;";
-            // print($sql);
-            $stml = $this->pdo->prepare($sql);
-            $stml->execute(array(
-                ':email' => $emailId
-            ));
-            $result = $stml->fetch();
+        public function get_one_user($emailId, $pass){
+            $stml = $this->pdo->prepare("SELECT * FROM users WHERE emailId = :email AND pass = :pass");
+            $stml->bindParam(':email',$emailId,PDO::PARAM_STR);
+            $stml->bindParam(':pass',$pass,PDO::PARAM_STR);
+            $stml->execute();
+            $data = $stml->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
+        }
+
+        public function get_one_admin_user($id){
+            $stml = $this->pdo->prepare("SELECT * FROM admins WHERE id = :id");
+            $stml->bindParam(':id',$id,PDO::PARAM_INT);
+            $stml->execute();
+            $result = $stml->fetchAll(); 
             return $result;
         }
 

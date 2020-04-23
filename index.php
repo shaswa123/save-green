@@ -1,6 +1,7 @@
 <?php 
   require "templates/top.php";
   require "templates/navbar.php";
+  session_start();
 ?>
   <!--Landing Images-->
   <div class="carousel-home-page">

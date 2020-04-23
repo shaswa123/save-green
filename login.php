@@ -8,19 +8,32 @@
     {
         // CHECK email and password from the DB
         $user = $db->get_one_user($_POST["email"],get_encrypt_pass($_POST["password"]));
-        if(isset($user["userID"])){
-            // SUCCESSFUL
-            // $_SESSION["userid"] = $row["userID"];
-            print($user["userID"]);
+        // print((int)$user[0]["userID"]);
+        $admin_user = $db->get_one_admin_user((int)$user[0]["userID"]);
+        // print_r($admin_user[0]["id"]);
+        if(isset($admin_user[0]["id"]))
+        {
+            print("OK");
+            // Admin user
+            $_SESSION["adminid"] = (int)$admin_user[0]["id"];
+            header("Location: admin101/dashboard.php");
+            return;
+        }
+        else if(isset($user[0]["userID"])){
+            print("OL");
+            // Normal user
+            $_SESSION["userid"] = (int)$user[0]["userID"];
             header("Location: index.php");
             return;
-        }else{
+        }
+        else {
+            print("NOO");
             // FAIL
-            header("Location: login.php");
+            header("Location: signup.php");
             return;
         }
     }
-    if(isset($_SESSION["userid"])){
+    if(isset($_SESSION["userid"]) || isset($_SESSION["adminid"])){
         // IF user ID is set then no need to come to LOGIN redirect
         // For now log out
         header("Location: loggout.php");

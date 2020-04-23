@@ -1,0 +1,22 @@
+/*  NAVBAR  */
+.nav-link {
+	color: rgba(0, 0, 0, 0.7);
+	font-weight: bold;
+}
+
+.nav-link:hover {
+	color: black;
+}
+
+.nav-item:hover {
+	border-bottom: 2px solid #aa0000 !important;
+}
+
+.navbar-brand > img {
+	width: 25%;
+}
+
+/*  TABLES  */
+.table {
+	width: 75% !important;
+}
