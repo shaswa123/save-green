@@ -25,7 +25,7 @@
                       <a class="nav-link" href="allusers.php">View Users</a>
                     </li>
                     <li class="nav-item dropdown">
-                      <a class="nav-link" href="allusers.php">Profile</a>
+                      <a class="nav-link" href="profile.php">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/save-green/loggout.php">Log out</a>

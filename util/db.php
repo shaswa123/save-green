@@ -53,13 +53,12 @@
         }
 
         public function insert_into_verify($user, $code){
-            $sql = "INSERT INTO emailverify (userid, email, e_code, isVerified) VALUES (:id, :email, :code, :val)";
+            $sql = "INSERT INTO emailverify (userid, e_code, isVerified) VALUES (:id, :code, :val)";
             $stml = $this->pdo->prepare($sql);
             $result = $stml->execute(array(
                 ':id' => $user["userID"],
-                ':email' => $user["emailId"],
                 ':code'=> $code,
-                ':pass' => 0
+                ':val' => 0
             ));
             return $result;
         }

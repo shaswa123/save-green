@@ -31,18 +31,19 @@
             <?php echo('<h3>'.$user["firstName"].'</h3>')?>
             <?php echo('<h5 style="margin:auto; margin-left:4em;">'.$user["emailId"].'</h5>') ?>
         </div>
-        <?php echo('<p style="font-size: 15px" class="text-muted">Phone number: '.$phone_nums[0]["phonenum"]).'</p>' ?>
+        <?php if(isset($phone_nums[0])) {echo('<p style="font-size: 15px" class="text-muted">Phone number: '.$phone_nums[0]["phonenum"].'</p>');} ?>
         <?php if(isset($phone_nums[1])){
             echo('<p style="font-size: 15px" class="text-muted">Phone number: '.$phone_nums[1]["phonenum"].'</p>');
         } ?>
         <div class="d-flex">
             <h4>All the campaings</h4>
-            <form method="post">
+            <form method="post" class="d-flex">
                 <select class="form-control form-control-sm" style="margin-left:10em;">
-                    <option>Active</option>
+                    <option><a href=<?= 'user_detail.php?id='.$_GET["id"].'search=active'?>>Active</a></option>
                     <option>Deactived</option>
                     <option>Finished</option>
                 </select>
+                <button type="submit" style="color:white; background-color:#aa0000; border:none; border-radius:10px;">SEARCH</button>
             </form>
         </div>
         <?php echo('') ?>

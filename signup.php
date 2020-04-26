@@ -34,32 +34,25 @@
         $pass = get_encrypt_pass($_POST["password"]);
         
         if($db->insert_user($_POST["name"],"",$_POST["email"],$pass)){
-            // REDIRECT TO code confirmation PAGE
-            header("Location: login.php");
+            // CODE below is for confirmation email
+            $user = $db->get_one_user($_POST["email"],$pass);
+            $user = $user[0];
+            $code = get_email_code($_POST["name"]);
+            $db->insert_into_verify($user, $code);
+            $code = str_split($code,10)[0];
+            if(confirmation_email($_POST["email"],$_POST["name"], $code)){
+                $_SESSION["isverified"] = false;
+                header("Location: signupconfirm.php");
+                return;
+            }else{
+                $_SESSION["signup-error"] = true;
+                $err = "Issue with Sign up. Please try again.";
+                header("Location: signup.php");
+                return;
+            }
             
-            // CODE below is for confirmation email. It does not work rn
-            
-            // $user = $db->get_one_user($_POST["email"]);
-            // print_r($user);
-            // if(isset($user["userID"])){
-            //     // FOUND it
-            //     $code = get_email_code($user["userID"]);
-                
-            //     $db->insert_into_verify($user, $code);
-
-            //     if(write_email($user, $code)){
-            //         header("Location: signupconfirm.php");
-            //         return;
-            //     }else{
-            //         $_SESSION["signup-error"] = true;
-            //         $err = "Issue with Sign up. Please try again.";
-            //         header("Location: signup.php");
-            //         return;
-            //     }
-            // }
-        
-            // header("Location: sig.php");
-            // return;
+            header("Location: signupconfirm.php");
+            return;
         }else{
             // User Exist
             $_SESSION["signup-error"] = true;
@@ -138,15 +131,15 @@
         <form class="mt-3" method="post">
             <div class="nameContainer">
                 <p id="name">Name</p>
-                <input type="text" id="nameInput" onfocusout="signUpOut(this.id)"  onfocus="signUp(this.id)" name="name">
+                <input type="text" id="nameInput" onfocusout="signUpOut(this.id)"  onfocus="signUp(this.id)" name="name" require>
             </div>
             <div class="emailContainer">
                 <p id="email">Email Address</p>
-                <input type="email" id="emailInput" onfocusout="signUpOut(this.id)" onfocus="signUp(this.id)" name="email">
+                <input type="email" id="emailInput" onfocusout="signUpOut(this.id)" onfocus="signUp(this.id)" name="email" require>
             </div>
             <div class="passContainer">
                 <p id="pass">Password</p>
-                <input type="password" id="passInput" onfocusout="signUpOut(this.id)" onfocus="signUp(this.id)" name="password">
+                <input type="password" id="passInput" onfocusout="signUpOut(this.id)" onfocus="signUp(this.id)" name="password" require>
             </div>
             <a href="#">Forgot your Password?</a>
             <input type="submit" name="" value="Sign Up to get started">
@@ -162,3 +155,14 @@
   
 <?php require "templates/foot.php";?>
 
+<!-- 
+
+                <div class="phoneContainer">
+                <p id="pass">Phone number</p>
+                <input type="text" id="phonenum" onfocusout="signUpOut(this.id)" onfocus="signUp(this.id)" name="password" require>
+            </div>
+            <div class="altphoneContainer">
+                <p id="pass">Alternate phone number</p>
+                <input type="text" id="altphone" onfocusout="signUpOut(this.id)" onfocus="signUp(this.id)" name="password">
+            </div>
+-->

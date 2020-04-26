@@ -11,21 +11,21 @@
         $encryption = openssl_encrypt($pass, $ciphering, $encryption_key, $options, $encryption_iv); 
         return $encryption;
     }
-    function get_email_code($userid){
+    function get_email_code($name){
         $ciphering = "AES-128-CTR";
         $iv_length = openssl_cipher_iv_length($ciphering); 
         $options = 0;
         $salt = "email_verify";
         $encryption_iv = "1102935159209143"; 
         $encryption_key = "email_code_1201";
-        $pass = $pass.$salt;
+        $pass = $name.$salt;
         $encryption = openssl_encrypt($pass, $ciphering, $encryption_key, $options, $encryption_iv); 
         return $encryption;
     }
 
-    function write_email($user, $code)
+    function confirmation_email($email_to,$name, $code)
     {
-        $to = $user["email"];
+        $to = $email_to;
         $subject = 'Confirmation code';
         $from = 'shaswat178@gmail.com';
          
@@ -40,8 +40,9 @@
          
         // Compose a simple HTML email message
         $message = '<html><body>';
-        $message .= '<h1 style="color:#f40;">Hi,'.$user["firstName"].'</h1>';
-        $message .= '<p style="color:#080;font-size:18px;">Thank you for joining save green fund raising website. The confirmation code is: <b>'.$code.'<b></p>';
+        $message .= '<h1>Hi, '.$name.'</h1>';
+        $message .= '<p style="font-size:"14px">Thank you for joining save green fund raising website. The confirmation code: <b>'.$code.'</b></p>';
+        $message .= '<p style="font-size:12px; color:rgba(0,0,0,0.7);">Please confirm within 48 hours.</p>';
         $message .= '</body></html>';
          
         // Sending email

@@ -40,7 +40,7 @@
     </div>
     <div class="promo-container shadow">
       <div class="video-container">
-
+        <iframe src="https://www.youtube.com/embed/TFNUij_1I5Q" style="width:100%; min-height:100%;" frameborder="0"></iframe>
       </div>
       <div class="title">
         Help US!
@@ -137,7 +137,7 @@
             </div>
           </section>
           <!--All the Fundraiser-->
-          <section class="section-2">
+          <section class="section-2" id="fundraisers">
             <div class="container">
               <h1 class="section-title">All Fundraisers</h1>
               <div class="tags d-flex">
