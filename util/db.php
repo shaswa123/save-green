@@ -48,8 +48,16 @@
             $stml = $this->pdo->prepare("SELECT * FROM admins WHERE id = :id");
             $stml->bindParam(':id',$id,PDO::PARAM_INT);
             $stml->execute();
-            $result = $stml->fetchAll(); 
+            $result = $stml->fetchAll(PDO::FETCH_ASSOC); 
             return $result;
+        }
+
+        public function get_user_by_id($id){
+            $stml = $this->pdo->prepare("SELECT * FROM users WHERE userID = :id");
+            $stml->bindParam(':id',$id,PDO::PARAM_INT);
+            $stml->execute();
+            $data = $stml->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
         }
 
         public function insert_into_verify($user, $code){
@@ -63,15 +71,15 @@
             return $result;
         }
 
-        public function get_from_verify($emailid){
-            $sql = "SELECT * FROM emailverify WHERE emailId = :email;";
+        public function get_from_verify($user_id){
+            $sql = "SELECT * FROM emailverify WHERE userid = :id;";
             // print($sql);
             $stml = $this->pdo->prepare($sql);
             $stml->execute(array(
-                ':email' => $emailid
+                ':id' => $user_id
             ));
-            $result = $stml->fetch();
-            return $result;
+            $result = $stml->fetchAll();
+            return $result[0];
         }
 
         public function set_verify($userid){
@@ -82,5 +90,39 @@
             ));
             return $result;
         }
+        public function insert_into_campaigns($camp_details){
+            $stml = $this->pdo->prepare("INSERT INTO campaigns (title,location,startdate,enddate,amount,image,description,currentamount,userID) VALUES (:title,:loc,:startdate,:enddate,:amount,:img,:description,:curramt,:userid)");
+            $res = $stml->execute(array(
+                ':title' => $camp_details["title"],
+                ':loc' => $camp_details["loc"],
+                ':startdate' => $camp_details["sdate"],
+                ':enddate' => $camp_details["edate"],
+                'amount' => $camp_details["amt"],
+                ':img' => $camp_details["img"],
+                ':description'=>$camp_details["desc"],
+                ':curramt'=>$camp_details["curramt"],
+                ':userid'=>$camp_details["userid"]
+            ));
+            return $res;
+        }
+        public function get_campaigns_by_user($userid){
+            $stml = $this->pdo->prepare("SELECT * FROM campaigns where userID = :id ORDER BY startdate DESC");
+            $stml->execute(array(':id' => $userid));
+            $result = $stml->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public function get_all_campaigns(){
+            $stml = $this->pdo->prepare("SELECT * FROM campaigns ORDER BY startdate DESC");
+            $stml->execute();
+            $result = $stml->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public function get_campaigns_by_id($id){
+            $stml = $this->pdo->prepare("SELECT * FROM campaigns where id = :id");
+            $stml->execute(array(':id' => $id));
+            $res = $stml->fetchAll(PDO::FETCH_ASSOC);
+            return $res;
+        }
     }
+
 ?>

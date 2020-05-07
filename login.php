@@ -16,10 +16,8 @@
         $user = $db->get_one_user($_POST["email"],get_encrypt_pass($_POST["password"]));
 
         // Check if email is verified or not
-        $stml = $db_obj->prepare("SELECT * from emailverify WHERE userid = :id");
-        $stml->execute(array(':id' => (int)$user[0]["userID"]));
-        $isverified = $stml->fetchAll();
-        if($isverified[0]["isverified"] == 0){
+        $isverified = $db->get_from_verify((int)$user[0]["userID"]);
+        if($isverified["isverified"] == 0){
             $_SESSION["isverified"] = false;
             header("Location: signupconfirm.php");
             $_SESSION["userid"] = $user[0]["userID"];
@@ -29,10 +27,7 @@
             $_SESSION["verifycode"] = $isverified[0]["e_code"];
 
         }
-        // print($_SESSION["isverified"]);
-        // print((int)$user[0]["userID"]);
         $admin_user = $db->get_one_admin_user((int)$user[0]["userID"]);
-        // print_r($admin_user[0]["id"]);
         if(isset($admin_user[0]["id"]))
         {
             // Admin user

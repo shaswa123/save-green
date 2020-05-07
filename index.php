@@ -1,7 +1,16 @@
 <?php 
+  require "util/util.php";
+  require "util/db.php";
+  $db = new DB;
+  $db_obj = $db->create_db(3306,"fundraising","root","");
+  $all_camp = $db->get_all_campaigns();
+  // print_r([$all_camp[0]]);
+?>
+
+
+<?php 
   require "templates/top.php";
   require "templates/navbar.php";
-  session_start();
 ?>
   <!--Landing Images-->
   <div class="carousel-home-page">
@@ -61,83 +70,37 @@
             <div class="carousel-main-page container">
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
-                        <div class="carousel-item">
-                          <div class="d-flex justify-content-around">
-                            <div class="card" style="width: 18rem;">
+                      <?php $k = 0; $limit; if(count($all_camp) < 3){$limit = 1;}else{$limit = 3;} for($i = 0; $i < (count($all_camp) %3 == 0 ? 3 : count($all_camp) % 3); $i++){
+                         if($k == 0){ echo('<div class="carousel-item active">');}else{ echo('<div class="carousel-item">');}
+                           echo('<div class="d-flex justify-content-around">');
+                       for($j=0; $j <$limit; $j++){ 
+                            echo('<div class="card" style="width: 18rem;">
                               <img src="public/images/education.jpg" class="card-img-top" alt="...">
                               <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <h5 class="card-title">'.$all_camp[$k]["title"].'</h5>
+                                <p class="card-text">'.str_split($all_camp[$k]["description"],25)[0].'...</p>
                               </div>
-                              
                               <div class="card-body">
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
+                                <label>'.(float)$all_camp[$k]["currentamount"].' raised</label>
+                                <div class="progress mt-2 mb-2">
+                                   <div class="progress-bar" role="progressbar" style="width:'.(float)$all_camp[$k]["currentamount"]*100/$all_camp[$k]["amount"].'%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">'.(float)$all_camp[$k]["currentamount"]*100/$all_camp[$k]["amount"].'%</div>
+                                 </div>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                          <div class="carousel-item">
-                            <div class="d-flex justify-content-around">
-                              <div class="card" style="width: 18rem;">
-                                <img src="public/images/study.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                  <h5 class="card-title">Card title</h5>
-                                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                                
-                                <div class="card-body">
-                                  <a href="#" class="card-link">Card link</a>
-                                  <a href="#" class="card-link">Another link</a>
-                                </div>
-                            </div>
-                            </div>
-                          </div>
-                      <div class="carousel-item active">
-                        <div class="d-flex justify-content-around">
-                            <div class="card" style="width: 18rem;">
-                                <img src="public/images/education.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                  <h5 class="card-title">Card title</h5>
-                                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                                
-                                <div class="card-body">
-                                  <a href="#" class="card-link">Card link</a>
-                                  <a href="#" class="card-link">Another link</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="public/images/study.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                  <h5 class="card-title">Card title</h5>
-                                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                                
-                                <div class="card-body">
-                                  <a href="#" class="card-link">Card link</a>
-                                  <a href="#" class="card-link">Another link</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="public/images/charity.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                  <h5 class="card-title">Card title</h5>
-                                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                                
-                                <div class="card-body">
-                                  <a href="#" class="card-link">Card link</a>
-                                  <a href="#" class="card-link">Another link</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                              <div class="card-body">
+                                <a href="viewcampaign.php?id='.get_encrypted_id($all_camp[$k]["id"]).'" style="text-decoration: none;" class="card-link">SEE MORE</a>
+                              </div>
+                            </div>');
+                            $k++;
+                        }    
+                        echo('</div>
+                       </div>');
+                      }
+                      ?>
                   </div>
             </div>
           </section>
           <!--All the Fundraiser-->
-          <section class="section-2" id="fundraisers">
+          <section class="section-2 mb-4" id="fundraisers">
             <div class="container">
               <h1 class="section-title">All Fundraisers</h1>
               <div class="tags d-flex">
@@ -145,135 +108,53 @@
                   <p>SORT BY:</p>
                 </div>
                 <div class="form-group" style="width:25%;">
-                  <form action="" class="d-flex" style="width:100%;">
-                    <select class="form-control" id="select">
+                  <form method="get" class="d-flex" style="width:100%;">
+                    <select name="op" class="form-control" id="select">
                       <option>Education</option>
                       <option>Food</option>
-                      <option value="">Env</option>
+                      <option>Env</option>
                     </select>
                     <button class="btn btn-danger">SEARCH</button>
                   </form>
                 </div>
               </div>
               <div class="all-cards">
-                <div class="rows">
-                  <div class="d-flex justify-content-around">
-                    <div class="card" style="width: 18rem;">
-                        <img src="public/images/education.jpg" class="card-img-top" alt="...">
+              <?php 
+                $k = count($all_camp) - 1;
+                for($i = 0; $i < count($all_camp) / 3 + 1; $i++)
+                {
+                  echo('<div class="rows"> <div class="d-flex justify-content-around">');
+                  for($j =0; $j < 3; $j++){
+                    echo('<div class="card" style="width: 18rem;">
+                        <img src="uploadimages/'.$all_camp[$k]["image"].'" class="card-img-top" alt="...">
                         <div class="card-body">
-                          <h5 class="card-title">Card title</h5>
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <h5 class="card-title">'.$all_camp[$k]["title"].'</h5>
+                          <p class="card-text">'.str_split($all_camp[$k]["description"],25)[0].'...</p>
                         </div>
-                        
                         <div class="card-body">
-                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                            Details
-                        </button>
-                        <!-- Modal -->
-                          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem rerum tempore, totam debitis voluptates aliquid laborum doloribus saepe accusamus! Deleniti!
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              </div>
-                            </div>
+                          <div class="progress mb-2">
+                            <div class="progress-bar" role="progressbar" style="width:'.(float)$all_camp[$k]["currentamount"]*100/$all_camp[$k]["amount"].'%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">'.(float)$all_camp[$k]["currentamount"]*100/$all_camp[$k]["amount"].'%</div>
                           </div>
+                          <a href="viewcampaign.php?id='.get_encrypted_id($all_camp[$k]["id"]).'" style="text-decoration: none;">SEE MORE</a>
                         </div>
-                        </div>
-                    </div>
-                    <div class="card" style="width: 18rem;">
-                        <img src="public/images/study.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <h5 class="card-title">Card title</h5>
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                        
-                        <div class="card-body">
-                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                            Details
-                        </button>
-                        <!-- Modal -->
-                          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi voluptas dicta ad ducimus fugit exercitationem saepe sed deleniti, nam vitae.
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        </div>
-                    </div>
-                         
-                        </div>
-                  </div>
-                    <div class="rows">
-                      <div class="d-flex justify-content-around">
-                        <div class="card" style="width: 18rem;">
-                            <img src="public/images/charity.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                              <h5 class="card-title">Card title</h5>
-                              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                            
-                            <div class="card-body">
-                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                                Details
-                            </button>
-                            <!-- Modal -->
-                              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem odit illo eum eos adipisci! Quia a nemo at impedit autem!
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            </div>
-                        </div>
+                       </div>
                       </div>
-                    </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
-              </div>
-            </div>
+                     </div>');
+                     $k--;
+                     if($k <= 0)
+                     {
+                      break;
+                     }
+                  }
+                }
+              ?>
+
+
+               </div>
           </section>
     </main>
-    <section style="height: 500px; width: 100%;">
 
-    </section>
-
-    <footer>
+    <footer class="mt-4">
         <div class="container-fluid p-0">
           <div class="row-text-left">
             <div class="d-flex pt-3">

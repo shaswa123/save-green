@@ -6,6 +6,8 @@ let navBg = () => {
 		let oTop = $('.section-1').offset().top - window.innerHeight;
 		if ($(window).scrollTop() >= oTop + 200) {
 			flagNav = true;
+			//Add shadow
+			// navBar.classList.add('shadow');
 			//Make background white
 			navBar.style.backgroundColor = 'whitesmoke';
 			document.getElementsByClassName('navbar-brand')[0].style.color = 'black';
@@ -21,6 +23,7 @@ let navBg = () => {
 			navToggle.style.borderColor = 'black';
 		} else if ($(window).scrollTop() < oTop + 200) {
 			flagNav = false;
+			//navBar.remove('shadow');
 			navBar.style.backgroundColor = 'transparent';
 			document.getElementsByClassName('navbar-brand')[0].style.color = 'white';
 			let navLinks = document.getElementsByClassName('nav-link');
@@ -71,4 +74,6 @@ let navBg = () => {
 
 $(window).on('load', () => {
 	navBg();
+	var $j = jQuery.noConflict();
+	$j('#datepicker').datepicker();
 });

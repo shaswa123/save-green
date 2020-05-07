@@ -54,4 +54,32 @@
         
     }
 
+    function get_encrypted_id($id)
+    {
+        $ciphering = "AES-128-CTR";
+        $iv_length = openssl_cipher_iv_length($ciphering); 
+        $options = 0;
+        $encryption_iv = "1102935159209150"; 
+        $encryption_key = "get_one_fundraiser";
+        $salt = "thisit_";
+        $id = $salt.$id;
+        $encryption = openssl_encrypt($id, $ciphering, $encryption_key, $options, $encryption_iv); 
+        return $encryption;
+    }
+
+    function get_decrypted_id($encrypted)
+    {
+        $ciphering = 'AES-128-CTR';
+        $iv_length = openssl_cipher_iv_length($ciphering); 
+        $options = 0; 
+        // Store the decryption key 
+        $decryption_iv = "1102935159209150";
+        $decryption_key = "get_one_fundraiser"; 
+        
+        // Use openssl_decrypt() function to decrypt the data 
+        $decryption=openssl_decrypt ($encrypted, $ciphering, $decryption_key, $options, $decryption_iv);
+        // print($decryption);
+        return $decryption;
+    }
+
 ?>

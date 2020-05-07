@@ -56,9 +56,9 @@ section {
 	color: white;
 }
 
-.nav-item:hover {
-	border-bottom: 2px solid #aa0000 !important;
-}
+/* .nav-item:hover {
+	border-bottom: 2px solid black !important;
+} */
 
 .carousel-home-page,
 .carousel-item,
