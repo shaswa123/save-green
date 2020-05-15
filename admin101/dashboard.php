@@ -12,6 +12,8 @@
         return;
     }
 
+    
+
     // GET the user
     $user = $db->get_user_by_id($_SESSION["adminid"])[0];
 

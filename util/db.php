@@ -34,7 +34,12 @@
                 ':email' => $emailId
             ));
         }
-
+        public function get_phone_numbers($id){
+            $stml = $this->pdo->prepare("SELECT * from phonenumbers WHERE userid = :id");
+            $stml->execute(array(':id' => $id));
+            $phone_nums = $stml->fetchAll(PDO::FETCH_ASSOC);
+            return $phone_nums;
+        }
         public function get_one_user($emailId, $pass){
             $stml = $this->pdo->prepare("SELECT * FROM users WHERE emailId = :email AND pass = :pass");
             $stml->bindParam(':email',$emailId,PDO::PARAM_STR);
@@ -122,6 +127,21 @@
             $stml->execute(array(':id' => $id));
             $res = $stml->fetchAll(PDO::FETCH_ASSOC);
             return $res;
+        }
+        public function get_popular_campaign($id){
+            $result;
+            if($id == -1){
+                // GET from all the campaigns in the DB
+                $stml = $this->pdo->prepare("SELECT * FROM campaigns ORDER BY currentamount DESC LIMIT 0,1");
+                $stml->execute();
+                $result = $stml->fetchAll(PDO::FETCH_ASSOC);
+            }else{
+                //GET for a particular volunteer
+                $stml = $this->pdo->prepare("SELECT * FROM campaigns WHERE userID = :id ORDER BY currentamount DESC LIMIT 0,1");
+                $stml->execute(array(':id'=> $id));
+                $result = $stml->fetchAll(PDO::FETCH_ASSOC);
+            }
+            return $result;
         }
     }
 

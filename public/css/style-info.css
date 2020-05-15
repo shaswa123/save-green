@@ -1,0 +1,276 @@
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Barlow&display=swap');
+
+* {
+	box-sizing: border-box;
+}
+
+/*Navbar CSS*/
+.navigation-bar {
+	width: 100%;
+	height: 30px;
+	background: transparent;
+	position: absolute;
+	z-index: 99;
+}
+
+.navbar ul li a {
+	font-family: 'Barlow', sans-serif;
+	color: #ffffff;
+	font-weight: bold;
+}
+
+.navbar img {
+	width: 250px;
+	height: 60px;
+}
+
+.navigation-bar :hover {
+	background-color: #2e3c4b;
+}
+
+/*box*/
+.box-image {
+	background: url(images/bg4.jpg);
+	background-size: cover;
+	position: relative;
+	width: 100%;
+	height: 300px;
+	top: 80px;
+}
+
+.box .box-image-text h2 {
+	position: relative;
+	bottom: 130px;
+	left: 5px;
+	color: #2e3c4b;
+	font-weight: bolder;
+	font-family: 'Barlow', sans-serif;
+	font-size: 60px;
+	text-align: center;
+}
+
+.box .box-image-text p {
+	position: relative;
+	bottom: 120px;
+	left: 5px;
+	color: #2e3c4b;
+	font-weight: bolder;
+	font-family: 'Barlow', sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+}
+
+/*Card*/
+.info-card {
+	/*position: relative;*/
+	padding-left: 20px;
+	width: 100%;
+	overflow-x: hidden;
+}
+
+.info-card .card {
+	height: 400px;
+	margin: auto;
+}
+
+.info-card .card .landing-image img {
+	position: relative;
+	height: 400px;
+	width: 550px;
+}
+
+.info-card .card .card-body .card-title {
+	position: relative;
+	left: 180px;
+	font-family: 'Barlow', sans-serif;
+	font-size: 40px;
+	font-weight: bold;
+	color: #2e3c4b;
+	width: fit-content;
+	margin-top: auto;
+}
+
+.info-card .card .card-body .card-text {
+	position: relative;
+	font-family: 'Barlow', sans-serif;
+	font-style: normal;
+	font-size: 20px;
+	left: 300px;
+	top: 45px;
+}
+
+.info-card .avatar a img {
+	position: relative;
+	border-radius: 100px;
+	border: 2px solid #fff;
+	box-shadow: 2px 2px 6px rgba(0, 0, 0, .1);
+	height: 40px;
+	bottom: 30px;
+	left: 220px;
+	height: 60px;
+}
+
+.info-card .avatar a .text {
+	position: relative;
+	bottom: 80px;
+	font-family: 'Barlow', sans-serif;
+	font-style: italic;
+	font-size: 15px;
+	left: 300px;
+	color: gray;
+}
+
+.info-card .card .card-body .progress {
+	position: relative;
+	height: 6px;
+	border-radius: 50px;
+	bottom: 50px;
+	left: 230px;
+	width: 400px;
+	top: 1px;
+}
+
+.info-card .card .card-body .progress .progress-bar {
+	position: absolute;
+	width: 20px;
+	height: 6px;
+	background: #00b964;
+	border-radius: 50px;
+}
+
+.info-card .card .card-body .stat-text {
+	position: relative;
+	top: 20px;
+	left: 240px;
+	color: #2e3c4b;
+	font-family: 'Barlow', sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.info-card .card .card-body .stat-text .perc {
+	position: relative;
+	left: 360px;
+	bottom: 52px;
+}
+.info-card .card .card-body .stat-text .text-muted {
+	font-weight: lighter;
+	font-size: 14px;
+}
+
+.info-card .card .card-body .sidebar .formz {
+	left: 220px;
+	bottom: 20px;
+	position: relative;
+}
+
+.info-card input[type = "number"] {
+	height: 50px;
+	border-radius: 3px;
+	border: 2px solid #f0edeb;
+	background: #f0edeb;
+	color: #74797e;
+	font-family: Barlow, sans-serif;
+	padding: 4px 15px 4px 20px;
+	font-size: 16px;
+	max-width: 80px;
+	line-height: 1;
+}
+
+.info-card .card .card-body .sidebar .formz button {
+	height: 50px;
+	line-height: 1;
+	border: none;
+	text-align: center;
+	display: inline-block;
+	border-radius: 3px;
+	width: auto;
+	padding: 20px 38px 19px 38px;
+	font-size: 13px;
+	text-transform: uppercase;
+	font-weight: 600;
+	font-family: 'Barlow', sans-serif;
+	color: #2e3c4b;
+	background-color: #fed857;
+}
+/*content-stuff*/
+
+.container {
+	width: 100%;
+}
+
+.content .tabs {
+	width: 80%;
+	margin: auto;
+	overflow-x: hidden;
+}
+
+.content .tabs .nav-item {
+	background: #f6f3f1;
+	margin-right: 0.5em;
+}
+
+.content .tabs .nav-item a {
+	top: 1px;
+	display: block;
+	font-family: 'Barlow', sans-serif;
+	font-size: 16px;
+	text-decoration: none;
+	border: none;
+	font-weight: 600;
+	color: #74797e;
+	background: #f0edeb;
+	padding: 22px 34px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+.content .tabs .nav-item a:hover {
+	color: #2e3c4b;
+	background: #00b964;
+}
+
+.content .tabs .tab-content {
+	margin-bottom: 28px;
+	display: block;
+	margin-block-start: 1em;
+	margin-block-end: 1em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	font-family: Barlow, sans-serif;
+	font-weight: 100;
+	font-size: medium;
+	color: #2e3c4b;
+}
+
+.content .tabs .tab-content table tr th {
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	text-align: left;
+	width: 50%;
+}
+
+.content .tabs .tab-content table th {
+	font-weight: 600;
+	font-family: Barlow, sans-serif;
+	color: #2e3c4b;
+	background: #f6f3f1;
+	border: none;
+	font-size: 17px;
+	padding: 15px;
+}
+
+@media (max-width: 1000px) {
+	/*box*/
+	.box-image {
+		background-size: cover;
+		position: relative;
+		width: 100%;
+		height: 300px;
+		top: 80px;
+	}
+}

@@ -32,13 +32,13 @@
         {
             // Admin user
             $_SESSION["adminid"] = (int)$admin_user[0]["id"];
-            header("Location: admin101/dashboard.php");
+            header("Location: dashboard.php");
             return;
         }
         else if(isset($user[0]["userID"])){
             // Normal user
             $_SESSION["userid"] = (int)$user[0]["userID"];
-            header("Location: volunteer/dashboard.php");
+            header("Location: dashboard.php");
             return;
         }
         else {

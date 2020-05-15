@@ -82,4 +82,17 @@
         return $decryption;
     }
 
+    function use_API()
+    {
+        $access_key = "LtKbygISZtRrYfS--91qH9G3Lt-XUiHJ5Z1p9nabrpE";
+        $secret_key = "vdIfTlMlvVjB1ZItUVNe74M6gR4O_pqk75FssbYAFVE";
+        $url = "https://api.unsplash.com/photos/?client_id=".$access_key;
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return $response;
+    }
+
 ?>

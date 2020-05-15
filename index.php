@@ -5,6 +5,7 @@
   $db_obj = $db->create_db(3306,"fundraising","root","");
   $all_camp = $db->get_all_campaigns();
   // print_r([$all_camp[0]]);
+  // print_r(use_API());
 ?>
 
 
@@ -153,6 +154,7 @@
                </div>
           </section>
     </main>
+    <img src="https://i.ibb.co//g6XYn7M/e26dfa9461e4.jpg">
 
     <footer class="mt-4">
         <div class="container-fluid p-0">

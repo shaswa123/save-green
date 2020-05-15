@@ -8,9 +8,10 @@
     font-weight:bold;
     padding:0.5em;
     border-radius:10px;
+    display:none;
   }
 </style>
-<form action="verify.php" method="POST">
+<form action="razor/verify.php" method="POST">
   <script
     src="https://checkout.razorpay.com/v1/checkout.js"
     data-key="<?php echo $data['key']?>"
@@ -32,5 +33,5 @@
   <input type="hidden" name="shopping_order_id" value="3456">
 </form>
 <script>
-  document.getElementsByClassName("razorpay-payment-button")[0].value = "Donate";
+  document.getElementsByClassName("razorpay-payment-button")[0].click();
 </script>

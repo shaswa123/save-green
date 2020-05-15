@@ -1,0 +1,436 @@
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Barlow&display=swap');
+
+* {
+	box-sizing: border-box;
+}
+
+.list-group-item {
+	border: none !important;
+	border-top: 1px solid lightgrey !important;
+}
+
+/*Navbar CSS*/
+.navigation-bar {
+	width: 100%;
+	height: 30px;
+	background: transparent;
+	position: absolute;
+	z-index: 99;
+}
+
+.navbar ul li a {
+	font-family: 'Barlow', sans-serif;
+	color: #ffffff;
+	font-weight: bold;
+}
+
+.navbar img {
+	width: 250px;
+	height: 60px;
+}
+
+.navigation-bar :hover {
+	background-color: #2e3c4b;
+}
+
+/*Landing Image CSS*/
+.image {
+	background-size: cover;
+	background-image: url("../images/main3.jpg");
+	/* background-position: bottom; */
+	position: relative;
+	width: 100%;
+	height: 700px;
+	/*-webkit-transform:reflect(180deg);
+    -moz-transform:reflect(180deg);
+    background-repeat:no-repeat;
+    background-position:center;*/
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+}
+
+.image-text header {
+	/* padding-left: 40%;
+    padding-top: 5%;*/
+	bottom: 50%;
+	font-family: 'Barlow', sans-serif;
+	color: #444444;
+	position: absolute;
+	width: 412px;
+	height: 100px;
+	left: 80px;
+	top: 250px;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 50px;
+	line-height: 75px;
+}
+
+.image-text button {
+	position: absolute;
+	width: 200px;
+	height: 50px;
+	left: 140px;
+	top: 400px;
+	background: #6e816b;
+	border-radius: 30px;
+	border: none;
+}
+
+button .btn {
+	position: absolute;
+	width: 176px;
+	height: 34px;
+	left: 169px;
+	top: 441px;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 24px;
+	line-height: 28px;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	color: #ffffff;
+	font-style: 'Barlow', sans-serif;
+}
+
+/*Cards CSS*/
+.card-container {
+	position: absolute;
+	width: 900px;
+	height: 268px;
+	background: white;
+	top: 80%;
+	left: 20%;
+}
+
+.row .card-1 {
+	background: #819d7b;
+	position: relative;
+	width: 455px;
+	height: 200px;
+}
+
+.row .card-1 .card-title {
+	position: relative;
+	width: 400px;
+	height: 40px;
+	font-family: 'Barlow', sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 27px;
+	line-height: 32px;
+	color: #ffffff;
+}
+
+.row .card-1 .card-text {
+	position: relative;
+	font-family: 'Barlow', sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 18px;
+	line-height: 21px;
+	color: #fffcfc;
+}
+
+.row .card-1 .card-body a {
+	position: relative;
+	width: 170px;
+	height: 36px;
+	font-family: 'Barlow', sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 25px;
+	line-height: 29px;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	color: #ffffff;
+	background: #6e816b;
+	border-color: #ffffff;
+}
+
+.row .card-2 {
+	background: #6e816b;
+	height: 200px;
+	width: 460px;
+}
+
+.row .card-2 .card-text {
+	position: absolute;
+	width: 379px;
+	height: 25px;
+	font-style: normal;
+	font-weight: 500;
+	font-family: 'Barlow', sans-serif;
+	font-size: 17px;
+	line-height: 16px;
+	display: flex;
+	align-items: center;
+	color: #ffffff;
+}
+
+.row .card-2 .progress {
+	position: absolute;
+	width: 379px;
+	height: 14px;
+	background: #ffffff;
+	border-radius: 50px;
+	top: 30%;
+}
+
+.row .card-2 .progress .progress-bar {
+	position: absolute;
+	width: 111px;
+	height: 14px;
+	background: #52dc00;
+	border-radius: 50px;
+}
+
+.row .card-2 .card-body a {
+	position: absolute;
+	width: 130px;
+	height: 36px;
+	background: #819d7b;
+	font-family: 'Barlow', sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 25px;
+	line-height: 29px;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	color: #ffffff;
+	border-color: #ffffff;
+	top: 55%;
+}
+
+/*Browse CSS */
+.browse-container {
+	position: relative;
+	width: 100%;
+	flex-wrap: wrap;
+	align-content: flex-start;
+}
+
+.browse-container .container-text h2 {
+	display: block;
+	text-align: center;
+	padding-top: 1em;
+	font-family: 'Barlow', sans-serif;
+	color: #2e3c4b;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 50px;
+	line-height: 75px;
+}
+
+.boxes .box-2 .card p {
+	text-align: center;
+	color: #2e3c4b;
+	font-family: 'Barlow', sans-serif;
+	font-weight: bold;
+}
+
+.boxes .box-3 .card {
+	left: 108%;
+	background: #ffffff;
+}
+
+.boxes .box-3 .card {
+	text-align: center;
+	color: #2e3c4b;
+	font-family: 'Barlow', sans-serif;
+	font-weight: bold;
+}
+*/ .browse-container .container-text .search-bar .dropdown {
+	left: 40%;
+	bottom: 10%;
+}
+
+.browse-container button {
+	color: #2e3c4b !important;
+	width: 380px;
+	border: none;
+	text-align: center;
+	background-color: #ffffff;
+}
+
+/* Campaign-cards CSS */
+
+.campaign-container {
+	position: relative;
+	width: 100%;
+	top: 25px;
+}
+
+.campaign-container .card {
+	height: fit-content;
+	box-sizing: border-box;
+}
+
+.campaign-container .author img {
+	border-radius: 100px;
+	border: 2px solid #fff;
+	box-shadow: 2px 2px 6px rgba(0, 0, 0, .1);
+	height: auto;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.campaign-container img {
+	margin-bottom: -1px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	height: auto;
+	max-width: 100%;
+	border: none;
+	box-sizing: border-box;
+}
+
+.campaign-container .card .but a {
+	display: inline-block;
+	position: relative;
+	bottom: 220px;
+	line-height: 1;
+	margin: 0 7px 5px 0;
+	font-size: 10px;
+	color: #2e3c4b;
+	font-weight: 600;
+	background: #fed857;
+	text-transform: uppercase;
+	letter-spacing: .2em;
+	padding: 10px 14px;
+	border-radius: 4px;
+	box-shadow: 0 0 6px rgba(0, 0, 0, .04);
+	box-sizing: border-box;
+	left: 20px;
+}
+
+.campaign-container .card .but a:hover {
+	background: #ffffff !important;
+}
+
+.campaign-container .card .avatar a img {
+	position: relative;
+	border-radius: 100px;
+	border: 2px solid #fff;
+	box-shadow: 2px 2px 6px rgba(0, 0, 0, .1);
+	height: 40px;
+	bottom: 60px;
+	left: 30px;
+}
+
+.campaign-container .card .avatar a .text {
+	position: relative;
+	bottom: 55px;
+	font-family: 'Barlow', sans-serif;
+	font-style: italic;
+	font-size: 15px;
+	left: 30px;
+	color: gray;
+}
+
+.campaign-container .card .card-body h2 a {
+	position: relative;
+	bottom: 60px;
+	font-family: 'Barlow', sans-serif;
+	color: #2e3c4b !important;
+	font-style: normal;
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.campaign-container .card .card-body h2 a:hover {
+	color: #00b964 !important;
+}
+
+.campaign-container .card .card-body .progress {
+	position: absolute;
+	width: 90%;
+	height: 6px;
+	border-radius: 50px;
+	top: 400px;
+}
+
+.campaign-container .card .card-body .progress .progress-bar {
+	position: absolute;
+	width: 100px;
+	height: 6px;
+	background: #00b964;
+	border-radius: 50px;
+}
+
+.campaign-container .card .stat-text {
+	position: relative;
+	bottom: 10px;
+	left: 25px;
+	color: #2e3c4b;
+	font-family: 'Barlow', sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.campaign-container .card .stat-text .perc {
+	position: relative;
+	left: 77%;
+	width: fit-content;
+	top: -50.5px;
+}
+.campaign-container .card .stat-text .text-muted {
+	font-weight: lighter;
+	font-size: 14px;
+}
+
+.campaign-container .card ul {
+	position: relative;
+	bottom: 5%;
+}
+
+.campaign-container .card ul li {
+	position: relative;
+	color: #2e3c4b;
+	font-family: 'Barlow', sans-serif;
+	font-style: normal;
+	font-weight: bold;
+}
+
+.minidesc {
+	position: relative;
+	top: -70px;
+	width: 100%;
+	z-index: 1;
+}
+
+/*box*/
+.box-image {
+	background: url(images/charity.jpg);
+	background-size: cover;
+	position: relative;
+	width: 100%;
+	height: 380px;
+	top: 180px;
+}
+
+.box .box-image-text h2 {
+	position: relative;
+	bottom: 180px;
+	left: 450px;
+	color: #ffffff;
+	font-weight: bolder;
+	font-family: 'Barlow', sans-serif;
+	font-size: 60px;
+}
+
+.box .box-image-text p {
+	position: relative;
+	bottom: 180px;
+	left: 490px;
+	color: #ffffff;
+	font-weight: bolder;
+	font-family: 'Barlow', sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+}
