@@ -41,7 +41,7 @@ if ($success === true)
     // store the order_id in database with user_id, phone_num and email_id 
     $html = "<p>Your payment was successful</p>
              <p>Payment ID: {$_POST['razorpay_payment_id']}</p>";
-    print_r($_POST);
+    // print_r($_POST);
 }
 else
 {

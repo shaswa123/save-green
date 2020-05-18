@@ -21,11 +21,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CrowdFunding</title>
     <link rel="stylesheet" href="public/css/style-final.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
-  <section>
     <!-- The Navigation Bar -->
     <div class="navigation-bar">
         <nav class="navbar">
@@ -45,6 +45,7 @@
             </ul>
         </nav>
     </div>
+  <section>
     <!--Landing Image-->
     <div class="image-container">
       <div class="image"></div>
@@ -77,7 +78,7 @@
           $limit = 3;
         } 
       for($i = 0; $i < ceil(count($all_camp) / 3); $i++){
-          echo('<div class="d-flex justify-content-around mb-4">
+          echo('<div class="d-flex justify-content-around mb-4" data-aos="fade-down" data-aos-duration="500">
                 ');
         for($j=0; $j <$limit; $j++){
           if($k >= count($all_camp)){
@@ -169,6 +170,18 @@
         </div>
       </div>
     </footer>
+    <!-- jQuery min JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+      crossorigin="anonymous"></script>
+    <!-- ANIMATE ON SCROLL(A0S) JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>>
+    <script>
+      AOS.init();
+    </script>
+    <!-- CUSTOM JS FILES -->
+    <script src="main.js"></script>
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

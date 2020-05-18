@@ -1,30 +1,15 @@
 let navBg = () => {
 	let flagNav = false;
 	let navBar = document.getElementsByClassName('navigation-bar')[0];
-	let sectionOne = $('.section-1');
 	$(window).scroll(() => {
-		let oTop = $('.section-1').offset().top - window.innerHeight;
-		if ($(window).scrollTop() >= oTop + 200) {
+		if ($(window).scrollTop() > 500) {
 			flagNav = true;
 			//Add shadow
 			// navBar.classList.add('shadow');
 			//Make background white
-			navBar.style.backgroundColor = 'whitesmoke';
-			document.getElementsByClassName('navbar-brand')[0].style.color = 'black';
-			let navLinks = document.getElementsByClassName('nav-link');
-			for (let i = 0; i < navLinks.length; i++) {
-				navLinks[i].style.color = 'black';
-			}
-			let navToggleLines = document.getElementsByClassName('lines');
-			for (let i = 0; i < navToggleLines.length; i++) {
-				navToggleLines[i].style.backgroundColor = 'black';
-			}
-			let navToggle = document.getElementsByClassName('navbar-toggler')[0];
-			navToggle.style.borderColor = 'black';
-		} else if ($(window).scrollTop() < oTop + 200) {
-			flagNav = false;
-			//navBar.remove('shadow');
-			navBar.style.backgroundColor = 'transparent';
+			navBar.style.backgroundColor = '#2e3c4b';
+			navBar.style.position = 'sticky';
+			navBar.style.top = '0px';
 			document.getElementsByClassName('navbar-brand')[0].style.color = 'white';
 			let navLinks = document.getElementsByClassName('nav-link');
 			for (let i = 0; i < navLinks.length; i++) {
@@ -34,13 +19,13 @@ let navBg = () => {
 			for (let i = 0; i < navToggleLines.length; i++) {
 				navToggleLines[i].style.backgroundColor = 'white';
 			}
-			let navToggle = document.getElementsByClassName('navbar-toggler')[0];
-			navToggle.style.borderColor = 'white';
-		}
-	});
-	navBar.addEventListener('mouseover', () => {
-		if (!flagNav) {
-			navBar.style.backgroundColor = 'whitesmoke';
+			// let navToggle = document.getElementsByClassName('navbar-toggler')[0];
+			// navToggle.style.borderColor = 'white';
+		} else {
+			flagNav = false;
+			//navBar.remove('shadow');
+			navBar.style.backgroundColor = 'transparent';
+			navBar.style.position = 'absolute';
 			document.getElementsByClassName('navbar-brand')[0].style.color = 'black';
 			let navLinks = document.getElementsByClassName('nav-link');
 			for (let i = 0; i < navLinks.length; i++) {
@@ -50,30 +35,44 @@ let navBg = () => {
 			for (let i = 0; i < navToggleLines.length; i++) {
 				navToggleLines[i].style.backgroundColor = 'black';
 			}
-			let navToggle = document.getElementsByClassName('navbar-toggler')[0];
-			navToggle.style.borderColor = 'black';
+			// let navToggle = document.getElementsByClassName('navbar-toggler')[0];
+			// navToggle.style.borderColor = 'black';
+		}
+	});
+	navBar.addEventListener('mouseover', () => {
+		if (!flagNav) {
+			navBar.style.backgroundColor = '#2e3c4b';
+			document.getElementsByClassName('navbar-brand')[0].style.color = 'white';
+			let navLinks = document.getElementsByClassName('nav-link');
+			for (let i = 0; i < navLinks.length; i++) {
+				navLinks[i].style.color = 'white';
+			}
+			let navToggleLines = document.getElementsByClassName('lines');
+			for (let i = 0; i < navToggleLines.length; i++) {
+				navToggleLines[i].style.backgroundColor = 'white';
+			}
+			// let navToggle = document.getElementsByClassName('navbar-toggler')[0];
+			// navToggle.style.borderColor = 'white';
 		}
 	});
 	navBar.addEventListener('mouseout', () => {
 		if (!flagNav) {
 			navBar.style.backgroundColor = 'transparent';
-			document.getElementsByClassName('navbar-brand')[0].style.color = 'white';
+			document.getElementsByClassName('navbar-brand')[0].style.color = 'black';
 			let navLinks = document.getElementsByClassName('nav-link');
 			for (let i = 0; i < navLinks.length; i++) {
-				navLinks[i].style.color = 'white';
+				navLinks[i].style.color = 'black';
 			}
 			let navToggleLines = document.getElementsByClassName('lines');
 			for (let i = 0; i < navToggleLines.length; i++) {
-				navToggleLines[i].style.backgroundColor = 'white';
+				navToggleLines[i].style.backgroundColor = 'black';
 			}
-			let navToggle = document.getElementsByClassName('navbar-toggler')[0];
-			navToggle.style.borderColor = 'white';
+			// let navToggle = document.getElementsByClassName('navbar-toggler')[0];
+			// navToggle.style.borderColor = 'black';
 		}
 	});
 };
 
 $(window).on('load', () => {
 	navBg();
-	var $j = jQuery.noConflict();
-	$j('#datepicker').datepicker();
 });

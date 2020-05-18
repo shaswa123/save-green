@@ -8,9 +8,7 @@
 /*Navbar CSS*/
 .navigation-bar {
 	width: 100%;
-	height: 30px;
-	background: transparent;
-	position: absolute;
+	background: #2e3c4b;
 	z-index: 99;
 }
 
@@ -21,27 +19,26 @@
 }
 
 .navbar img {
-	width: 250px;
-	height: 60px;
+	width: 200px;
+	height: 45px;
 }
 
-.navigation-bar :hover {
+/* .navigation-bar :hover {
 	background-color: #2e3c4b;
-}
+} */
 
 /*box*/
 .box-image {
-	background: url(images/bg4.jpg);
+	background: url("../images/bg4.jpeg");
 	background-size: cover;
 	position: relative;
 	width: 100%;
 	height: 300px;
-	top: 80px;
 }
 
 .box .box-image-text h2 {
 	position: relative;
-	bottom: 130px;
+	bottom: 200px;
 	color: #2e3c4b;
 	font-weight: bolder;
 	font-family: 'Barlow', sans-serif;
@@ -51,7 +48,7 @@
 
 .box .box-image-text p {
 	position: relative;
-	bottom: 120px;
+	bottom: 200px;
 	color: #2e3c4b;
 	font-weight: bolder;
 	font-family: 'Barlow', sans-serif;
@@ -245,4 +242,29 @@ button:hover {
 	background: #fed857;
 	font-family: 'Barlow', sans-serif;
 	font-weight: bold;
+}
+
+.profileImg {
+	width: 40%;
+}
+
+.profileImg img {
+	width: 100%;
+	border-radius: 50%;
+}
+
+.personalDetails {
+	width: 50%;
+	margin-left: 2em;
+}
+
+#save-changes {
+	background-color: #fed857;
+	color: #2a3746;
+	border: none;
+}
+
+.modal-header {
+	background-color: #2a3746;
+	color: white;
 }

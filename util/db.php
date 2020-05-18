@@ -34,6 +34,24 @@
                 ':email' => $emailId
             ));
         }
+        public function update_user_details($id, $firstName, $lastName, $emailId){
+            $sql = 'UPDATE users SET firstName = :firstName, lastName = :lastName, emailId = :emailId WHERE userID = :id';
+            // echo($sql);
+            $stml = $this->pdo->prepare($sql);
+            $stml->bindParam(":firstName",$firstName,PDO::PARAM_STR);
+            $stml->bindParam(":lastName",$lastName,PDO::PARAM_STR);
+            $stml->bindParam(":emailId",$emailId,PDO::PARAM_STR);
+            $stml->bindParam(":id",$id,PDO::PARAM_INT);
+            $stml->execute();
+            return $stml;
+            // $stml2 = $this->pdo->prepare("UPDATE phonenumbers SET phonenum = :num WHERE userid = :id");
+            // $stml_2 = $stml2->execute(array(
+            //     ":num"=>$num, 
+            //     ":id"=>$id
+            // ));
+            // return $stml_1;
+            // echo("Ok");
+        }
         public function get_phone_numbers($id){
             $stml = $this->pdo->prepare("SELECT * from phonenumbers WHERE userid = :id");
             $stml->execute(array(':id' => $id));

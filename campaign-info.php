@@ -1,4 +1,5 @@
-<?php 
+<?php
+    session_start();
     require "util/util.php";
     require "util/db.php"; 
     $db = new DB;
@@ -12,9 +13,28 @@
     $img = $camp[0]["image"];  
     // print($img);
     $user_name = $db->get_user_by_id($camp[0]["userID"])[0]["firstName"];
-    
-    if(isset($_POST["donate-amount"]) && $_POST["donate-amount"] >= 10){
-      require "razor/pay.php";
+    $err;
+    if((isset($_POST["firstName"]) && isset($_POST["email"])) && (isset($_POST["lastName"]) && isset($_POST["middleName"]))){
+      $panCardString = "[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}";
+      if(!preg_match($panCardString, $_POST["pancardNum"])){
+        $err = "Pan card number is invalid. Please enter a valid pan card number.";
+      }
+      else if(!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)){
+        $err = "Email id is invalid. Please enter a valid email id.";
+      }
+      else if(strlen($_POST["phoneNumber"]) != 10 && !preg_match('@"^[0-9]{10}$"', $_POST["phonernumber"])){
+        $err = "Phone number is invalid, there should be 10 digits in a phone number. Please enter a valid phone number.";
+      }
+      else if($_POST["firstName"] == "" || $_POST["middleName"] == "" || $_POST["lastName"] == ""){
+        $err = "Either first name, middle name or last name has an empty field.";
+      }
+      else{
+        
+      }
+    }
+    if(isset($_POST["donate-amount"], $_POST["donate-amount"])){
+      // require "razor/pay.php";
+      echo 'ok';
     }
 
 ?>
@@ -101,9 +121,9 @@
                                     
                                     &#8377 
                                 
-                                    <input type="number" step="any" min="10" placeholder="25" name="donate-amount" class="input-text amount donate-amount" value="25" data-min-price="10" data-max-price>
+                                    <input type="number" step="any" min="10" name="donate-amount" class="input-text amount donate-amount" value="25" data-min-price="10" data-max-price>
                                     <input type="hidden" value="144" name="add-to-cart">
-                                    <button type="submit" class="donate-button">Donate to Campaign</button>
+                                    <button type="button" data-toggle="modal" data-target="#personalInfoModal" class="donate-button">Donate to Campaign</button>
                                 </form>
                                 </div>
                             </div>
@@ -112,6 +132,66 @@
                 </div>
             </div> 
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="personalInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="background-color:#2e3c4b; color:white;">
+                <h5 class="modal-title" id="exampleModalLongTitle">Personal information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span style="color:white;" aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form method="POST" action="payment.php">
+                <div class="modal-body">
+                  <?php 
+                    if($err != ""){
+                      echo(
+                        '<div class="form-group" style="background-color:#ff4136;color:white;">
+                          <p style="font-size:13px;">'.$err.'</p>
+                        </div>'
+                      )
+
+                    }
+                  ?>
+                  <div class="form-group">
+                    <label for="firstName">First name</label>
+                    <input type="text" name="firstName" require class="form-control" id="firstName" placeholder="Enter first name">
+                  </div>
+                  <div class="form-group">
+                    <label for="middleName">Middle name</label>
+                    <input type="text" name="middleName" require class="form-control" id="middleName" placeholder="Enter middle name">
+                  </div>
+                  <div class="form-group">
+                    <label for="lastName">Last name</label>
+                    <input type="text" name="lastName" require class="form-control" id="lastName" placeholder="Enter last name">
+                  </div>
+                  <div class="form-group">
+                    <label for="emailId">Email address</label>
+                    <input type="text" name="emailId" require class="form-control" id="emailId" placeholder="Enter email">
+                  </div>
+                  <div class="form-group">
+                    <label for="phoneNumber">Phone number</label>
+                    <input type="text" name="phoneNumber" require class="form-control" id="phoneNumber" placeholder="Enter phone number">
+                  </div>
+                  <div class="form-group">
+                    <label for="address">Permanent address</label>
+                    <input type="text" name="address" require class="form-control" id="address" placeholder="Enter address">
+                  </div>
+                  <div class="form-group">
+                    <label for="pancardNum">Pan card number</label>
+                    <input type="text" name="pancardNum" require class="form-control" aria-describedby="pancardHelp" pattern="[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}" id="pancardNum" placeholder="Enter pan card number">
+                    <small id="pancardHelp" class="form-text text-muted">We'll never share your pan card details with anyone else.</small>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="yellow-button w-100">SUBMIT</button>
+                </div>  
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- INFO AND LIST -->
         <div class="content">
             <div class="tabs">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -183,7 +263,12 @@
         </div>
       </div>
     </footer> -->
-    
+        <!-- jQuery min JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+      crossorigin="anonymous"></script>
+   <!-- <script src="main.js"></script>  -->
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

@@ -8,8 +8,7 @@
 /*Navbar CSS*/
 .navigation-bar {
 	width: 100%;
-	height: 30px;
-	background: transparent;
+	background: #2e3c4b;
 	position: absolute;
 	z-index: 99;
 }
@@ -21,22 +20,22 @@
 }
 
 .navbar img {
-	width: 250px;
-	height: 60px;
+	width: 200px;
+	height: 45px;
 }
 
-.navigation-bar :hover {
+/* .navigation-bar :hover {
 	background-color: #2e3c4b;
-}
+} */
 
 /*box*/
 .box-image {
-	background: url(images/bg4.jpg);
+	background: url('../images/bg4.jpeg');
 	background-size: cover;
 	position: relative;
 	width: 100%;
 	height: 300px;
-	top: 80px;
+	top: 70px;
 }
 
 .box .box-image-text h2 {
@@ -203,7 +202,7 @@
 }
 
 .content .tabs {
-	width: 80%;
+	width: 77.75%;
 	margin: auto;
 	overflow-x: hidden;
 }
@@ -262,6 +261,27 @@
 	border: none;
 	font-size: 17px;
 	padding: 15px;
+}
+
+/* MODAL */
+.modal-content {
+	top: -1px;
+}
+.yellow-button {
+	height: 50px;
+	line-height: 1;
+	border: none;
+	text-align: center;
+	display: inline-block;
+	border-radius: 3px;
+	width: auto;
+	padding: 20px 38px 19px 38px;
+	font-size: 13px;
+	text-transform: uppercase;
+	font-weight: 600;
+	font-family: 'Barlow', sans-serif;
+	color: #2e3c4b;
+	background-color: #fed857;
 }
 
 @media (max-width: 1000px) {
