@@ -95,4 +95,10 @@
         return $response;
     }
 
+    function get_order_id(){
+        $temp = rand(10000,99999999);
+        $en = get_encrypted_id($temp."".time());
+        return "ORDS".str_split($en, 10)[0];
+    }
+
 ?>

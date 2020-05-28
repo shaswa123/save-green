@@ -3,16 +3,18 @@
     require('razorpay-php/Razorpay.php');
     // Create the Razorpay Order
     use Razorpay\Api\Api;
-    session_start();
     $api = new Api($keyId, $keySecret);
     
     //
     // We create an razorpay order using orders api
     // Docs: https://docs.razorpay.com/docs/orders
     //
+    
+    $shopping_id = rand() * 10 + $_POST["campid"];
+
     $orderData = [
-        'receipt'         => 3456,
-        'amount'          => $_POST["donate-amount"] * 100, // 2000 rupees in paise
+        'receipt'         => $shopping_id,
+        'amount'          => $_POST["donateAmount"] * 100, // 2000 rupees in paise
         'currency'        => 'INR',
         'payment_capture' => 1 // auto capture
     ];
@@ -35,26 +37,26 @@
     }
     
     
-    
     $data = [
         "key"               => $keyId,
         "amount"            => $amount,
         "name"              => "Save Green",
-        "description"       => "Paying for", // Have paying for a particular fund raiser
-        "image"             => "http://localhost/save-green/public/images/Save-Green-log-PNG.png",
+        "description"       => "Paying for ".$camp[0]["title"], // Have paying for a particular fund raiser
+        "image"             => "https://i.ibb.co/Z2WCFHj/bd8acb076055.png",
         "prefill"           => [
-        "name"              => "Shaswat", // GET from session the user's name
-        "email"             => "customer@merchant.com", // EMAIL
-        "contact"           => "9999999999", // number AND address (IDK about address)
+        "name"              => $_POST["name"], // GET from session the user's name
+        "email"             => $_POST["emailId"], // EMAIL
+        "contact"           => $_POST["phoneNumber"] // number AND address (IDK about address)
         ],
         "notes"             => [
-        "address"           => "Hello World",
+        "address"           => $_POST["address"],
         "merchant_order_id" => "12312321",
         ],
         "theme"             => [
         "color"             => "#F37254"
         ],
         "order_id"          => $razorpayOrderId,
+        "shopping_id"       => $shopping_id
     ];
     
     if ($displayCurrency !== 'INR')

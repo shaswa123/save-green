@@ -112,7 +112,7 @@
             </div>
             <input type="submit" name="" value="Log In">
             <div class="d-flex">
-                <a href="#">Forgot Password?</a>
+                <a href="changepass.php">Forgot Password?</a>
             </div>
         </form>
     </div>

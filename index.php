@@ -4,160 +4,133 @@
   $db = new DB;
   $db_obj = $db->create_db(3306,"fundraising","root","");
   $all_camp = $db->get_all_campaigns();
-  // print_r([$all_camp[0]]);
-  // print_r(use_API());
+  $camp_to_username;
+  foreach($all_camp as $camp){
+    $userName = $db->get_user_by_id($camp["userID"])[0]["firstName"];
+    $camp_to_username[$camp["id"]] = $userName;
+  }
+  $popular_camp = $db->get_popular_campaign(-1)[0];
+  $popular_camp_volunteer = $db->get_user_by_id($popular_camp["userID"]);
 ?>
 
 
-<?php 
-  require "templates/top.php";
-  require "templates/navbar.php";
-?>
-  <!--Landing Images-->
-  <div class="carousel-home-page">
-    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-          <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-          <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-          <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="public/images/planting.jpg" class="d-block w-100" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-              <h1>First slide label</h1>
-              <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-              <button class="btn btn-danger">Donate now</button>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img src="public/images/education.jpg" class="d-block w-100" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-              <h1>Second slide label</h1>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              <button class="btn btn-danger">Donate now</button>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img src="public/images/other.jpg" class="d-block w-100" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-              <h1>Third slide label</h1>
-              <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-              <button class="btn btn-danger">Donate now</button>
-            </div>
-          </div>
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrowdFunding</title>
+    <link rel="stylesheet" href="public/css/style-final.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <!-- The Navigation Bar -->
+    <div class="navigation-bar">
+        <nav class="navbar">
+            <a class="navbar-brand" href="#">
+              <img src="public/images/Save-Green-logo-PNG.png" alt="">
+            </a>
+            <ul class="nav">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Campaigns</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Contact Us</a>
+              </li>
+            </ul>
+        </nav>
     </div>
-    <div class="promo-container shadow">
-      <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/TFNUij_1I5Q" style="width:100%; min-height:100%;" frameborder="0"></iframe>
-      </div>
-      <div class="title">
-        Help US!
-      </div>
-      <div class="desc">
-        We raise funds for people in need and with your help we can make everyone's life happy
+  <section>
+    <!--Landing Image-->
+    <div class="image-container">
+      <div class="image"></div>
+      <div class="image-text">
+         <header>Raising Money has never been easy</header>
+          <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">
+          Explore Projects
+          </button>
       </div>
     </div>
-  </div>
 
-    
-    <main>
-      <!--Card Caruosel-->
-        <section class="section-1">
-          <div class="section-title container">
-            Latest Fundraisers
-          </div>
-            <div class="carousel-main-page container">
-                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner">
-                      <?php $k = 0; $limit; if(count($all_camp) < 3){$limit = 1;}else{$limit = 3;} for($i = 0; $i < (count($all_camp) %3 == 0 ? 3 : count($all_camp) % 3); $i++){
-                         if($k == 0){ echo('<div class="carousel-item active">');}else{ echo('<div class="carousel-item">');}
-                           echo('<div class="d-flex justify-content-around">');
-                       for($j=0; $j <$limit; $j++){ 
-                            echo('<div class="card" style="width: 18rem;">
-                              <img src="public/images/education.jpg" class="card-img-top" alt="...">
-                              <div class="card-body">
-                                <h5 class="card-title">'.$all_camp[$k]["title"].'</h5>
-                                <p class="card-text">'.str_split($all_camp[$k]["description"],25)[0].'...</p>
-                              </div>
-                              <div class="card-body">
-                                <label>'.(float)$all_camp[$k]["currentamount"].' raised</label>
-                                <div class="progress mt-2 mb-2">
-                                   <div class="progress-bar" role="progressbar" style="width:'.(float)$all_camp[$k]["currentamount"]*100/$all_camp[$k]["amount"].'%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">'.(float)$all_camp[$k]["currentamount"]*100/$all_camp[$k]["amount"].'%</div>
-                                 </div>
-                              </div>
-                              <div class="card-body">
-                                <a href="viewcampaign.php?id='.get_encrypted_id($all_camp[$k]["id"]).'" style="text-decoration: none;" class="card-link">SEE MORE</a>
-                              </div>
-                            </div>');
-                            $k++;
-                        }    
-                        echo('</div>
-                       </div>');
-                      }
-                      ?>
-                  </div>
-            </div>
-          </section>
-          <!--All the Fundraiser-->
-          <section class="section-2 mb-4" id="fundraisers">
-            <div class="container">
-              <h1 class="section-title">All Fundraisers</h1>
-              <div class="tags d-flex">
-                <div>
-                  <p>SORT BY:</p>
+  </section>
+  <section>
+    <!--Browsing Section-->
+    <div class="browse-container">
+      <div class="container-text">
+        <h2>All our Campaigns</h2>
+
+      </div>
+
+      </div>
+    </div>
+    <div class="container">
+    <div class="campaign-container">
+    <?php $k = 0; $limit; 
+      if(count($all_camp) < 3)
+        {
+          $limit = 1;
+        }else{
+          $limit = 3;
+        } 
+      for($i = 0; $i < ceil(count($all_camp) / 3); $i++){
+          echo('<div class="d-flex justify-content-around mb-4" data-aos="fade-down" data-aos-duration="500">
+                ');
+        for($j=0; $j <$limit; $j++){
+          if($k >= count($all_camp)){
+            break;
+          }
+          echo('
+            <div class="card shadow" style="width: 22rem;">
+              <img src="public/images/education.jpg" class="card-img-top" alt="...">
+              <div class="but">
+              <a href="campaign-info.php?id='.get_encrypted_id($all_camp[$k]["id"]).'" class="btn btn-primary">DONATE</a>
+              </div>
+              <div class="avatar">
+              <a href="author">
+                <img src="public/images/av.jpg" alt="avatar">
+                <div class="text">
+                <text-muted>by '.$camp_to_username[$all_camp[$k]["id"]].'</text-muted>
                 </div>
-                <div class="form-group" style="width:25%;">
-                  <form method="get" class="d-flex" style="width:100%;">
-                    <select name="op" class="form-control" id="select">
-                      <option>Education</option>
-                      <option>Food</option>
-                      <option>Env</option>
-                    </select>
-                    <button class="btn btn-danger">SEARCH</button>
-                  </form>
+              </a>
+              </div>
+              <div class="card-body">
+                <h2>
+                <a href="campaign-info.php?id='.get_encrypted_id($all_camp[$k]["id"]).'" class="card-link">'.$all_camp[$k]["title"].'</a>
+                </h2>
+                <p class="minidesc">Some info about the campaign</p>
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" style="width:'.floor($all_camp[$k]["currentamount"]*100 / $all_camp[$k]["amount"]).'%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
               </div>
-              <div class="all-cards">
-              <?php 
-                $k = count($all_camp) - 1;
-                for($i = 0; $i < count($all_camp) / 3 + 1; $i++)
-                {
-                  echo('<div class="rows"> <div class="d-flex justify-content-around">');
-                  for($j =0; $j < 3; $j++){
-                    echo('<div class="card" style="width: 18rem;">
-                        <img src="uploadimages/'.$all_camp[$k]["image"].'" class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <h5 class="card-title">'.$all_camp[$k]["title"].'</h5>
-                          <p class="card-text">'.str_split($all_camp[$k]["description"],25)[0].'...</p>
-                        </div>
-                        <div class="card-body">
-                          <div class="progress mb-2">
-                            <div class="progress-bar" role="progressbar" style="width:'.(float)$all_camp[$k]["currentamount"]*100/$all_camp[$k]["amount"].'%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">'.(float)$all_camp[$k]["currentamount"]*100/$all_camp[$k]["amount"].'%</div>
-                          </div>
-                          <a href="viewcampaign.php?id='.get_encrypted_id($all_camp[$k]["id"]).'" style="text-decoration: none;">SEE MORE</a>
-                        </div>
-                       </div>
-                      </div>
-                     </div>');
-                     $k--;
-                     if($k <= 0)
-                     {
-                      break;
-                     }
-                  }
-                }
-              ?>
+              <div class="stat-text">&#8377 '.$all_camp[$k]["currentamount"].'
+                <div class="text-muted">
+                  raised of &#8377 '.$all_camp[$k]["amount"].'
+                </div>
+                <div class="perc">
+                  <p>'.floor($all_camp[$k]["currentamount"]*100 / $all_camp[$k]["amount"]).'%</p>
+                </div>
+              </div
+              <ul class="list-group list-group-flush">
+               <div class="symbol"></div> 
+               <li class="list-group-item">&#128339 770 days to go</li>
+              </ul>
+            </div>
+          ');
+          $k++;
+        }    
+      echo('
+      </div>');
+    }?>
+  </div>
+  </section>
 
-
-               </div>
-          </section>
-    </main>
-    <img src="https://i.ibb.co//g6XYn7M/e26dfa9461e4.jpg">
-
-    <footer class="mt-4">
-        <div class="container-fluid p-0">
+  <footer style="margin-top:10em;">
+        <div class="container-fluid p-5">
           <div class="row-text-left">
             <div class="d-flex pt-3">
               <div class="col-md-3">
@@ -195,6 +168,22 @@
           </div>
           </div>
         </div>
-        </div>
+      </div>
     </footer>
-<?php require "templates/foot.php"; ?>
+    <!-- jQuery min JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+      crossorigin="anonymous"></script>
+    <!-- ANIMATE ON SCROLL(A0S) JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>>
+    <script>
+      AOS.init();
+    </script>
+    <!-- CUSTOM JS FILES -->
+    <script src="main.js"></script>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</html>

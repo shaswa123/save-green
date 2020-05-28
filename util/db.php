@@ -146,6 +146,10 @@
             $res = $stml->fetchAll(PDO::FETCH_ASSOC);
             return $res;
         }
+        public function update_campaign_amount($id, $amt){
+            $stml = $this->pdo->prepare("UPDATE campaigns SET currentamount = :amt WHERE id = :id");
+            return $stml->execute(array(':amt' => $amt, ':id' => $id));
+        }
         public function get_popular_campaign($id){
             $result;
             if($id == -1){
@@ -160,6 +164,41 @@
                 $result = $stml->fetchAll(PDO::FETCH_ASSOC);
             }
             return $result;
+        }
+        public function insert_in_donor($info){
+            $stml = $this->pdo->prepare("INSERT INTO donors (name, email, phonenumber, pancardnumber, address) VALUES(:n, :email, :phone, :pan,:ad)");
+            return $stml->execute(array(':n'=>$info["name"], ':email'=>$info["email"], ':phone'=>$info["phoneNumber"], ':pan' => $info["pancardNum"],':ad'=>$info["address"] ));
+        }
+        public function get_all_donors(){
+            $stml = $this->pdo->prepare("SELECT name FROM donors");
+            $stml->execute();
+            return $stml->fetchAll(PDO::FETCH_ASSOC);
+        }
+        public function get_donor_by_id($id){
+            $stml = $this->pdo->prepare("SELECT * FROM donors WHERE id = :ID");
+            $stml->execute(array(':ID' => $id));
+            return $stml->fetchAll(PDO::FETCH_ASSOC);
+        }
+        public function get_donor_by_email($email){
+            $stml = $this->pdo->prepare("SELECT * FROM donors WHERE email = :email");
+            $stml->bindParam(":email",$email);
+            $stml->execute();
+            return $stml->fetchAll(PDO::FETCH_ASSOC);
+        }
+        public function get_orders_for_campaigns(){
+            $stml = $this->pdo->prepare("SELECT COUNT(*) FROM donations");
+            $stml->execute();
+            return $stml->fetchAll(PDO::FETCH_ASSOC);
+        }
+        public function insert_in_donations($info){
+            $stml = $this->pdo->prepare("INSERT INTO donations (txnid, amount, razor_order_id, orderid, campid, donorid) VALUES (:tnxid, :amt, :r_oid, :oid, :campid, :donorid)");
+            return $stml->execute(array(':tnxid' => $info["razorpay_payment_id"], ':amt' => $info["amount"], ':r_oid' => $info["razorpay_order_id"], ':oid' => $info["shopping_order_id"] , ':campid' => $info["campid"], ':donorid' => $info["donorid"] ));
+        }
+        public function get_all_donations($campid){
+            $stml = $this->pdo->prepare("SELECT donorid,txndate,amount FROM donations WHERE campid = :cid ORDER BY txndate DESC");
+            $stml->bindParam(":cid",$campid);
+            $stml->execute();
+            return $stml->fetchAll(PDO::FETCH_ASSOC);
         }
     }
 

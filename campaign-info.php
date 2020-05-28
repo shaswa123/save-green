@@ -5,38 +5,57 @@
     $db = new DB;
     $db_obj = $db->create_db(3306,"fundraising","root","");
     
-    
+    //GET campagin details using the ID from the URL's GET PARAM    
     $campid = get_decrypted_id($_GET["id"]);
     $campid = explode('_', $campid)[1];
     $camp = $db->get_campaigns_by_id($campid);
+
+    //GET the images associated with the CAMPAGIN
     //print_r($camp[0]["image"]);  
     $img = $camp[0]["image"];  
     // print($img);
+    
+    //GET the details of the CAMPAIGN creater
     $user_name = $db->get_user_by_id($camp[0]["userID"])[0]["firstName"];
-    $err;
-    if((isset($_POST["firstName"]) && isset($_POST["email"])) && (isset($_POST["lastName"]) && isset($_POST["middleName"]))){
-      $panCardString = "[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}";
-      if(!preg_match($panCardString, $_POST["pancardNum"])){
-        $err = "Pan card number is invalid. Please enter a valid pan card number.";
-      }
-      else if(!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)){
-        $err = "Email id is invalid. Please enter a valid email id.";
-      }
-      else if(strlen($_POST["phoneNumber"]) != 10 && !preg_match('@"^[0-9]{10}$"', $_POST["phonernumber"])){
-        $err = "Phone number is invalid, there should be 10 digits in a phone number. Please enter a valid phone number.";
-      }
-      else if($_POST["firstName"] == "" || $_POST["middleName"] == "" || $_POST["lastName"] == ""){
-        $err = "Either first name, middle name or last name has an empty field.";
-      }
-      else{
-        
-      }
-    }
-    if(isset($_POST["donate-amount"], $_POST["donate-amount"])){
-      // require "razor/pay.php";
-      echo 'ok';
+
+    //GET donor id list from DB
+    $donor_id = $db->get_all_donations($campid);
+
+    //All the donors
+    $donors;
+    $amt = 0;
+    for($i = 0; $i < count($donor_id); $i++){
+      $donors[$i]["date"] = $donor_id[$i]["txndate"];
+      $amt = $amt + $donor_id[$i]["amount"];
+      $donors[$i]["name"] = $db->get_donor_by_id($donor_id[$i]["donorid"])[0]["name"];
     }
 
+    //Total donation amount to update current donated amount in CAMPAGIN TABLE
+    if($amt != $camp[0]["currentamount"] && count($donor_id) > 0)
+    {
+      //IF the two total amounts from donation and campaign tables are different, they should not be different
+      $db->update_campaign_amount($campid, $amt);
+      $camp = $db->get_campaigns_by_id($campid);
+    }
+
+    $err = 0;
+    if(isset($_POST["emailId"])){
+      if($_POST["emailId"] == ""){
+        $err = "Invalid emailId. Please try again.";
+      }else if($_POST["name"] == ""){
+        $err = "Invalid Name. Please try again.";
+      }else if($_POST["pancardNum"] == ""){
+        $err = "Invalid Pan card Number. Please try again.";
+      }else if($_POST["phoneNumber"] == ""){
+        $err = "Invalid Phonen number. Please try again.";
+      }else if($_POST["address"] == ""){
+        $err = "Invalid address. Please try again.";
+      }
+      else{
+        // $rec = $db->get_orders_for_campaigns()[0]["COUNT(*)"];
+        require "razor/pay.php";
+      }
+    }
 ?>
 
 
@@ -51,11 +70,16 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
+    <?php 
+      if(!empty($err)){
+        echo("<script>alert('".$err."');</script>");
+      }
+    ?>
     <section>
         <!-- The Navigation Bar -->
         <div class="navigation-bar">
             <nav class="navbar">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="index.php">
                   <img src="public/images/Save-Green-logo-PNG.png" alt="">
                 </a>
                 <ul class="nav">
@@ -121,7 +145,7 @@
                                     
                                     &#8377 
                                 
-                                    <input type="number" step="any" min="10" name="donate-amount" class="input-text amount donate-amount" value="25" data-min-price="10" data-max-price>
+                                    <input type="number" step="any" min="10" name="donate-amount" id="donateAmt" class="input-text amount donate-amount" value="25" data-min-price="10" data-max-price>
                                     <input type="hidden" value="144" name="add-to-cart">
                                     <button type="button" data-toggle="modal" data-target="#personalInfoModal" class="donate-button">Donate to Campaign</button>
                                 </form>
@@ -142,29 +166,18 @@
                   <span style="color:white;" aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <form method="POST" action="payment.php">
+              <form method="POST">
                 <div class="modal-body">
                   <?php 
                     if($err != ""){
                       echo(
-                        '<div class="form-group" style="background-color:#ff4136;color:white;">
-                          <p style="font-size:13px;">'.$err.'</p>
-                        </div>'
-                      )
-
+                        '<script>alert('.$err.')</script>'
+                      );
                     }
                   ?>
                   <div class="form-group">
-                    <label for="firstName">First name</label>
-                    <input type="text" name="firstName" require class="form-control" id="firstName" placeholder="Enter first name">
-                  </div>
-                  <div class="form-group">
-                    <label for="middleName">Middle name</label>
-                    <input type="text" name="middleName" require class="form-control" id="middleName" placeholder="Enter middle name">
-                  </div>
-                  <div class="form-group">
-                    <label for="lastName">Last name</label>
-                    <input type="text" name="lastName" require class="form-control" id="lastName" placeholder="Enter last name">
+                    <label for="firstName">Name</label>
+                    <input type="text" name="name" require class="form-control" id="firstName" placeholder="Enter your name">
                   </div>
                   <div class="form-group">
                     <label for="emailId">Email address</label>
@@ -180,12 +193,16 @@
                   </div>
                   <div class="form-group">
                     <label for="pancardNum">Pan card number</label>
-                    <input type="text" name="pancardNum" require class="form-control" aria-describedby="pancardHelp" pattern="[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}" id="pancardNum" placeholder="Enter pan card number">
+<!-- pattern="[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}" -->
+                    <input type="text" name="pancardNum" require class="form-control" aria-describedby="pancardHelp"  id="pancardNum" placeholder="Enter pan card number">
                     <small id="pancardHelp" class="form-text text-muted">We'll never share your pan card details with anyone else.</small>
                   </div>
+                  <input type="hidden" name="donateAmount" id="donateAmountHidden">
+                  <input type="hidden" name="campid" value="<?= $campid ?>">
                 </div>
-                <div class="modal-footer">
-                  <button type="submit" class="yellow-button w-100">SUBMIT</button>
+                <div class="modal-footer d-flex justify-content-between">
+                  <button class="yellow-button" style="width:100%" id="razorPayBtn">Proceed to donate</button>
+                  <!-- <button type="submit" method="POST" class="yellow-button infoSubmitBtn w-100">SUBMIT</button> -->
                 </div>  
               </form>
             </div>
@@ -207,14 +224,21 @@
                       <?php echo $camp[0]["description"] ?>
                     </div>
                     <div class="tab-pane fade" id="donor-list" role="tabpanel" aria-labelledby="donor-list-tab">
-                        <table>
+                        <table style="width:50%;">
                             <tbody>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Donate Amount</th>
                                     <th>Date</th>
                                 </tr>
-                                <tr>...</tr>
+                                <?php 
+                                  if(isset($donors)){
+                                    for($i = 0; $i < count($donors); $i++){
+                                      echo("<tr><td>".$donors[$i]["name"]."</td>
+                                        <td>".$donors[$i]["date"]."</td></tr>
+                                      ");
+                                    }
+                                  }
+                                ?>
                             </tbody>
                         </table>
                     </div>
@@ -267,7 +291,17 @@
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous">
+    </script>
+    <script>
+      document.getElementsByClassName("donate-button")[0].addEventListener("click",()=>{
+        let amt = document.getElementById("donateAmt").value;
+        document.getElementById("donateAmountHidden").value = amt;
+      })
+      document.getElementById("razorPayBtn").addEventListener("click", ()=>{
+        
+      })
+    </script>
    <!-- <script src="main.js"></script>  -->
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
