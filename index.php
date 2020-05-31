@@ -1,12 +1,23 @@
-<?php 
+<?php
+  if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) 
+    ob_start('ob_gzhandler'); 
+  else ob_start();
+  
   require "util/util.php";
   require "util/db.php";
   $db = new DB;
   $db_obj = $db->create_db(3306,"fundraising","root","");
   $all_camp = $db->get_all_campaigns();
   $camp_to_username;
+  $camp_to_img;
   foreach($all_camp as $camp){
     $userName = $db->get_user_by_id($camp["userID"])[0]["firstName"];
+    $campIMG = $db->get_images($camp["id"]);
+    if(isset(($campIMG)[0]["imgurl"])){
+      $camp_to_img[$camp["id"]] = $campIMG[0]["imgurl"];
+    }else{
+      $camp_to_img[$camp["id"]] = "public/images/bg4.jpeg";
+    }
     $camp_to_username[$camp["id"]] = $userName;
   }
 ?>
@@ -73,7 +84,7 @@
           }
           echo('
             <div class="card shadow" style="width: 22rem;">
-              <img src="public/images/education.jpg" class="card-img-top" alt="...">
+              <img src="'.$camp_to_img[$all_camp[$k]["id"]].'" class="card-img-top" alt="...">
               <div class="but">
               <a href="campaign-info.php?id='.get_encrypted_id($all_camp[$k]["id"]).'" class="btn btn-primary">DONATE</a>
               </div>

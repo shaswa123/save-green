@@ -1,4 +1,7 @@
 <?php
+    if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) 
+      ob_start('ob_gzhandler'); 
+    else ob_start();
     session_start();
     require "util/util.php";
     require "util/db.php"; 
@@ -11,8 +14,10 @@
     $camp = $db->get_campaigns_by_id($campid);
 
     //GET the images associated with the CAMPAGIN
-    
-    
+    $imgs = $db->get_images($campid);
+    $imgCounter = 0;
+    $total_images = count($imgs);
+
     //GET the details of the CAMPAIGN creater
     $user_name = $db->get_user_by_id($camp[0]["userID"])[0]["firstName"];
 
@@ -32,6 +37,8 @@
       $donors[$i]["email"] = $temp["email"];
 
     }
+
+    $desc = explode("\n",$camp[0]["description"]);
 
     //Total donation amount to update current donated amount in CAMPAGIN TABLE
     if($amt != $camp[0]["currentamount"] && count($donations) > 0)
@@ -81,6 +88,8 @@
     <link rel="stylesheet" href="public/css/style-info.css">
     <link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- FONT AWESOME CDN -->
+    <script src="https://kit.fontawesome.com/f0c4100b26.js" crossorigin="anonymous"></script>
     <style>
       body{
         overflow-x:hidden;
@@ -93,7 +102,15 @@
         echo("<script>alert('".$err."');</script>");
       }
     ?>
-    <section>
+    <div class="w-100 spinnerContainer" style="height:600px;">
+        <div style="margin:auto; width:fit-content; margin-top:300px;">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <p class="Spinneradvice"></p>
+        </div>
+    </div>
+    <section class="main-body-section" style="display:none;">
         <!-- The Navigation Bar -->
         <div class="navigation-bar">
             <nav class="navbar">
@@ -119,7 +136,6 @@
                 <div class="box-image-text">
                     <h2>Explore</h2>
                     <?php echo("<p>Home / Campaigns / ".$camp[0]["title"]."</p>") ?>
-                    <!-- <p>Home / Campaigns /KeyFrame-portable 3D Printer</p> -->
                 </div>
         </div> 
         <div class="info-card">
@@ -128,7 +144,7 @@
                     <div class="col-md-4">
                         <div class="landing-image">
                         <?php // have image ?>
-                        <img src="public/images/planting.jpg" class="card-img" alt="...">
+                        <img src="<?php if($total_images == 0) {echo("public/images/bg4.jpeg"); }else { echo($imgs[$imgCounter++]["imgurl"]); }?>" class="card-img" alt="...">
                         </div>
                     </div>
                     <div class="col-md-8">
@@ -158,7 +174,6 @@
                             <div class="sidebar">
                                 <span class="tool">...</span>
                                 <div class="formz">
-                                <?php // Create a page for payment ?>
                                 <form method="post" class="cart">
                                     
                                     &#8377 
@@ -239,7 +254,19 @@
                   </ul>
                   <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="campaign-story" role="tabpanel" aria-labelledby="campaign-story-tab">
-                      <?php echo $camp[0]["description"] ?>
+                      <?php
+                        for($i =0; $i < count($desc); $i++){
+                          echo('<p style="white-space:pre-line;" id="desc_p" class="desc_para">'.$desc[$i].'</p>');
+                          if(strlen($desc[$i]) > 50 && $imgCounter < $total_images){                            
+                            echo('<img style="width:100%; height:500px; object-fit:contain; margin-top:0.5em; margin-bottom:0.5em;" src = "'.$imgs[$imgCounter++]["imgurl"].'">');
+                          }
+                        }
+                        if($imgCounter < $total_images){
+                          while($imgCounter < $total_images){
+                            echo('<img style="width:100%; height:500px; object-fit:contain;" src = "'.$imgs[$imgCounter++]["imgurl"].'">');
+                          }
+                        }
+                      ?>
                     </div>
                     <div class="tab-pane fade" id="donor-list" role="tabpanel" aria-labelledby="donor-list-tab">
                         <table style="<?php if($userPresent) echo("width = 75%;"); else echo("width:50%;");?>">
@@ -279,47 +306,7 @@
             </div>
         </div>
     </section>
-    <!-- <footer>
-        <div class="container-fluid p-5">
-          <div class="row-text-left">
-            <div class="d-flex pt-3">
-              <div class="col-md-3">
-                  <img src="./public/images/Save-Green-logo-PNG.png" style="width: 50%;" alt="">
-                  <p class="text-muted">100K+ Followers</p>
-                  <div class="column text-light">
-                    <i class="fab fa-facebook-f"></i>
-                    <i class="fab fa-instagram"></i>
-                    <i class="fab fa-twitter"></i>
-                    <i class="fab fa-youtube"></i>
-                    <i class="fab fa-whatsapp"></i>
-                  </div>
-                  <p class="pt-4 text-muted">
-                    2020 | All Rights Reserved
-                  </p>
-              </div>
-              <div class="col-md-3">
-                <h1>Fundraise</h1>
-                <h6 class="text-muted">Fundraising for NGOs</h6>
-                <h6 class="text-muted">Fundraising for Education</h6>
-                <h6 class="text-muted">Fundraising for Environment</h6>
-                </div>
-                <div class="col-md-3">
-                  <h1 class="text">About Us</h1>
-                  <h6 class="text-muted">FAQs</h6>   
-                </div>
-                <div class="col-md-3">
-                  <h1 class="text">Contact Us</h1>
-                  <form action="">
-                    <input type="text" class="form-control" placeholder="Email ID" name="email">
-                    <textarea type="text" class="form-control mt-3" name="text" placeholder="Your query"></textarea>
-                    <button class="btn btn-danger mt-3 mb-4" style="width: 100%;">Submit</button>
-                  </form>
-                </div>
-          </div>
-          </div>
-        </div>
-      </div>
-    </footer> -->
+    <?php require_once("templates/footer.php"); ?>
         <!-- jQuery min JS -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -330,12 +317,34 @@
       document.getElementsByClassName("donate-button")[0].addEventListener("click",()=>{
         let amt = document.getElementById("donateAmt").value;
         document.getElementById("donateAmountHidden").value = amt;
-      })
-      document.getElementById("razorPayBtn").addEventListener("click", ()=>{
-        
-      })
+      });
+      // var HttpClient = function() {
+      //   this.get = function(aUrl, aCallback) {
+      //   var anHttpRequest = new XMLHttpRequest();
+      //   anHttpRequest.onreadystatechange = function() { 
+      //       if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+      //           aCallback(anHttpRequest.responseText);
+      //   }
+
+      //   anHttpRequest.open( "GET", aUrl, true );            
+      //   anHttpRequest.send( null );
+      //   }
+      // }
+
+      // function whileLoading(){
+      //   let client = new HttpClient();
+      //   client.get('https://api.adviceslip.com/advice', response=>{
+      //     document.getElementsByClassName("Spinneradvice")[0].innerText = JSON.parse(response)["slip"]["advice"];
+      //   });
+      // }
+
+      // whileLoading();
+      setTimeout(() => {
+        let spinnerContainer = document.getElementsByClassName("spinnerContainer")[0].style.display = "none";
+        let main_body = document.getElementsByClassName("main-body-section")[0].style.display = "block";
+      },2000)
+      
     </script>
-   <!-- <script src="main.js"></script>  -->
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

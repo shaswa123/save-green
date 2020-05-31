@@ -133,6 +133,11 @@
                 ':campid' => $campid
             ));
         }
+        public function get_images($campid){
+            $stml = $this->pdo->prepare("SELECT imgurl FROM images WHERE campaginID = :id");
+            $stml->execute(array(':id' => $campid));
+            return $stml->fetchAll(PDO::FETCH_ASSOC);
+        }
         public function get_campaigns_by_user($userid){
             $stml = $this->pdo->prepare("SELECT * FROM campaigns where userID = :id ORDER BY startdate DESC");
             $stml->execute(array(':id' => $userid));

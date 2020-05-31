@@ -281,10 +281,14 @@ button .btn {
 	margin-bottom: -1px;
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
-	height: auto;
+	height: 250px;
 	max-width: 100%;
 	border: none;
 	box-sizing: border-box;
+}
+
+.campaign-container .card {
+	height: 580px;
 }
 
 .campaign-container .card .but a {
