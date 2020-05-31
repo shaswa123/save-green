@@ -63,7 +63,7 @@
 ?>
 
 <?php 
-  require "templates/top.php";
+//   require "templates/top.php";
   if($_SESSION["isverified"] == true)
   {
       echo('<h1 class="mt-4 ml-4">Thank you for confirming</h1>');

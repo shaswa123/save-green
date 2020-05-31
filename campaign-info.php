@@ -11,31 +11,44 @@
     $camp = $db->get_campaigns_by_id($campid);
 
     //GET the images associated with the CAMPAGIN
-    //print_r($camp[0]["image"]);  
-    $img = $camp[0]["image"];  
-    // print($img);
+    
     
     //GET the details of the CAMPAIGN creater
     $user_name = $db->get_user_by_id($camp[0]["userID"])[0]["firstName"];
 
     //GET donor id list from DB
-    $donor_id = $db->get_all_donations($campid);
+    $donations = $db->get_all_donations($campid);
 
     //All the donors
     $donors;
     $amt = 0;
-    for($i = 0; $i < count($donor_id); $i++){
-      $donors[$i]["date"] = $donor_id[$i]["txndate"];
-      $amt = $amt + $donor_id[$i]["amount"];
-      $donors[$i]["name"] = $db->get_donor_by_id($donor_id[$i]["donorid"])[0]["name"];
+    for($i = 0; $i < count($donations); $i++){
+      $donors[$i]["date"] = $donations[$i]["txndate"];
+      $amt = $amt + $donations[$i]["amount"];
+      $donors[$i]["txnid"] = $donations[$i]["txnid"];
+      $donors[$i]["amount"] = $donations[$i]["amount"];
+      $temp = $db->get_donor_by_id($donations[$i]["donorid"])[0];
+      $donors[$i]["name"] = $temp["name"];
+      $donors[$i]["email"] = $temp["email"];
+
     }
 
     //Total donation amount to update current donated amount in CAMPAGIN TABLE
-    if($amt != $camp[0]["currentamount"] && count($donor_id) > 0)
+    if($amt != $camp[0]["currentamount"] && count($donations) > 0)
     {
       //IF the two total amounts from donation and campaign tables are different, they should not be different
       $db->update_campaign_amount($campid, $amt);
       $camp = $db->get_campaigns_by_id($campid);
+    }
+    $userPresent = false;    
+    //If the campaigner is visiting the page
+    if(isset($_SESSION["adminid"]) || isset($_SESSION["userid"])){
+      //Check if this campaign is created by you or not
+      $userid = isset($_SESSION["adminid"]) == true ? $_SESSION["adminid"] : $_SESSION["userid"];
+      if($userid == $camp[0]["userID"]){
+        //Show the email, and txnid, amount
+        $userPresent = true;
+      }
     }
 
     $err = 0;
@@ -68,6 +81,11 @@
     <link rel="stylesheet" href="public/css/style-info.css">
     <link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+      body{
+        overflow-x:hidden;
+      }
+    </style>
 </head>
 <body>
     <?php 
@@ -224,17 +242,32 @@
                       <?php echo $camp[0]["description"] ?>
                     </div>
                     <div class="tab-pane fade" id="donor-list" role="tabpanel" aria-labelledby="donor-list-tab">
-                        <table style="width:50%;">
+                        <table style="<?php if($userPresent) echo("width = 75%;"); else echo("width:50%;");?>">
                             <tbody>
                                 <tr>
                                     <th>Name</th>
+                                    <?php 
+                                    if($userPresent){
+                                      echo("<th>Email</th>
+                                        <th>Payment ID</th>
+                                        <th>Amount</th>
+                                      ");
+                                    }
+                                    ?>
                                     <th>Date</th>
                                 </tr>
                                 <?php 
                                   if(isset($donors)){
                                     for($i = 0; $i < count($donors); $i++){
-                                      echo("<tr><td>".$donors[$i]["name"]."</td>
-                                        <td>".$donors[$i]["date"]."</td></tr>
+                                      echo("<tr><td>".$donors[$i]["name"]."</td>");
+                                        if($userPresent){
+                                          echo('<td>'.$donors[$i]["email"].'</td>
+                                            <td>'.$donors[$i]["txnid"].'</td>
+                                            <td>'.$donors[$i]["amount"].'</td>
+                                          ');
+                                        }
+                                        echo("<td>".$donors[$i]["date"]."</td>
+                                        </tr>
                                       ");
                                     }
                                   }

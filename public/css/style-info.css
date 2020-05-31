@@ -80,6 +80,10 @@
 	width: 550px;
 }
 
+.card-title {
+	width: 60% !important;
+	left: 225px !important;
+}
 .info-card .card .card-body .card-title {
 	position: relative;
 	left: 180px;

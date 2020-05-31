@@ -208,7 +208,6 @@ button .btn {
 
 /*Browse CSS */
 .browse-container {
-	position: relative;
 	width: 100%;
 	flex-wrap: wrap;
 	align-content: flex-start;
@@ -260,9 +259,8 @@ button .btn {
 /* Campaign-cards CSS */
 
 .campaign-container {
-	position: relative;
 	width: 100%;
-	top: 25px;
+	margin-top: 1em;
 }
 
 .campaign-container .card {

@@ -9,8 +9,6 @@
     $userName = $db->get_user_by_id($camp["userID"])[0]["firstName"];
     $camp_to_username[$camp["id"]] = $userName;
   }
-  $popular_camp = $db->get_popular_campaign(-1)[0];
-  $popular_camp_volunteer = $db->get_user_by_id($popular_camp["userID"]);
 ?>
 
 
@@ -23,37 +21,26 @@
     <link rel="stylesheet" href="public/css/style-final.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/f0c4100b26.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
+<style>
+  html{
+    scroll-behavior : smooth;
+  }
+</style>
 <body>
-    <!-- The Navigation Bar -->
-    <div class="navigation-bar">
-        <nav class="navbar">
-            <a class="navbar-brand" href="#">
-              <img src="public/images/Save-Green-logo-PNG.png" alt="">
-            </a>
-            <ul class="nav">
-              <li class="nav-item">
-                <a class="nav-link active" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Campaigns</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Contact Us</a>
-              </li>
-            </ul>
-        </nav>
-    </div>
+<?php require "templates/navbar.php";  ?>
   <section>
     <!--Landing Image-->
     <div class="image-container">
       <div class="image"></div>
       <div class="image-text">
          <header>Raising Money has never been easy</header>
-          <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">
+          <a href="#browse-container" style=""><button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">
           Explore Projects
           </button>
+          </a>  
       </div>
     </div>
 
@@ -77,7 +64,7 @@
         }else{
           $limit = 3;
         } 
-      for($i = 0; $i < ceil(count($all_camp) / 3); $i++){
+      for($i = 0; $i <= ceil(count($all_camp) / 3); $i++){
           echo('<div class="d-flex justify-content-around mb-4" data-aos="fade-down" data-aos-duration="500">
                 ');
         for($j=0; $j <$limit; $j++){
@@ -102,7 +89,7 @@
                 <h2>
                 <a href="campaign-info.php?id='.get_encrypted_id($all_camp[$k]["id"]).'" class="card-link">'.$all_camp[$k]["title"].'</a>
                 </h2>
-                <p class="minidesc">Some info about the campaign</p>
+                <p class="minidesc">'.str_split($all_camp[$k]["description"], 60)[0].' ...</p>
                 <div class="progress">
                   <div class="progress-bar" role="progressbar" style="width:'.floor($all_camp[$k]["currentamount"]*100 / $all_camp[$k]["amount"]).'%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
@@ -128,55 +115,14 @@
     }?>
   </div>
   </section>
-
-  <footer style="margin-top:10em;">
-        <div class="container-fluid p-5">
-          <div class="row-text-left">
-            <div class="d-flex pt-3">
-              <div class="col-md-3">
-                  <img src="./public/images/Save-Green-logo-PNG.png" style="width: 50%;" alt="">
-                  <p class="text-muted">100K+ Followers</p>
-                  <div class="column text-light">
-                    <i class="fab fa-facebook-f"></i>
-                    <i class="fab fa-instagram"></i>
-                    <i class="fab fa-twitter"></i>
-                    <i class="fab fa-youtube"></i>
-                    <i class="fab fa-whatsapp"></i>
-                  </div>
-                  <p class="pt-4 text-muted">
-                    2020 | All Rights Reserved
-                  </p>
-              </div>
-              <div class="col-md-3">
-                <h1>Fundraise</h1>
-                <h6 class="text-muted">Fundraising for NGOs</h6>
-                <h6 class="text-muted">Fundraising for Education</h6>
-                <h6 class="text-muted">Fundraising for Environment</h6>
-                </div>
-                <div class="col-md-3">
-                  <h1 class="text">About Us</h1>
-                  <h6 class="text-muted">FAQs</h6>   
-                </div>
-                <div class="col-md-3">
-                  <h1 class="text">Contact Us</h1>
-                  <form action="">
-                    <input type="text" class="form-control" placeholder="Email ID" name="email">
-                    <textarea type="text" class="form-control mt-3" name="text" placeholder="Your query"></textarea>
-                    <button class="btn btn-danger mt-3 mb-4" style="width: 100%;">Submit</button>
-                  </form>
-                </div>
-          </div>
-          </div>
-        </div>
-      </div>
-    </footer>
+  <?php require_once("templates/footer.php"); ?>
     <!-- jQuery min JS -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"></script>
     <!-- ANIMATE ON SCROLL(A0S) JS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
       AOS.init();
     </script>

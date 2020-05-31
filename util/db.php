@@ -114,19 +114,24 @@
             return $result;
         }
         public function insert_into_campaigns($camp_details){
-            $stml = $this->pdo->prepare("INSERT INTO campaigns (title,location,startdate,enddate,amount,image,description,currentamount,userID) VALUES (:title,:loc,:startdate,:enddate,:amount,:img,:description,:curramt,:userid)");
+            $stml = $this->pdo->prepare("INSERT INTO campaigns (title,location,startdate,enddate,amount,description,userID) VALUES (:title,:loc,:startdate,:enddate,:amount,:description,:userid)");
             $res = $stml->execute(array(
-                ':title' => $camp_details["title"],
-                ':loc' => $camp_details["loc"],
-                ':startdate' => $camp_details["sdate"],
-                ':enddate' => $camp_details["edate"],
-                'amount' => $camp_details["amt"],
-                ':img' => $camp_details["img"],
-                ':description'=>$camp_details["desc"],
-                ':curramt'=>$camp_details["curramt"],
+                ':title' => $camp_details["camp_title"],
+                ':loc' => $camp_details["camp_location"],
+                ':startdate' => $camp_details["camp_start_date"],
+                ':enddate' => $camp_details["camp_end_date"],
+                'amount' => $camp_details["camp_total_amt"],
+                ':description'=>$camp_details["camp_desc"],
                 ':userid'=>$camp_details["userid"]
             ));
-            return $res;
+            return $this->pdo->lastInsertId();
+        }
+        public function insert_into_images($url,$campid){
+            $stml = $this->pdo->prepare("INSERT INTO images (imgurl, campaginID) VALUES (:imgurl, :campid)");
+            $stml->execute(array(
+                ':imgurl' => $url,
+                ':campid' => $campid
+            ));
         }
         public function get_campaigns_by_user($userid){
             $stml = $this->pdo->prepare("SELECT * FROM campaigns where userID = :id ORDER BY startdate DESC");
@@ -135,7 +140,7 @@
             return $result;
         }
         public function get_all_campaigns(){
-            $stml = $this->pdo->prepare("SELECT * FROM campaigns ORDER BY startdate DESC");
+            $stml = $this->pdo->prepare("SELECT * FROM campaigns WHERE campaigns.status = 1 ORDER BY startdate DESC");
             $stml->execute();
             $result = $stml->fetchAll(PDO::FETCH_ASSOC);
             return $result;
@@ -195,9 +200,14 @@
             return $stml->execute(array(':tnxid' => $info["razorpay_payment_id"], ':amt' => $info["amount"], ':r_oid' => $info["razorpay_order_id"], ':oid' => $info["shopping_order_id"] , ':campid' => $info["campid"], ':donorid' => $info["donorid"] ));
         }
         public function get_all_donations($campid){
-            $stml = $this->pdo->prepare("SELECT donorid,txndate,amount FROM donations WHERE campid = :cid ORDER BY txndate DESC");
+            $stml = $this->pdo->prepare("SELECT * FROM donations WHERE campid = :cid ORDER BY txndate DESC");
             $stml->bindParam(":cid",$campid);
             $stml->execute();
+            return $stml->fetchAll(PDO::FETCH_ASSOC);
+        }
+        public function get_number_of_donors($campid){
+            $stml = $this->pdo->prepare("SELECT COUNT(*) FROM donations WHERE campid = :campid");
+            $stml->execute(array(':campid' => $campid));
             return $stml->fetchAll(PDO::FETCH_ASSOC);
         }
     }

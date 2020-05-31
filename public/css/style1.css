@@ -7,20 +7,6 @@ body {
 	height: 520px;
 }
 
-/*  Navbar  */
-.nav-link {
-	color: black !important;
-	font-weight: bold;
-}
-
-.nav-link:hover {
-	color: black !important;
-}
-
-.nav-item:hover {
-	border-bottom: 2px solid #aa0000 !important;
-}
-
 /*  Login Box  */
 
 .loginbox {
@@ -83,16 +69,14 @@ body {
 	border: none;
 	outline: none;
 	height: 40px;
-	background: red;
+	background: #2e3c4b;
 	color: #fff;
 	font-size: 18px;
 	transition: 0.5s linear;
 }
 
 .loginbox input[type="submit"]:hover {
-	cursor: pointer;
-	background: #aa0000;
-	color: white;
+	color: #fed857;
 }
 
 .loginbox a {
@@ -104,7 +88,7 @@ body {
 }
 
 .loginbox a:hover {
-	color: #aa0000;
+	color: #2e3c2e;
 }
 
 #email {

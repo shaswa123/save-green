@@ -15,36 +15,37 @@
         // CHECK email and password from the DB
         $user = $db->get_one_user($_POST["email"],get_encrypt_pass($_POST["password"]));
 
-        // Check if email is verified or not
-        $isverified = $db->get_from_verify((int)$user[0]["userID"]);
-        if($isverified["isverified"] == 0){
-            $_SESSION["isverified"] = false;
-            header("Location: signupconfirm.php");
-            $_SESSION["userid"] = $user[0]["userID"];
-            return;
-        }else{
-            $_SESSION["isverified"] = true;
-            $_SESSION["verifycode"] = $isverified[0]["e_code"];
+        //Check if email and password is correct or incorrect
+        if(isset($user[0]["userID"]) == false){
+            $_SESSION["login_err"] = "Please enter correct email address and password!";
+        }
+        else{
+            // Check if email is verified or not
+            $isverified = $db->get_from_verify((int)$user[0]["userID"]);
+            if($isverified["isverified"] == 0){
+                $_SESSION["isverified"] = false;
+                header("Location: signupconfirm.php");
+                $_SESSION["userid"] = $user[0]["userID"];
+                return;
+            }else{
+                $_SESSION["isverified"] = true;
+                $_SESSION["verifycode"] = $isverified[0]["e_code"];
 
-        }
-        $admin_user = $db->get_one_admin_user((int)$user[0]["userID"]);
-        if(isset($admin_user[0]["id"]))
-        {
-            // Admin user
-            $_SESSION["adminid"] = (int)$admin_user[0]["id"];
-            header("Location: dashboard.php");
-            return;
-        }
-        else if(isset($user[0]["userID"])){
-            // Normal user
-            $_SESSION["userid"] = (int)$user[0]["userID"];
-            header("Location: dashboard.php");
-            return;
-        }
-        else {
-            // FAIL
-            header("Location: signup.php");
-            return;
+            }
+            $admin_user = $db->get_one_admin_user((int)$user[0]["userID"]);
+            if(isset($admin_user[0]["id"]))
+            {
+                // Admin user
+                $_SESSION["adminid"] = (int)$admin_user[0]["id"];
+                header("Location: dashboard.php");
+                return;
+            }
+            else if(isset($user[0]["userID"])){
+                // Normal user
+                $_SESSION["userid"] = (int)$user[0]["userID"];
+                header("Location: dashboard.php");
+                return;
+            }
         }
     }
 ?>
@@ -94,6 +95,15 @@
         }
     </script>
 </head>
+<style>
+    .err-block{
+        background-color: #e8635c;
+        text-align:center;
+    }
+    .nav-links{
+        color:white!important;
+    }
+</style>
 <body>
       <!-- The Navigation Bar -->
       <?php require "templates/navbar.php";?>
@@ -113,8 +123,15 @@
             <input type="submit" name="" value="Log In">
             <div class="d-flex">
                 <a href="changepass.php">Forgot Password?</a>
+                <a href="signup.php" class="ml-2">Sign up</a>
             </div>
         </form>
+        <?php 
+            if(isset($_SESSION["login_err"])){
+                echo("<div class='err-block mt-4 pb-1'><p style='color:white; font-size:13px; font-weight:bold;'>".$_SESSION["login_err"]."</p></div>");
+                unset($_SESSION["login_err"]);
+            }
+        ?>
     </div>
     
 <?php require "templates/foot.php"; ?>

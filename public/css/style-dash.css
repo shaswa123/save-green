@@ -59,7 +59,6 @@
 
 /*nav*/
 .navthrough {
-	width: 80%;
 	padding-left: 250px;
 	position: relative;
 	display: block;
@@ -73,9 +72,9 @@
 	color: #2a3746;
 }
 
-.navthrough ul li a button {
+.navthrough ul li button {
 	position: relative;
-	left: 450px;
+	left: 595px;
 	top: 1px;
 	background: #fed857;
 	border-radius: 5px;
@@ -98,8 +97,6 @@ button:hover {
 }
 
 .container .monitor {
-	position: relative;
-	top: 30px;
 	padding-left: 45px;
 	width: 1010px;
 }
@@ -121,7 +118,6 @@ button:hover {
 }
 
 .container .monitor form button {
-	position: relative;
 	left: 10px;
 	top: 1px;
 	background: #fed857;
@@ -138,9 +134,20 @@ button:hover {
 
 /*Cards*/
 .container .monitor .chart .card {
-	position: relative;
-	top: 50px;
 	width: 400px;
+}
+.chart {
+	width: fit-content !important;
+	margin: auto;
+}
+
+.card-link:hover {
+	text-decoration: none;
+	background-color: #2e3c4b;
+}
+
+.card-link:hover p {
+	color: white !important;
 }
 
 .container .monitor .chart .d-flex .first-one .card-body {
@@ -184,9 +191,7 @@ button:hover {
 }
 
 .my-projects {
-	position: relative;
-	top: 150px;
-	left: 50px;
+	width: 50%;
 }
 
 .my-projects h2 {
@@ -205,12 +210,6 @@ button:hover {
 	color: #2e3c4b;
 }
 
-.my-info {
-	position: relative;
-	left: 700px;
-	top: 48px;
-}
-
 .my-info h2 {
 	font-family: Barlow, sans-serif;
 	font-weight: bold;
@@ -220,7 +219,6 @@ button:hover {
 }
 
 .my-info form input {
-	position: relative;
 	width: 400px;
 }
 
@@ -258,7 +256,8 @@ button:hover {
 	margin-left: 2em;
 }
 
-#save-changes {
+#save-changes,
+#create_camp {
 	background-color: #fed857;
 	color: #2a3746;
 	border: none;

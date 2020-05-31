@@ -37,23 +37,12 @@ section {
 	padding-right: 0.5em;
 	border-radius: 50px;
 	font-weight: bold;
-	background-color: #aa0000;
+	background-color: #aa0000;;
 	color: white;
 }
 
 .btn-tags:hover {
 	color: white !important;
-}
-
-/*  Navbar CSS  */
-
-.nav-link {
-	color: white;
-	font-weight: bold;
-}
-
-.nav-link:hover {
-	color: white;
 }
 
 /* .nav-item:hover {
