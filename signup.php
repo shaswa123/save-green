@@ -1,4 +1,8 @@
 <?php 
+    if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) 
+      ob_start('ob_gzhandler'); 
+    else ob_start();
+    
     require "util/db.php";
     require "util/util.php";
     session_start();
@@ -125,7 +129,7 @@
       <?php require "templates/navbar.php";?>
 
     <!--Signupform-->
-    <div class="signupbox">
+    <div class="signupbox shadow" style="background-color:white;">
         
         <h1>Sign Up</h1>
         <form class="mt-3" method="post">
@@ -141,28 +145,27 @@
                 <p id="pass">Password</p>
                 <input type="password" id="passInput" onfocusout="signUpOut(this.id)" onfocus="signUp(this.id)" name="password" require>
             </div>
-            <a href="#">Forgot your Password?</a>
             <input type="submit" name="" value="Sign Up to get started">
             <div class="d-flex">
-                <a href="#">Already have an account?</a>
-                <a href="#" class="ml-2">Log In</a>
+                <a href="login.php" class="ml-2">Log In</a>
+            </div>
+            <div style="background-color:#e8635c;display:none;" class="mt-3 pt-1 pb-1" id="errBlock">
+                <p style="color:white; text-align:center;"></p>
             </div>
         </form>
         <?php if(isset($_SESSION["signup-error"])){ ?>
             <p style="color: #aa0000;font-size: 14;font-weight: bold;"><?php $err ?></p>
         <?php } session_destroy();?>
     </div>
-  
-<?php require "templates/foot.php";?>
+        <div class="w-100 waveContainer">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#2e3c4b" fill-opacity="1" d="M0,0L80,5.3C160,11,320,21,480,69.3C640,117,800,203,960,197.3C1120,192,1280,96,1360,48L1440,0L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>
+    </div>
 
-<!-- 
-
-                <div class="phoneContainer">
-                <p id="pass">Phone number</p>
-                <input type="text" id="phonenum" onfocusout="signUpOut(this.id)" onfocus="signUp(this.id)" name="password" require>
-            </div>
-            <div class="altphoneContainer">
-                <p id="pass">Alternate phone number</p>
-                <input type="text" id="altphone" onfocusout="signUpOut(this.id)" onfocus="signUp(this.id)" name="password">
-            </div>
--->
+    <!-- jQuery min JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+      crossorigin="anonymous">
+    </script>
+    <!-- CUSTOM JS -->
+    <script src="public/Js/signup.js"></script>

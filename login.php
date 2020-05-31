@@ -1,4 +1,8 @@
 <?php 
+    if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) 
+      ob_start('ob_gzhandler'); 
+    else ob_start();
+
     require "util/db.php";
     require "util/util.php";
     session_start();
@@ -108,7 +112,7 @@
       <!-- The Navigation Bar -->
       <?php require "templates/navbar.php";?>
     <!--loginbox-->
-    <div class="loginbox">
+    <div class="loginbox shadow">
         
         <h1>Login</h1>
         <form method="post">
@@ -133,5 +137,7 @@
             }
         ?>
     </div>
-    
+    <div class="w-100 waveContainer">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#2e3c4b" fill-opacity="1" d="M0,0L80,5.3C160,11,320,21,480,69.3C640,117,800,203,960,197.3C1120,192,1280,96,1360,48L1440,0L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>
+    </div>
 <?php require "templates/foot.php"; ?>

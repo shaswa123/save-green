@@ -4,7 +4,12 @@ body {
 	margin: 0;
 	padding: 0;
 	width: 100%;
-	height: 520px;
+	height: 900px;
+	overflow: hidden;
+}
+
+.nav-link:hover {
+	color: #fed857 !important;
 }
 
 /*  Login Box  */
@@ -101,4 +106,10 @@ body {
 	position: absolute;
 	top: 48%;
 	transition: 0.2s linear;
+}
+
+.waveContainer {
+	position: absolute;
+	bottom: 0px;
+	z-index: -1;
 }

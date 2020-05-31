@@ -97,7 +97,7 @@
     </style>
 </head>
 <body>
-    <?php 
+<?php 
       if(!empty($err)){
         echo("<script>alert('".$err."');</script>");
       }
@@ -318,27 +318,7 @@
         let amt = document.getElementById("donateAmt").value;
         document.getElementById("donateAmountHidden").value = amt;
       });
-      // var HttpClient = function() {
-      //   this.get = function(aUrl, aCallback) {
-      //   var anHttpRequest = new XMLHttpRequest();
-      //   anHttpRequest.onreadystatechange = function() { 
-      //       if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
-      //           aCallback(anHttpRequest.responseText);
-      //   }
 
-      //   anHttpRequest.open( "GET", aUrl, true );            
-      //   anHttpRequest.send( null );
-      //   }
-      // }
-
-      // function whileLoading(){
-      //   let client = new HttpClient();
-      //   client.get('https://api.adviceslip.com/advice', response=>{
-      //     document.getElementsByClassName("Spinneradvice")[0].innerText = JSON.parse(response)["slip"]["advice"];
-      //   });
-      // }
-
-      // whileLoading();
       setTimeout(() => {
         let spinnerContainer = document.getElementsByClassName("spinnerContainer")[0].style.display = "none";
         let main_body = document.getElementsByClassName("main-body-section")[0].style.display = "block";
