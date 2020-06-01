@@ -31,35 +31,41 @@ document.getElementById('title').onkeyup = () => {
 
 $(document).ready(function() {
 	if (window.File && window.FileList && window.FileReader) {
+		let imgCount = document.getElementsByClassName('uploaded_images')[0];
 		$('#files').on('change', function(e) {
-			var files = e.target.files,
-				filesLength = files.length;
-			for (var i = 0; i < filesLength; i++) {
-				var f = files[i];
-				var fileReader = new FileReader();
-				fileReader.onload = function(e) {
-					var file = e.target;
-					//e.traget.result is a base64 encoding of the image
-					$(
-						'<span class="pip">' +
-							'<img class="imageThumb" src="' +
-							e.target.result +
-							'" title="' +
-							file.name +
-							'"/>' +
-							'<br/><span class="remove">Remove image</span>' +
-							'</span>'
-					).insertAfter('#files');
-					//If an Image is added it is important to add +1 to the count
-					let imgCount = document.getElementsByClassName('uploaded_images')[0];
-					imgCount.innerHTML = Number(imgCount.innerHTML) + 1;
-					$('.remove').click(function() {
-						$(this).parent('.pip').remove();
-						//When removed the count for number of images uploaded should decrease by 1
-						imgCount.innerHTML = Number(imgCount.innerHTML) - 1;
-					});
-				};
-				fileReader.readAsDataURL(f);
+			if (Number(imgCount.innerHTML) < 3) {
+				document.getElementById('files').removeAttribute('disabled');
+				var files = e.target.files,
+					filesLength = files.length;
+				for (var i = 0; i < filesLength; i++) {
+					var f = files[i];
+					var fileReader = new FileReader();
+					fileReader.onload = function(e) {
+						var file = e.target;
+						//e.traget.result is a base64 encoding of the image
+						$(
+							'<span class="pip">' +
+								'<img class="imageThumb" src="' +
+								e.target.result +
+								'" title="' +
+								file.name +
+								'"/>' +
+								'<br/><span class="remove">Remove image</span>' +
+								'</span>'
+						).insertAfter('#files');
+						//If an Image is added it is important to add +1 to the count
+						imgCount.innerHTML = Number(imgCount.innerHTML) + 1;
+						$('.remove').click(function() {
+							$(this).parent('.pip').remove();
+							//When removed the count for number of images uploaded should decrease by 1
+							imgCount.innerHTML = Number(imgCount.innerHTML) - 1;
+						});
+					};
+					fileReader.readAsDataURL(f);
+				}
+			} else {
+				//Disable the upload button
+				document.getElementById('files').setAttribute('disabled', true);
 			}
 		});
 	} else {

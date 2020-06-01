@@ -20,13 +20,36 @@
   .navigation-bar .nav-link{
       color:white!important;
   }
+  .contactOnSubmit{
+    width:50%;
+    margin:auto;
+    margin-top:5em;
+    margin-bottom:5em;
+    height:500px;
+  }
+  .contactOnSubmit  p{
+    height:fit-content;
+    text-align:center;
+    font-size:150px;
+  }
+  .contactOnSubmit div{
+    height:fit-content;
+    margin:auto;
+  }
+
 </style>
 <body>
     <?php require "templates/navbar.php";  ?>
-    <div style="width:fit-content; margin:auto;">
+    <div style="width:fit-content; margin:auto;" class="gform">
         <iframe style= "margin-top:5em;" src="https://docs.google.com/forms/d/e/1FAIpQLSeEXPNcFyWwHoqdRGhWcovzLLOH8XtLqJeVEguVyCc7iA1XRA/viewform?embedded=true" width="640" height="900" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
     </div>
-    
+    <div class="contactOnSubmit shadow" style="display:none;">
+      <div class="w-100">
+        <p><i class="fas fa-check-circle"></i></p>
+        <h3 style="text-align: center;">Thank you!</h3>
+        <h5 style="text-align:center">Your submission has been received</h5>
+      </div>
+    </div>
     <?php require_once("templates/footer.php"); ?>
     
     
@@ -42,6 +65,15 @@
     </script>
     <!-- CUSTOM JS FILES -->
     <script src="main.js"></script>
+    <script>
+      document.getElementsByClassName("appsMaterialWizButtonPaperbuttonContent")[0].onclick = () => {
+        document.getElementsByClassName("gform")[0].style.display = "none";
+        document.getElementsByClassName("contactOnSubmit")[0].style.display = "block";
+        document.getElementsByClassName("contactOnSubmit")[0].classList.add("d-flex");
+
+      }
+
+    </script>
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

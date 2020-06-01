@@ -58,7 +58,7 @@
       <div class="image"></div>
       <div class="image-text">
          <header>Raising Money has never been easy</header>
-          <a href="#browse-container" style=""><button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">
+          <a href="#explore"  style=""><button type="button" id = "exploreBtn" class="btn btn-primary">
           Explore Projects
           </button>
           </a>  
@@ -78,12 +78,8 @@
     <div class="browse-container">
       <div class="container-text">
         <h2>All our Campaigns</h2>
-
-      </div>
-
-      </div>
     </div>
-    <div class="container">
+    <div class="container" id="explore">
     <div class="campaign-container">
     <?php $k = 0; $limit; 
       if(count($all_camp) < 3)
@@ -100,7 +96,7 @@
             break;
           }
           echo('
-            <div class="card shadow" style="width: 22rem;transition: 0.1s ease-in;" onmouseenter = "cardOnMouseEnter(this)" onmouseleave = "cardOnMouseLeave(this)">
+            <div class="card shadow" style="transition: 0.1s ease-in;" onmouseenter = "cardOnMouseEnter(this)" onmouseleave = "cardOnMouseLeave(this)">
               <img src="'.$camp_to_img[$all_camp[$k]["id"]].'" class="card-img-top" alt="...">
               <div class="but">
               <a href="campaign-info.php?id='.get_encrypted_id($all_camp[$k]["id"]).'" class="btn btn-primary">DONATE</a>
@@ -132,7 +128,7 @@
               </div
               <ul class="list-group list-group-flush">
                <div class="symbol"></div> 
-               <li class="list-group-item">&#128339 770 days to go</li>
+               <li class="list-group-item">&#128339 '.date_diff(date_create($all_camp[$k]["enddate"]),date_create($all_camp[$k]["startdate"]),true)->format('%a days').' remaining</li>
               </ul>
             </div>
           ');

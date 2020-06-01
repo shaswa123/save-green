@@ -289,6 +289,7 @@ button .btn {
 
 .campaign-container .card {
 	height: 580px;
+	width: 22rem;
 }
 
 .campaign-container .card .but a {
@@ -332,6 +333,7 @@ button .btn {
 	font-size: 15px;
 	left: 30px;
 	color: gray;
+	width: fit-content;
 }
 
 .campaign-container .card .card-body h2 a {
@@ -384,6 +386,7 @@ button .btn {
 .campaign-container .card .stat-text .text-muted {
 	font-weight: lighter;
 	font-size: 14px;
+	width: fit-content;
 }
 
 .campaign-container .card ul {
@@ -446,5 +449,52 @@ button .btn {
 	.campaign-container > div > div {
 		margin: auto !important;
 		margin-bottom: 1em !important;
+	}
+}
+
+@media (max-width: 768px) {
+	.image-container {
+		display: none;
+	}
+	.browse-container {
+		padding-top: 2em;
+	}
+	.socialMedia {
+		width: 50%;
+	}
+}
+
+@media (max-width: 426px) {
+	.nav {
+		margin: auto;
+	}
+
+	.browse-container {
+		padding-top: 4em;
+	}
+
+	.socialMedia {
+		flex-direction: column;
+	}
+	.socialMedia a {
+		margin: auto;
+	}
+	.browse-container .container-text h2 {
+		font-size: 40px;
+	}
+	.campaign-container .card {
+		width: 90%;
+	}
+}
+
+@media (max-width: 376px) {
+	.campaign-container .card {
+		width: 100%;
+	}
+	.campaign-container .card {
+		height: 600px;
+	}
+	.campaign-container .card .card-body .progress {
+		top: 425px;
 	}
 }
