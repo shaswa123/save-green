@@ -31,7 +31,6 @@
 .box-image {
 	background: url("../images/bg4.jpeg");
 	background-size: cover;
-	position: relative;
 	width: 100%;
 	height: 300px;
 }
@@ -57,25 +56,7 @@
 	text-align: center;
 }
 
-/*nav*/
-.navthrough {
-	padding-left: 250px;
-	position: relative;
-	display: block;
-}
-
-.navthrough ul li a {
-	font-family: Barlow, sans-serif;
-	font-weight: bold;
-	line-height: 1.6;
-	font-size: 17px;
-	color: #2a3746;
-}
-
-.navthrough ul li button {
-	position: relative;
-	left: 595px;
-	top: 1px;
+#addProject {
 	background: #fed857;
 	border-radius: 5px;
 	height: 50px;
@@ -83,22 +64,8 @@
 	border: none;
 }
 
-.navthrough ul li button .but-text {
-	padding: 8px 8px;
-	color: #2e3c4b;
-	font-family: 'Barlow', sans-serif;
-	font-style: normal;
-	font-weight: bold;
-	font-size: 15px;
-}
-
 button:hover {
 	color: #2e3c4b !important;
-}
-
-.container .monitor {
-	padding-left: 45px;
-	width: 1010px;
 }
 
 .container .monitor ul li a {
@@ -190,8 +157,9 @@ button:hover {
 	color: #2e3c4b;
 }
 
-.my-projects {
-	width: 50%;
+.my-projects,
+.my-info {
+	width: 45%;
 }
 
 .my-projects h2 {
@@ -266,4 +234,46 @@ button:hover {
 .modal-header {
 	background-color: #2a3746;
 	color: white;
+}
+
+@media (max-width: 1024px) {
+	.campAndInfo {
+		flex-direction: column;
+	}
+	.campAndInfo > div {
+		margin: auto;
+		margin-bottom: 1em;
+	}
+}
+
+@media (max-width: 942px) {
+	.monitor > .chart > .row > .d-flex {
+		flex-direction: column;
+	}
+	.my-projects,
+	.my-info {
+		width: 75%;
+	}
+}
+
+@media (max-width: 768px) {
+	.my-projects,
+	.my-info {
+		width: 100%;
+	}
+}
+
+@media (max-width: 540px) {
+	.nav {
+		margin: auto !important;
+	}
+}
+
+@media (max-width: 425px) {
+	.container .monitor .chart .card {
+		width: 300px;
+	}
+	.campDetails > div:nth-child(1) {
+		flex-direction: column;
+	}
 }
