@@ -63,10 +63,7 @@
 
 /*Card*/
 .info-card {
-	/*position: relative;*/
-	padding-left: 20px;
 	width: 100%;
-	overflow-x: hidden;
 }
 
 .info-card .card {
@@ -75,68 +72,53 @@
 }
 
 .info-card .card .landing-image img {
-	position: relative;
 	height: 400px;
 	width: 550px;
 }
 
-.card-title {
-	width: 60% !important;
-	left: 225px !important;
-}
 .info-card .card .card-body .card-title {
-	position: relative;
-	left: 180px;
 	font-family: 'Barlow', sans-serif;
 	font-size: 40px;
 	font-weight: bold;
 	color: #2e3c4b;
-	width: fit-content;
 	margin-top: auto;
 }
 
 .info-card .card .card-body .card-text {
-	position: relative;
 	font-family: 'Barlow', sans-serif;
 	font-style: normal;
 	font-size: 20px;
-	left: 300px;
-	top: 45px;
+}
+
+.info-card .avatar {
+	margin-bottom: 1em;
 }
 
 .info-card .avatar a img {
-	position: relative;
 	border-radius: 100px;
 	border: 2px solid #fff;
 	box-shadow: 2px 2px 6px rgba(0, 0, 0, .1);
 	height: 40px;
-	bottom: 30px;
-	left: 220px;
 	height: 60px;
 }
 
 .info-card .avatar a .text {
-	position: relative;
-	bottom: 80px;
 	font-family: 'Barlow', sans-serif;
 	font-style: italic;
 	font-size: 15px;
-	left: 300px;
 	color: gray;
+	margin: auto;
+	margin-left: 0.5em;
 }
 
 .info-card .card .card-body .progress {
-	position: relative;
 	height: 6px;
 	border-radius: 50px;
-	bottom: 50px;
-	left: 230px;
 	width: 400px;
-	top: 1px;
+	margin: 2em 0 2em 0;
 }
 
 .info-card .card .card-body .progress .progress-bar {
-	position: absolute;
 	width: 20px;
 	height: 6px;
 	background: #00b964;
@@ -144,30 +126,19 @@
 }
 
 .info-card .card .card-body .stat-text {
-	position: relative;
-	top: 20px;
-	left: 240px;
 	color: #2e3c4b;
 	font-family: 'Barlow', sans-serif;
 	font-style: normal;
 	font-weight: bold;
 	font-size: 20px;
+	justify-content: space-between;
 }
 
-.info-card .card .card-body .stat-text .perc {
-	position: relative;
-	left: 360px;
-	bottom: 52px;
-}
 .info-card .card .card-body .stat-text .text-muted {
 	font-weight: lighter;
 	font-size: 14px;
-}
-
-.info-card .card .card-body .sidebar .formz {
-	left: 220px;
-	bottom: 20px;
-	position: relative;
+	margin-left: 0.5em;
+	margin-top: 0.4em;
 }
 
 .info-card input[type = "number"] {
@@ -288,6 +259,37 @@
 	background-color: #fed857;
 }
 
+@media (max-width: 1024px) {
+	.info-card > div > .row {
+		flex-direction: column;
+	}
+	.content {
+		margin-top: 30em;
+	}
+	.info-card .card .landing-image img {
+		width: 100%;
+		object-fit: cover;
+	}
+	.info-card .row > div:nth-child(2) {
+		border: 1px solid lightgrey;
+		border-top: 0px;
+	}
+	.infoContainer {
+		width: 75%;
+		margin: auto;
+	}
+	.info-card {
+		width: 80%;
+		margin: auto;
+	}
+	#donor-list > table {
+		width: 100% !important;
+	}
+	.info-card .card .card-body .stat-text {
+		width: 400px;
+	}
+}
+
 @media (max-width: 1000px) {
 	/*box*/
 	.box-image {
@@ -295,6 +297,53 @@
 		position: relative;
 		width: 100%;
 		height: 300px;
-		top: 80px;
+	}
+}
+
+@media (max-width: 740px) {
+	.infoContainer {
+		width: 90%;
+	}
+}
+
+@media (max-width: 580px) {
+	.info-card .card .card-body .progress {
+		width: 100%;
+	}
+	.info-card .card .card-body .stat-text {
+		width: 100%;
+		margin-bottom: 1em;
+	}
+}
+
+@media (max-width: 425px) {
+	.infoContainer {
+		width: 95%;
+	}
+	.info-card input[type = "number"] {
+		max-width: 95%;
+	}
+	.info-card .card .card-body .sidebar .formz button {
+		width: 100%;
+		margin-top: 0.75em;
+	}
+	.content .tabs {
+		width: 95%;
+	}
+	.info-card {
+		width: 95%;
+	}
+	.card-title {
+		width: 100%;
+	}
+	.content {
+		width: 95%;
+	}
+}
+
+@media (max-width: 369px) {
+	.content .nav-item {
+		width: 115px;
+		text-align: center;
 	}
 }

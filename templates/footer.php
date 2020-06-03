@@ -32,6 +32,25 @@
         text-align:center;
         margin-bottom:0!important;
     }
+    @media (max-width: 768px) {
+        .socialMedia {
+            width: 50%;
+        }
+        .navigation-bar {
+            background-color: #2e3c4b;
+        }
+    }
+
+    @media (max-width: 426px) {
+        .nav {
+            margin: auto;
+        }
+        .socialMedia {
+            flex-direction: column;
+        }
+        .socialMedia a {
+            margin: auto;
+        }
 </style>
 
 

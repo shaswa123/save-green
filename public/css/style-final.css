@@ -462,6 +462,9 @@ button .btn {
 	.socialMedia {
 		width: 50%;
 	}
+	.navigation-bar {
+		background-color: #2e3c4b;
+	}
 }
 
 @media (max-width: 426px) {

@@ -102,6 +102,7 @@
         echo("<script>alert('".$err."');</script>");
       }
     ?>
+    <?php require "templates/navbar.php";?>
     <div class="w-100 spinnerContainer" style="height:600px;">
         <div style="margin:auto; width:fit-content; margin-top:300px;">
           <div class="spinner-border" role="status">
@@ -111,25 +112,6 @@
         </div>
     </div>
     <section class="main-body-section" style="display:none;">
-        <!-- The Navigation Bar -->
-        <div class="navigation-bar">
-            <nav class="navbar">
-                <a class="navbar-brand" href="index.php">
-                  <img src="public/images/Save-Green-logo-PNG.png" alt="">
-                </a>
-                <ul class="nav">
-                    <li class="nav-item">
-                      <a class="nav-link active" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Campaigns</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Contact Us</a>
-                    </li>
-                  </ul>
-            </nav>
-        </div>
         <!--box-->  
         <div class="box">
             <div class="box-image"></div>
@@ -141,18 +123,17 @@
         <div class="info-card">
             <div class="card mb-3" style="max-width: 1200px;">
                 <div class="row no-gutters">
-                    <div class="col-md-4">
+                    <div>
                         <div class="landing-image">
-                        <?php // have image ?>
                         <img src="<?php if($total_images == 0) {echo("public/images/bg4.jpeg"); }else { echo($imgs[$imgCounter++]["imgurl"]); }?>" class="card-img" alt="...">
                         </div>
                     </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
+                    <div>
+                        <div class="card-body infoContainer">
                             <h5 class="card-title"><?php echo $camp[0]["title"]; ?></h5>
                             <p class="card-text"><small class="text-muted"><?php echo("Location:".$camp[0]["location"]); ?></small></p>
                             <div class="avatar">
-                                <a href="author">
+                                <a href="author" class="d-flex">
                                   <img src="public/images/av.jpg" alt="avatar">
                                   <div class="text">
                                   <text-muted><?php echo("By ".$user_name); ?></text-muted>
@@ -162,17 +143,18 @@
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" style="width: <?php echo(floor($camp[0]["currentamount"]*100 / $camp[0]["amount"])) ?>%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
-                            <div class="stat-text">
-                                <?php echo("&#8377 ".$camp[0]["currentamount"]); ?>
-                                <div class="text-muted">
-                                  <?php echo("raised of &#8377 ".$camp[0]["amount"]); ?>
+                            <div class="stat-text d-flex justify-cotent-between">
+                                <div class="d-flex">
+                                  <?php echo("&#8377 ".$camp[0]["currentamount"]); ?>
+                                  <div class="text-muted">
+                                    <?php echo("raised of &#8377 ".$camp[0]["amount"]); ?>
+                                  </div>
                                 </div>
                                 <div class="perc">
                                 <p><?= (floor($camp[0]["currentamount"] * 100 / $camp[0]["amount"]))."%" ?></p>
                                 </div>
                             </div>
                             <div class="sidebar">
-                                <span class="tool">...</span>
                                 <div class="formz">
                                 <form method="post" class="cart">
                                     
