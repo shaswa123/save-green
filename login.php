@@ -37,7 +37,7 @@
 
             }
             $admin_user = $db->get_one_admin_user((int)$user[0]["userID"]);
-            if(isset($admin_user[0]["id"]))
+            if(count($admin_user) != 0)
             {
                 // Admin user
                 $_SESSION["adminid"] = (int)$admin_user[0]["id"];

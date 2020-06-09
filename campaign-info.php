@@ -76,6 +76,13 @@
         require "razor/pay.php";
       }
     }
+    
+    //CHECK IF LOGIN
+    $userid;
+    if(isset($_SESSION["userid"]) || isset($_SESSION["adminid"])){
+      $userid = isset($_SESSION["userid"]) == true ? $_SESSION["userid"] : $_SESSION["adminid"];
+    }
+
 ?>
 
 
@@ -94,6 +101,15 @@
       body{
         overflow-x:hidden;
       }
+      .box-image {
+        top:0!important;
+      }
+      .box .box-image-text h2{
+        bottom:200px!important;
+      }
+      .box .box-image-text p{
+        bottom:200px!important;
+      }
     </style>
 </head>
 <body>
@@ -104,7 +120,7 @@
     ?>
     <?php require "templates/navbar.php";?>
     <div class="w-100 spinnerContainer" style="height:600px;">
-        <div style="margin:auto; width:fit-content; margin-top:300px;">
+        <div style="margin:auto; width:fit-content; padding-top:300px;">
           <div class="spinner-border" role="status">
             <span class="sr-only">Loading...</span>
           </div>
@@ -157,11 +173,6 @@
                             <div class="sidebar">
                                 <div class="formz">
                                 <form method="post" class="cart">
-                                    
-                                    &#8377 
-                                
-                                    <input type="number" step="any" min="10" name="donate-amount" id="donateAmt" class="input-text amount donate-amount" value="25" data-min-price="10" data-max-price>
-                                    <input type="hidden" value="144" name="add-to-cart">
                                     <button type="button" data-toggle="modal" data-target="#personalInfoModal" class="donate-button">Donate to Campaign</button>
                                 </form>
                                 </div>
@@ -191,6 +202,10 @@
                     }
                   ?>
                   <div class="form-group">
+                    <label>Donation amount</label>
+                    <input type="number" name="donateAmount" required class="form-control" placeholder = "Enter donation amount">
+                  </div>
+                  <div class="form-group">
                     <label for="firstName">Name</label>
                     <input type="text" name="name" require class="form-control" id="firstName" placeholder="Enter your name">
                   </div>
@@ -208,11 +223,10 @@
                   </div>
                   <div class="form-group">
                     <label for="pancardNum">Pan card number</label>
-<!-- pattern="[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}" -->
+                    <!-- pattern="[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}" -->
                     <input type="text" name="pancardNum" require class="form-control" aria-describedby="pancardHelp"  id="pancardNum" placeholder="Enter pan card number">
                     <small id="pancardHelp" class="form-text text-muted">We'll never share your pan card details with anyone else.</small>
                   </div>
-                  <input type="hidden" name="donateAmount" id="donateAmountHidden">
                   <input type="hidden" name="campid" value="<?= $campid ?>">
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
@@ -296,11 +310,6 @@
       crossorigin="anonymous">
     </script>
     <script>
-      document.getElementsByClassName("donate-button")[0].addEventListener("click",()=>{
-        let amt = document.getElementById("donateAmt").value;
-        document.getElementById("donateAmountHidden").value = amt;
-      });
-
       setTimeout(() => {
         let spinnerContainer = document.getElementsByClassName("spinnerContainer")[0].style.display = "none";
         let main_body = document.getElementsByClassName("main-body-section")[0].style.display = "block";

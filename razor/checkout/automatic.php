@@ -6,6 +6,7 @@
   display:none;
 }
 </style>
+</php print_r($_POST); ?>
 <form action="razor/verify.php" method="POST">
   <script
 
@@ -17,7 +18,7 @@
     data-image="<?php echo $data['image']?>"
     data-description="<?php echo $data['description']?>"
     data-prefill.name="<?php echo $data["prefill"]["name"]?>"
-    data-prefill.email="<?php echo $data["prefill"]["emailId"]?>"
+    data-prefill.email="<?php echo $data["prefill"]["email"]?>"
     data-prefill.contact="<?php echo $data["prefill"]["contact"]?>"
     data-notes.shopping_order_id= <?php echo $data["shopping_id"] ?>
     data-order_id="<?php echo $data["order_id"]?>"

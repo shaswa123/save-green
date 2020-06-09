@@ -16,10 +16,8 @@
       return;
   }
   $userID;
-  $isAdmin = false;
   if(isset($_SESSION["adminid"])){
     $userID = $_SESSION["adminid"];
-    $isAdmin = true;
   }else{
     $userID = $_SESSION["userid"];
   }
@@ -40,12 +38,14 @@
 
   if(isset($_POST["emailId"]) && isset($_POST["firstName"])){
     $res = $db->update_user_details($userID, htmlentities($_POST["firstName"]), htmlentities($_POST["lastName"]),htmlentities($_POST["emailId"]));
-    if(!$res){
+    $res2 = $db->update_phone_number($userID, htmlentities($_POST["phonenum"]));
+    if(!$res || !res2){
       echo("Error!");
     }else{
       header("Location: dashboard.php");
     }
   }
+
 
 ?>
 <!DOCTYPE html>
@@ -131,24 +131,7 @@
     <section>
         <!-- <div class="backgroundFixed"></div> -->
         <!-- The Navigation Bar -->
-        <div class="navigation-bar" id="navBar">
-            <nav class="navbar">
-                <a class="navbar-brand" href="#">
-                  <img src="public/images/Save-Green-logo-PNG.png" alt="">
-                </a>
-                <ul class="nav">
-                  <li class="nav-item">
-                    <a class="nav-link active" href="#">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Campaigns</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Contact Us</a>
-                  </li>
-                </ul>
-            </nav>
-        </div>
+        <?php  require ("templates/navbar.php"); ?>
         <!--box-->  
         <div class="box">
             <div class="box-image"></div>
@@ -277,11 +260,14 @@
                                         <p style="font-weight:bold; font-size:13px;">&#8377 '.$camp["currentamount"].'</p>
                                         <p style="font-weight:bold; font-size:13px;">&#8377 '.$camp["amount"].'</p>
                                         <p style="font-weight:bold; font-size:13px">'.(floor($camp["currentamount"] * 100 / $camp["amount"])).'%</p>
-                                        <div class="d-flex">');if($camp["status"]) {
+                                        <div class="d-flex">');if($camp["status"] == '1') {
                                             echo("<p style='text-align:end; color:green; width:100%;'>Active</p>");
-                                          }else{
+                                          }else if($camp['status'] == '0'){
                                             echo("<p style='text-align:end; color:red; width:100%;'>Inactive</p>");
-                                          }echo('
+                                          }else if($camp['status'] == '2'){
+                                            echo("<p style='text-align:end; color:yellow; width:100%;'>Request send</p>");
+                                          }
+                                          echo('
                                         </div>
                                       </div>
                                   </div>

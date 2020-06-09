@@ -36,6 +36,7 @@
         $displayAmount = $exchange['rates'][$displayCurrency] * $amount / 100;
     }
     
+    $email = $_POST["emailId"];
     
     $data = [
         "key"               => $keyId,
@@ -45,7 +46,7 @@
         "image"             => "https://i.ibb.co/Z2WCFHj/bd8acb076055.png",
         "prefill"           => [
         "name"              => $_POST["name"], // GET from session the user's name
-        "email"             => $_POST["emailId"], // EMAIL
+        "email"             => $email, // EMAIL
         "contact"           => $_POST["phoneNumber"] // number AND address (IDK about address)
         ],
         "notes"             => [

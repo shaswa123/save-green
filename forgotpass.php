@@ -1,3 +1,41 @@
+<?php
+    if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) 
+      ob_start('ob_gzhandler'); 
+    else ob_start();
+
+    require "util/db.php";
+    require "util/util.php";
+    session_start();
+
+    $db = new DB;
+    $db_obj = $db->create_db(3306,"fundraising","root","");
+    
+    $err = '';
+
+    if(isset($_POST["password"]) && isset($_POST["email"])){
+        //CHECK FOR USER WITH EMAIL IN DB
+        $user = $db->get_one_user_by_email($_POST["email"]);
+        print_r($user);
+        if(isset($user[0])){
+            //THE USER WITH EMAIL EXISTS
+            //UPDATE THE PASSWORD AND ISVERFIED IN DB and SEND A CONFIRMATION MAIL
+            $encrpyt_pass = get_encrypt_pass($_POST["password"]);
+            $db->update_user_pass($user[0]["userID"], $encrpyt_pass);
+            $email_code = get_email_code($user[0]["firstName"]);
+            $db->unset_verify($user[0]["userID"], $email_code);
+            if(confirmation_email($user[0]["emailId"], $user[0]["firstName"], $email_code)){
+                //REDIRECT TO LOGIN 
+                header("Location : login.php");    
+            }else{
+                echo("OOPS");
+            }
+        }else{
+            //ASK TO SIGN UP
+            $err = "The user does not exist. Please try to sign up.";
+        }
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,10 +81,6 @@
     </script>
 </head>
 <style>
-    .err-block{
-        background-color: #e8635c;
-        text-align:center;
-    }
     .nav-links{
         color:white!important;
     }
@@ -73,7 +107,7 @@
     <div class="loginbox shadow">
         
         <h2>Forgot Password</h2>
-        <form method="post">
+        <form method="POST">
             <div class="emailContainer">
                 <p id="email">Email Address</p>
                 <input type="text" id="emailInput" onfocusout="loginOut(this.id)" onfocus="login(this.id)" name="email">
@@ -89,9 +123,10 @@
             </div>
         </form>
         <?php 
-            if(isset($_SESSION["login_err"])){
-                echo("<div class='err-block mt-4 pb-1'><p style='color:white; font-size:13px; font-weight:bold;'>".$_SESSION["login_err"]."</p></div>");
+            if($err != ''){
+                echo("<p style='color:#e8635c; text-align:center; font-size:13px; font-weight:bold;'>".$err."</p>");
                 unset($_SESSION["login_err"]);
+                $err = '';
             }
         ?>
     </div>

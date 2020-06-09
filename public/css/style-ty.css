@@ -1,0 +1,59 @@
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Barlow&display=swap');
+
+* {
+	box-sizing: border-box;
+}
+
+/*box*/
+.box-image {
+	background: url(images/bg5.jpg);
+	background-size: cover;
+	position: relative;
+	width: 100%;
+	height: 580px;
+	top: 80px;
+}
+
+.box .box-image-text h2 {
+	position: relative;
+	bottom: 250px;
+	left: 5px;
+	color: #2e3c4b;
+	font-weight: bolder;
+	font-family: 'Barlow', sans-serif;
+	font-size: 60px;
+	text-align: center;
+}
+
+.box .box-image-text p {
+	position: relative;
+	bottom: 250px;
+	left: 5px;
+	color: #2e3c4b;
+	font-weight: bolder;
+	font-family: 'Barlow', sans-serif;
+	font-size: 40px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.but a button {
+	position: relative;
+	left: 670px;
+	bottom: 250px;
+	background: #fed857;
+	border-radius: 5px;
+	height: 50px;
+	width: 180px;
+	border: none;
+}
+
+.but button .but-text {
+	padding: 8px 8px;
+	color: #2e3c4b;
+	font-family: 'Barlow', sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+}

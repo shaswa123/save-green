@@ -67,10 +67,14 @@
         curl_close($ch);
         $db->insert_into_images($response["data"]["url"], $campid);
     }
-
+    //SEND a mail for campaign create
+    createCampagin_mail();
+    
     header("Location: index.php");
 
     require_once "templates/footer.php";
     require_once "templates.foot.php";
+
+
 
 ?>

@@ -5,28 +5,6 @@
 	box-sizing: border-box;
 }
 
-/*Navbar CSS*/
-.navigation-bar {
-	width: 100%;
-	background: #2e3c4b;
-	z-index: 99;
-}
-
-.navbar ul li a {
-	font-family: 'Barlow', sans-serif;
-	color: #ffffff;
-	font-weight: bold;
-}
-
-.navbar img {
-	width: 200px;
-	height: 45px;
-}
-
-/* .navigation-bar :hover {
-	background-color: #2e3c4b;
-} */
-
 /*box*/
 .box-image {
 	background: url("../images/bg4.jpeg");
