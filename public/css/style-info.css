@@ -202,14 +202,12 @@
 	border-left: none;
 	border-right: none;
 	text-align: left;
-	width: 50%;
 }
 
 .content .tabs .tab-content table th {
 	font-weight: 600;
 	font-family: Barlow, sans-serif;
-	color: #2e3c4b;
-	background: #f6f3f1;
+	color: white;
 	border: none;
 	font-size: 17px;
 	padding: 15px;

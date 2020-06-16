@@ -9,12 +9,9 @@ require('razorpay-php/Razorpay.php');
 use Razorpay\Api\Api;
 use Razorpay\Api\Errors\SignatureVerificationError;
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
 
-require __DIR__.'/vendor/autoload.php';
-use Spipu\Html2Pdf\Html2Pdf;
+require('../util/pdf.php');
+
 
 $success = true;
 
@@ -26,7 +23,6 @@ $db_obj = $db->create_db(3306,"fundraising","root","");
 if (empty($_POST['razorpay_payment_id']) === false)
 {
     $api = new Api($keyId, $keySecret);
-
     try
     {
         // Please note that the razorpay order ID must
@@ -49,186 +45,106 @@ if (empty($_POST['razorpay_payment_id']) === false)
 
 if ($success === true)
 {
-    //GET FROM EMAIL DETAILS
+    //CAMPAIGN CERATER'S NAME
+    $CAMPAGIN = $db->get_campaigns_by_id($_POST["campid"])[0];
+    $USER_ID = $CAMPAGIN["userID"];
+    $USER = $db->get_user_by_id($USER_ID)[0];
 
-    // store the order_id in database with user_id, phone_num and email_id 
-    $html = "<p>Your payment was successful</p>
-             <p>Payment ID: {$_POST['razorpay_payment_id']}</p>";
-    // print_r($_POST);
+
+    //GET FROM EMAIL DETAILS
+    $emailDetails = $db->get_from_email();
+    $FROM_ADDRESS = $emailDetails[0]["address"];     //GET EMAIL FROM ADDRESS
+    $FROM_PASSWORD = $emailDetails[0]["pass"];    //GET EMAIL FROM PASSWORD
+    $EMAIL_SUBJECT = $emailDetails[0]["subject"];    //GET EMAIL SUBJECT
+    $EMAIL_BODY = $emailDetails[0]["body"];    //GET EMAIL BODY`
+    // $FROM_NAME = $db->get_user_by_id($db->get_campaigns_by_id($_POST["campid"])[0]["userID"])[0];    
+    //GET NAME OF THE CAMPAIGN CREATER
+    $FROM_NAME = isset($USER['lastName']) == true ? $USER['firstName']." ".$USER["lastName"] : $USER["firstName"];
+
+    // NGO DETAILS
+    $ngoDetails = $db->get_from_ngo_details();
+    $ORG_NAME = $ngoDetails[0]["orgnization_name"];     //GET ORGANIZATION's NAME
+    $PHONE_NUM = $ngoDetails[0]["phonenum"];        //GET ORGANIZATION's PHONE NUMBER
+    $PAN_CARD = $ngoDetails[0]["pancard"];      //GET ORGANIZATION's PAN CARD NUMBER
+    $NGO_EMAIL = $ngoDetails[0]["email"];       //GET NGO's EMAIL ADDRESS
+    $A = $ngoDetails[0]["A"];       //GET NGO's A
+    $G = $ngoDetails[0]["G"];       //GET NGO's 80-G
+
+    // GET CURRENT DATE
+    $CURRENT_DATE = date("d/m/Y");
+
+    // GET RECIPT_ID, CONTRIBUTION_AMOUNT FROM POST DATA
+    $RECIPT_ID = $_POST["shopping_order_id"];
+    $CONTRIBUTION_AMOUNT = $_POST["amount"];
+
+    // GET CAMPAIGN NAME USING CAMPAIGN ID
+    $CAMPAGIN_NAME = $db->get_campaigns_by_id($_POST["campid"])[0]["title"];
+
+    // OBJECT OF DATA WHICH WILL BE USED BY CREATE PDF FUNCTION
+    $PDF_DATA['DATE'] = $CURRENT_DATE;
+    $PDF_DATA['RECIPT_ID'] = $RECIPT_ID;
+    $PDF_DATA['CAMPAIGN_NAME'] = $CAMPAGIN_NAME;
+    $PDF_DATA['CONTRIBUTION_AMOUNT'] = $CONTRIBUTION_AMOUNT;
+    $PDF_DATA['DONOR_NAME'] = ''; //THIS IS ASSIGNED AFTER DONOR IS INSERTED IN THE DB
+    $PDF_DATA['ORG_NAME'] = $ORG_NAME;
+    $PDF_DATA['ORG_PHONE_NUMBER'] = $PHONE_NUM;
+    $PDF_DATA['ORG_EMAIL'] = $NGO_EMAIL;
+    $PDF_DATA['ORG_WEBSITE_URL'] = '';
+    $PDF_DATA['ORG_ADDRESS'] = '';
+    $PDF_DATA['PAN_CARD'] = $PAN_CARD;
+    $PDF_DATA['A'] = $A;
+    $PDF_DATA['G'] = $G;
+    $PDF_DATA['PRESIDENT_NAME'] = '';
+
+    // IF GIVEN PERMISSION FOR 80-G OR 12-A
+
+
+    // CHECK IF DONOR ALREADY EXISTS IN OUR DB
     $donor = $db->get_donor_by_email($_POST["email"]);
-    if(sizeof($donor) > 0){
+    if(sizeof($donor) > 0){     //IF IT DOES THEN ASSIGN THE DONOR TO A VAR
         $donor = $donor[0];
-    }else{
+    }else{      //IF DONOR DOES NOT EXISTS INSERT INTO THE DB
         if($db->insert_in_donor($_POST) == false){
-            header("Location: ../index.php");
+            //ERROR WHILE INSERTING IN DB
+            header("Location: ../thankyou.php");
+            return;
         }
         $donor = $db->get_donor_by_email($_POST["email"])[0];
     }
+    
+    $PDF_DATA['DONOR_NAME'] = $donor['name'];   //FOR PDF GENERATION
+
+    // Successful donation
     $data = $_POST;
     $data["donorid"] = $donor["id"];
-    $db->insert_in_donations($data);
-    //Successful donation
-    $html2pdf = new Html2Pdf();
-    $html2pdf->writeHTML('
-        <html>
-            <head>
-                <style>
-                    .top-div{
-                        margin-top:50px;
-                    }
-                    .date{
-                        font-size:20px;
-                        font-weight:900;
-                        position:absolute;
-                        right:1px;
-                        top:80px;
-                    }
-                    .recipt h1{
-                        padding-bottom:0!important;
-                        margin-bottom:5px;
-                    }
-                    .recipt p{
-                        color:grey;
-                    }
-                    .cont{
-                        border:1px solid grey;
-                        margin-top:10px;
-                        padding:10px 10px;
-                    }
-                    .cont p{
-                        font-size:18px;
-                        font-weight:700;
-                    }
-                    .sign{
-                        margin-top:20px;
-                        margin-left:500px;
-                    }
-                    .sign img{
-                        width:100px;
-                        height:50px;
-                    }
-                </style>
-            </head>
-            <body>
-                <div style="width:85%; margin:auto;">
-                    <div class="top-div">
-                        <img src="public/images/Save-Green-logo-PNG.png" style="width:200px; height:50px;">
-                        <div class="date">15-9-2020</div>
-                    </div>
-                    <div class="recipt" style="margin-top:25px;">
-                        <h1>Recipt #12035124</h1>
-                        <p>Thank you for your contribution towards the COVID 19 campaign.</p>
-                    </div>
-                    <div class="amt">
-                        <h2>Total contribution : Rs 50.00</h2>
-                    </div>
-                    <div class="cont">
-                        <p><pre>Contributed by         :    Shaswat P Patel</pre></p>
-                        <p><pre>Name of organization   :    Save Green</pre></p>
-                        <p><pre>Contact number         :    9998070108</pre></p>
-                        <p><pre>Email ID               :    savegreen@gmail.com</pre></p>
-                        <p><pre>Website                :    savegreen.com</pre></p>
-                        <p><pre>Address                :    Regent Insingnia, No. 414, 3rd floor,
-                            4th block, 17th Main, 100 feet road, 
-                            Koramangala, Bengaluru - 560034</pre></p>
-                        <p><pre>PAN                    :    XYZ</pre></p>
-                        <p><pre>80G approval reference :    Donations are exempt under Section 80G 
-                            of the IT Act 1961 vide order: 
-                            No. CIT (E)/AAATO5745J/ITO (E)-2/2018-19</pre></p>
-                    </div>
-                    <div class="sign">
-                        <img src="public/images/Save-Green-logo-PNG.png">
-                        <p>Shaswat Patel, Volunteer</p>
-                    </div>
-                </div>
-            </body>
-        </html>
-    ');
-    $pdf = $html2pdf->output('', 'S');
-    function smtpmailer($to, $from, $from_pass, $from_name, $subject, $body, $pdfdoc) {
-        global $error;
-        $mail = new PHPMailer();  // create a new object
-        $mail->IsSMTP(); // enable SMTP
-        $mail->SMTPDebug = false;  // debugging: 1 = errors and messages, 2 = messages only
-        $mail->SMTPAuth = true;  // authentication enabled
-        $mail->SMTPSecure = 'tls'; // secure transfer enabled REQUIRED for GMail
-        $mail->SMTPAutoTLS = false;
-        $mail->Host = 'smtp.gmail.com';
-        $mail->Port = 587;
-
-        $mail->Username = $from;  
-        $mail->Password = $from_pass;
-
-        $mail->SetFrom($from, $from_name);
-        $mail->Subject = $subject;
-        $mail->Body = $body;
-        $mail->addStringAttachment($pdfdoc, 'Recipt.pdf');
-        $mail->AddAddress($to);
-        if(!$mail->Send()) {
-            $error = 'Mail error: '.$mail->ErrorInfo; 
-            return false;
-        } else {
-            $error = 'Message sent!';
-            return true;
-        }
+    if($db->insert_in_donations($data) == false){
+        header("Location: ../thankyou.php");
+        return;
     }
 
-    smtpmailer($_POST['email'], $from, $from_pass, $from_name, $sub, $body, $pdf);
-    header("Location : ../thankyou.php");
-    // header("Location: ../index.php");
-    //Array ( [shopping_order_id] => 0 [campid] => 19 [name] => Shaswat P Patel [phoneNumber] => 6358099361 [email] => shaswat178@gmail.com [address] => B-205, BH-1, NSIT, [razorpay_payment_id] => pay_Eu94j4So6HrQHi [razorpay_order_id] => order_Eu94bMmtkSEkax [razorpay_signature] => 0f4cf945841084f257f600566cca10b1be02087f52de21d6d7f672b73d977d98 )
+    //OBJECT FOR EMAIL
+    $EMAIL['EMAIL_FROM'] = $FROM_ADDRESS;
+    $EMAIL['EMAIL_FROM_NAME'] = $FROM_NAME;
+    $EMAIL['EMAIL_PASSWORD'] = $FROM_PASSWORD;
+    $EMAIL['EMAIL_SUBJECT'] = $EMAIL_SUBJECT;
+    $EMAIL['EMAIL_BODY'] = $EMAIL_BODY;
+    $EMAIL['EMAIL_TO'] = $donor['email'];
+
+    if(pdf_and_email($PDF_DATA, $EMAIL) == false){
+        $_SESSION["PAYMENT_ERROR"] = "There was an issue while sending a recipt email, please contact us through email for recipt. Thank you for your contribution!";
+    }
+
+    header('Location: ../thankyou.php');
+    return;
 }
 else
 {
-    $html = "<p>Your payment failed</p>
-             <p>{$error}</p>";
+    // Your payment failed
+    header('../index.php');
+    return;
 }
 
-echo $html;
 
-//Array ( [shopping_order_id] => 3456 [razorpay_payment_id] => pay_EtMW6iXocEfmiV [razorpay_order_id] => order_EtMVzmkq6rAamE [razorpay_signature] => e23b661d4ff1abfe4b350eefdc0734965bae8686d783505eb95d38bb79cca09f )
 
-/*
-
-    use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\SMTP;
-    use PHPMailer\PHPMailer\Exception;
-
-    require __DIR__.'/vendor/autoload.php';
-    use Spipu\Html2Pdf\Html2Pdf;
-
-    function create_recipt($info){
-        $html2pdf = new Html2Pdf();
-        $html2pdf->writeHTML('<h1>HelloWorld</h1>This is my first test');
-        $pdfdoc = $html2pdf->Output('Recipt.pdf', 'S');
-        return $pdfdoc;
-    }
-
-    function smtpmailer($to, $from, $from_pass, $from_name, $subject, $body, $pdfdoc) {
-        global $error;
-        $mail = new PHPMailer();  // create a new object
-        $mail->IsSMTP(); // enable SMTP
-        $mail->SMTPDebug = false;  // debugging: 1 = errors and messages, 2 = messages only
-        $mail->SMTPAuth = true;  // authentication enabled
-        $mail->SMTPSecure = 'tls'; // secure transfer enabled REQUIRED for GMail
-        $mail->SMTPAutoTLS = false;
-        $mail->Host = 'smtp.gmail.com';
-        $mail->Port = 587;
-
-        $mail->Username = $from;  
-        $mail->Password = $from_pass;
-
-        $mail->SetFrom($from, $from_name);
-        $mail->Subject = $subject;
-        $mail->Body = $body;
-        $mail->addStringAttachment($pdfdoc, 'Recipt.pdf');
-        $mail->AddAddress($to);
-        if(!$mail->Send()) {
-            $error = 'Mail error: '.$mail->ErrorInfo; 
-            return false;
-        } else {
-            $error = 'Message sent!';
-            return true;
-        }
-    }
-*/
+// Array ( [shopping_order_id] => 0 [campid] => 19 [name] => Shaswat P Patel [phoneNumber] => 6358099361 [email] => shaswat178@gmail.com [address] => B-205, BH-1, NSIT, [razorpay_payment_id] => pay_Eu94j4So6HrQHi [razorpay_order_id] => order_Eu94bMmtkSEkax [razorpay_signature] => 0f4cf945841084f257f600566cca10b1be02087f52de21d6d7f672b73d977d98 )
+?>

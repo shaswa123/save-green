@@ -8,8 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style>
-
+        html{
+            overflow-x:hidden;
+        }
     </style>
+    <script>
+        if(isset($_SESSION["PAYMENT_ERROR"])){
+            echo('alert('.$_SESSION["PAYMENT_ERROR"].')');
+            unset($_SESSION["PAYMENT_ERROR"]);
+        }
+    </script>
 </head>
 <body>
     <section>

@@ -60,6 +60,16 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- FONT AWESOME CDN -->
     <script src="https://kit.fontawesome.com/f0c4100b26.js" crossorigin="anonymous"></script>
+    <!-- jQuery min JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+      crossorigin="anonymous">
+    </script>
+    <!-- CUSTOM Js -->
+    <script 
+      src = "public/Js/dashboard.js">
+    </script>
 </head>
 <style>
   body{
@@ -129,7 +139,6 @@
 </style>
 <body>
     <section>
-        <!-- <div class="backgroundFixed"></div> -->
         <!-- The Navigation Bar -->
         <?php  require ("templates/navbar.php"); ?>
         <!--box-->  
@@ -239,12 +248,17 @@
                     </div>
                 </button>
               </div>
-              <?php  if(isset($all_camp) == false){
+              <?php  
+                  if(isset($all_camp) == false){
                     //If no project is found 
                     echo("<p style='font-weight:bold';>No campagins</p>");
                   }else{
                     echo("<div style='height:450px; width:100%; overflow-y: auto;'>");
-                    foreach($all_camp as $camp){
+                    foreach($all_camp as $camp){ 
+                      $PERCENTAGE = 0;
+                      if($camp["amount"] != 0){
+                        $PERCENTAGE = floor($camp["currentamount"] * 100 / $camp["amount"]);
+                      }
                       echo('<div class="card mb-2 shadow-sm">
                               <a class="card-link" href="campaign-info.php?id='.get_encrypted_id($camp["id"]).'">
                                 <div class="d-flex">
@@ -259,13 +273,13 @@
                                       <div class="d-flex justify-content-between">
                                         <p style="font-weight:bold; font-size:13px;">&#8377 '.$camp["currentamount"].'</p>
                                         <p style="font-weight:bold; font-size:13px;">&#8377 '.$camp["amount"].'</p>
-                                        <p style="font-weight:bold; font-size:13px">'.(floor($camp["currentamount"] * 100 / $camp["amount"])).'%</p>
+                                        <p style="font-weight:bold; font-size:13px">'.$PERCENTAGE.'%</p>
                                         <div class="d-flex">');if($camp["status"] == '1') {
                                             echo("<p style='text-align:end; color:green; width:100%;'>Active</p>");
                                           }else if($camp['status'] == '0'){
                                             echo("<p style='text-align:end; color:red; width:100%;'>Inactive</p>");
                                           }else if($camp['status'] == '2'){
-                                            echo("<p style='text-align:end; color:yellow; width:100%;'>Request send</p>");
+                                            echo("<p style='text-align:end; color:black; width:100%;'>Request send</p>");
                                           }
                                           echo('
                                         </div>
@@ -359,15 +373,6 @@
     <?php require_once("templates/footer.php"); ?>
     
     
-    <!-- jQuery min JS -->
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.min.js"
-      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-      crossorigin="anonymous">
-    </script>
-    <!-- CUSTOM Js -->
-    <script src = "public/Js/dashboard.js">
-    </script>
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

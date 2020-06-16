@@ -97,6 +97,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- FONT AWESOME CDN -->
     <script src="https://kit.fontawesome.com/f0c4100b26.js" crossorigin="anonymous"></script>
+        <!-- jQuery min JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+      crossorigin="anonymous">
+    </script>
     <style>
       body{
         overflow-x:hidden;
@@ -265,20 +271,22 @@
                       ?>
                     </div>
                     <div class="tab-pane fade" id="donor-list" role="tabpanel" aria-labelledby="donor-list-tab">
-                        <table style="<?php if($userPresent) echo("width = 75%;"); else echo("width:50%;");?>">
-                            <tbody>
+                        <table class="table" style="width:100%;">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>Name</th>
                                     <?php 
                                     if($userPresent){
                                       echo("<th>Email</th>
                                         <th>Payment ID</th>
-                                        <th>Amount</th>
-                                      ");
-                                    }
-                                    ?>
+                                        ");
+                                      }
+                                      ?>
+                                    <th>Amount</th>
                                     <th>Date</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <?php 
                                   if(isset($donors)){
                                     for($i = 0; $i < count($donors); $i++){
@@ -286,10 +294,10 @@
                                         if($userPresent){
                                           echo('<td>'.$donors[$i]["email"].'</td>
                                             <td>'.$donors[$i]["txnid"].'</td>
-                                            <td>'.$donors[$i]["amount"].'</td>
-                                          ');
-                                        }
-                                        echo("<td>".$donors[$i]["date"]."</td>
+                                            ');
+                                          }
+                                        echo(" <td>Rs ".$donors[$i]["amount"]."</td>
+                                        <td>".explode(' ',$donors[$i]["date"])[0]."</td>
                                         </tr>
                                       ");
                                     }
@@ -303,12 +311,6 @@
         </div>
     </section>
     <?php require_once("templates/footer.php"); ?>
-        <!-- jQuery min JS -->
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.min.js"
-      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-      crossorigin="anonymous">
-    </script>
     <script>
       setTimeout(() => {
         let spinnerContainer = document.getElementsByClassName("spinnerContainer")[0].style.display = "none";

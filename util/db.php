@@ -159,7 +159,7 @@
         //-------------------------------------------------------------//
 
         public function insert_into_campaigns($camp_details){
-            $stml = $this->pdo->prepare("INSERT INTO campaigns (title,location,startdate,enddate,amount,description,userID, status = 2) VALUES (:title,:loc,:startdate,:enddate,:amount,:description,:userid)");
+            $stml = $this->pdo->prepare("INSERT INTO campaigns (title,location,startdate,enddate,amount,description,userID, status) VALUES (:title,:loc,:startdate,:enddate,:amount,:description,:userid, 2)");
             $res = $stml->execute(array(
                 ':title' =>htmlentities($camp_details["camp_title"],ENT_QUOTES, 'UTF-8'),
                 ':loc' => htmlentities($camp_details["camp_location"],ENT_QUOTES, 'UTF-8'),
@@ -290,11 +290,12 @@
         //-------------------------------------------------//
         //                     EMAIL TABLE                 //
         //-------------------------------------------------//
-        public function insert_into_email($info){
-            $stml = $this->pdo->prepare("DELETE FROM emaildata");
-            $stml->execute();
-            $stml = $this->pdo->prepare("INSERT INTO emaildata (address, pass, body, subject) VALUES (:email,:pass, :body, :subject);");
+        public function insert_into_email($info, $id){
+            $stml = $this->pdo->prepare("DELETE FROM emaildata WHERE id = :id");
+            $stml->execute(array(':id' => $id));
+            $stml = $this->pdo->prepare("INSERT INTO emaildata (id,address, pass, body, subject) VALUES (:id,:email,:pass, :body, :subject);");
             return $stml->execute(array(
+                ':id' => htmlentities($id, ENT_QUOTES,'UTF-8'),
                 ':email' => htmlentities($info["email"], ENT_QUOTES, 'UTF-8'),
                 ':pass' => htmlentities($info["password"], ENT_QUOTES, 'UTF-8'),
                 ':body' => htmlentities($info["body"], ENT_QUOTES, 'UTF-8'),
@@ -311,14 +312,16 @@
         //             NGO DETAILS TABLE                 //
         //-----------------------------------------------//
         public function insert_into_ngo($info){
-            $stml = $this->pdo->prepare("INSERT INTO ngodetails (orgnization_name, phonenum, pancard, email, 12-A, 80-G) VALUES (:org, :pho, :pan, :email, :12-A, :80-G)");
+            $stml = $this->pdo->prepare("DELETE FROM ngodetails");
+            $stml->execute();
+            $stml = $this->pdo->prepare("INSERT INTO ngodetails (orgnization_name, phonenum, pancard, email, A, G) VALUES (:org, :pho, :pan, :email, :A, :G);");
             return $stml->execute(array(
                 ':org' => htmlentities($info["orgName"], ENT_QUOTES, 'UTf-8'),
                 ':pho' => htmlentities($info["phoneNum"], ENT_QUOTES, 'UTf-8'),
                 ':pan' => htmlentities($info["panCardNum"], ENT_QUOTES, 'UTf-8'),
                 ':email' => htmlentities($info["email"], ENT_QUOTES, 'UTf-8'),
-                ':12-A' => htmlentities($info["12-A"], ENT_QUOTES, 'UTf-8'),
-                '80-G' => htmlentities($info["80-G"], ENT_QUOTES, 'UTf-8')
+                ':A' => htmlentities($info["12-A"], ENT_QUOTES, 'UTf-8'),
+                ':G' => htmlentities($info["80-G"], ENT_QUOTES, 'UTf-8')
             ));
         }
         public function get_from_ngo_details(){

@@ -1,4 +1,8 @@
 <?php 
+
+    require __DIR__.'/../vendor/autoload.php';
+    
+
     function get_encrypt_pass($pass)
     {
         $ciphering = "AES-128-CTR";
@@ -23,29 +27,30 @@
         return $encryption;
     }
 
-    function confirmation_email($email_to,$name, $code)
+    function confirmation_email($EMAIL, $code)
     {
-        $to = $email_to;
-        $subject = 'Confirmation code';
-         
-        // To send HTML mail, the Content-type header must be set
-        $headers  = 'MIME-Version: 1.0' . "\r\n";
-        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-         
-        // Compose a simple HTML email message
-        $message = '<html><body>';
-        $message .= '<h1>Hi, '.$name.'</h1>';
-        $message .= '<p style="font-size:"14px">Thank you for joining save green fund raising website. The confirmation code: <b>'.$code.'</b></p>';
-        $message .= '<p style="font-size:12px; color:rgba(0,0,0,0.7);">Please confirm within 48 hours.</p>';
-        $message .= '</body></html>';
-         
-        // Sending email
-        if(mail($to, $subject, $message, $headers)){
-            return true;
-        } else{
+        global $error;
+        $mail = new PHPMailer();  // create a new object
+        $mail->IsSMTP(); // enable SMTP
+        $mail->SMTPDebug = false;  // debugging: 1 = errors and messages, 2 = messages only
+        $mail->SMTPAuth = true;  // authentication enabled
+        $mail->SMTPSecure = 'tls'; // secure transfer enabled REQUIRED for GMail
+        $mail->SMTPAutoTLS = false;
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = 587;
+
+        $mail->Username = $EMAIL['EMAIL_FROM'];  
+        $mail->Password = $EMAIL['EMAIL_PASS'];
+
+        $mail->SetFrom($EMAIL['EMAIL_FROM'], $EMAIL['EMAIL_FROM_NAME']);
+        $mail->Subject = $EMAIL['EMAIL_SUBJECT'];
+        $mail->Body = $EMAIL['EMAIL_BODY']." ".$code;
+        $mail->AddAddress($EMAIL['EMAIL_TO']);
+        if(!$mail->Send()) { 
             return false;
+        } else {
+            return true;
         }
-        
     }
 
     function get_encrypted_id($id)
@@ -76,23 +81,13 @@
         return $decryption;
     }
 
-    function use_API()
-    {
-        $access_key = "LtKbygISZtRrYfS--91qH9G3Lt-XUiHJ5Z1p9nabrpE";
-        $secret_key = "vdIfTlMlvVjB1ZItUVNe74M6gR4O_pqk75FssbYAFVE";
-        $url = "https://api.unsplash.com/photos/?client_id=".$access_key;
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POST, true);
-        $response = curl_exec($curl);
-        curl_close($curl);
-        return $response;
-    }
 
     function get_order_id(){
         $temp = rand(10000,99999999);
         $en = get_encrypted_id($temp."".time());
         return "ORDS".str_split($en, 10)[0];
     }
+
+    
 
 ?>

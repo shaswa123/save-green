@@ -1,3 +1,39 @@
+<?php 
+    if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) 
+      ob_start('ob_gzhandler'); 
+    else ob_start();
+
+    session_start();
+    require "util/util.php";
+    require "util/db.php"; 
+
+    $db = new DB;
+    $db_obj = $db->create_db(3306,"fundraising","root","");
+    
+    //CHECK IF LOGIN
+    $userid;
+    $isAdmin = false;
+    if(isset($_SESSION["userid"]) || isset($_SESSION["adminid"])){
+      $userid = isset($_SESSION["userid"]) == true ? $_SESSION["userid"] : $_SESSION["adminid"];
+    }
+
+    //GET campagin details using the ID from the URL's GET PARAM    
+    $campid = get_decrypted_id($_GET["id"]);
+    $campid = explode('_', $campid)[1];
+    $camp = $db->get_campaigns_by_id($campid);
+
+    //GET the images associated with the CAMPAGIN
+    $imgs = $db->get_images($campid);
+    $imgCounter = 0;
+    $total_images = count($imgs);
+
+    $desc = explode("\n",$camp[0]["description"]);
+
+    if(isset($_POST["desc"]) && $_POST["title"] && $_POST["total_amt"]){
+      // UPDATE DB WITH NEW INFORMATION
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,9 +67,36 @@
         </div>
     </div>
     <section class="main-body-section" style="display:none;">
-    
-
-
+        <div class="info-card">
+            <div class="card mb-3" style="max-width: 1200px;">
+                <div class="row no-gutters">
+                    <div>
+                        <div class="landing-image">
+                        <img src="<?php if($total_images == 0) {echo("public/images/bg4.jpeg"); }else { echo($imgs[$imgCounter++]["imgurl"]); }?>" class="card-img" alt="...">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-body infoContainer">
+                            <h5 class="card-title"><?php echo $camp[0]["title"]; ?></h5>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: <?php echo(floor($camp[0]["currentamount"]*100 / $camp[0]["amount"])) ?>%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="stat-text d-flex justify-cotent-between">
+                                <div class="d-flex">
+                                  <?php echo("&#8377 ".$camp[0]["currentamount"]); ?>
+                                  <div class="text-muted">
+                                    <?php echo("raised of &#8377 ".$camp[0]["amount"]); ?>
+                                  </div>
+                                </div>
+                                <div class="perc">
+                                <p><?= (floor($camp[0]["currentamount"] * 100 / $camp[0]["amount"]))."%" ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
 
     </section>
     <?php require_once("templates/footer.php"); ?>

@@ -25,29 +25,28 @@
 
   if(isset($_POST["emailDetails"])){
     //EMAIL DB
-    if($db->insert_into_email($_POST) == false){
-        header("Location : dashboard");
-    }else{
-        $_SESSION["ERROR"] = 'ERROR INSERTING. PLEASE TRY AGAIN!';
+    if($db->insert_into_email($_POST, 0) == false){
+        $_SESSION["ERROR"] = 'ERROR INSERTING EMAIL DETAILS. PLEASE TRY AGAIN!';
     }
   }
+
+  if(isset($_POST["confirmationEmail"])){
+      if($db->insert_into_email($_POST,1) == false){
+        $_SESSION["ERROR"] = 'ERROR INSERTING EMAIL DETAILS. PLEASE TRY AGAIN!';          
+      }
+  }
+
   if(isset($_POST["recipt"])){
     //RECIPT
-    if($db->insert_into_ngo($_POST)){
-        header("Location : dashboard");
-    }else{
-        header("Location : dashboard");
-        $_SESSION["ERROR"] = 'ERROR INSERTING. PLEASE TRY AGAIN!';
+    if($db->insert_into_ngo($_POST) == false){
+        $_SESSION["ERROR"] = 'ERROR INSERTING RECIPT DETAILS. PLEASE TRY AGAIN!';
     }
-
   }
+
   if(isset($_POST["shareCamp"])){
     //SHARE CAMP
-    if($db->insert_into_misc($_POST["shareCamp"], 'sharecamp')){
-        header("Location : dashboard");
-    }else{
-        header("Location : index");
-        $_SESSION["ERROR"] = 'ERROR INSERTING. PLEASE TRY AGAIN!';
+    if($db->insert_into_misc($_POST["shareCamp"], 'sharecamp') == false){
+        $_SESSION["ERROR"] = 'ERROR INSERTING SHARE CAMPAIGN MESSAGE. PLEASE TRY AGAIN!';
     }
   }
 
@@ -96,6 +95,7 @@
                     </div>
                 </div>
             ');
+            unset($_SESSION["ERROR"]);
         }
     ?>
     <!-- RECIEPT FEILD -->
@@ -109,7 +109,7 @@
                 </div>
                 <div class="form-group">
                     <label>Phone number</label>
-                    <input type="number" name="phoneNum" class="form-control" placeholder="Enter phone number" value="<?php if(isset($ngoDetails[0]["phonenum"])){echp($ngoDetails[0]["phonenum"]);} ?>">
+                    <input type="text" name="phoneNum" class="form-control" placeholder="Enter phone number" value="<?php if(isset($ngoDetails[0]["phonenum"])){echo($ngoDetails[0]["phonenum"]);} ?>">
                 </div>
                 <div class="form-group">
                     <label>Pan card number</label>
@@ -119,19 +119,19 @@
             <div class="d-flex" style="justify-content:space-evenly">
                 <div class="form-group">
                     <label>Email address</label>
-                    <input type="email" name="email" class="form-control" placeholder="Enter email" vakue="<?php if(isset($ngoDetails[0]["email"])){echo($ngoDetails[0]["email"]);} ?>">
+                    <input type="email" name="email" class="form-control" placeholder="Enter email" value="<?php if(isset($ngoDetails[0]["email"])){echo($ngoDetails[0]["email"]);} ?>">
                 </div>
                 <div class="form-group">
                     <label >12-A</label>
-                    <input type="text" name="12-A" class="form-control" placeholder="Enter 12-A number" value="<?php if(isset($ngoDetails[0]["12-A"])){echo($ngoDetails[0]["12-A"]);} ?>">
+                    <input type="text" name="12-A" class="form-control" placeholder="Enter 12-A number" value="<?php if(isset($ngoDetails[0]["A"])){echo($ngoDetails[0]["A"]);} ?>">
                 </div>
                 <div class="form-group">
                     <label >80-G</label>
-                    <input type="text" name="80-G" class="form-control" placeholder="Enter 80-G number" value="<?php if(isset($ngoDetails[0]["80-G"])){echo($ngoDetails[0]["80-G"]);} ?>">
+                    <input type="text" name="80-G" class="form-control" placeholder="Enter 80-G number" value="<?php if(isset($ngoDetails[0]["G"])){echo($ngoDetails[0]["G"]);} ?>">
                 </div>
             </div>
             <div class="w-100 d-flex">
-                <input type="submit" name="reciept" class="btn btn-yellow" value="SUBMIT">
+                <input type="submit" name="recipt" class="btn btn-yellow" value="SUBMIT">
             </div>
         </form>
     </div>
@@ -156,6 +156,26 @@
             <textarea name="body" style="width:100%; height:auto; min-height:150px;"><?php if(isset($emailDetails[0]["body"])){echo($emailDetails[0]["body"]);} ?></textarea>
             <div class="d-flex w-100">
                 <input type="submit" value="SUBMIT" name="emailDetails" class="btn btn-yellow">
+            </div>
+        </form>
+        <h4 style="text-align:center;" class="mt-3">Confirmation code email</h4>
+        <form method="POST">
+            <div class="form-group">
+                <label>Email address</label>
+                <input type="email" name="email" class="form-control" placeholder="Enter address name" value="<?php if(isset($emailDetails[1]["address"])){echo($emailDetails[1]["address"]);}?>">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="text" name="password" class="form-control" placeholder = "Enter password" value="<?php if(isset($emailDetails[1]["pass"])){echo($emailDetails[1]["pass"]);} ?>">
+            </div>
+            <div class="form-group">
+                <label>Email subject</label>
+                <input type="text" name="subject" class="form-control" placeholder = "Enter subject" value = "<?php if(isset($emailDetails[1]["subject"])){echo($emailDetails[1]["subject"]);} ?>">
+            </div>
+            <label>Email body</label>
+            <textarea name="body" style="width:100%; height:auto; min-height:150px;"><?php if(isset($emailDetails[0]["body"])){echo($emailDetails[1]["body"]);} ?></textarea>
+            <div class="d-flex w-100">
+                <input type="submit" value="SUBMIT" name="confirmationEmail" class="btn btn-yellow">
             </div>
         </form>
     </div>

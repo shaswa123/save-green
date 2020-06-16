@@ -1,28 +1,30 @@
 //--------------------------------------------------//
 //                  POST REQ FOR EDIT               //
 //--------------------------------------------------//
-
-document.getElementById('save-changes').addEventListener('click', () => {
-	document.getElementById('save-changes').submit();
-});
+window.onload = () => {
+	document.getElementById('save-changes').addEventListener('click', () => {
+		document.getElementById('save-changes').submit();
+	});
+};
 
 //--------------------------------------------------//
 //   CHECKING VARIOUS INPUT FOR CAMPAIGN CREATION   //
 //--------------------------------------------------//
-
-document.getElementById('title').onkeyup = () => {
-	document.getElementById('charNum').innerHTML = 20 - document.getElementById('title').value.length;
-	if (20 - document.getElementById('title').value.length < 0) {
-		let err = 'Title is too long';
-		let errBlock = document.getElementById('err-block');
-		errBlock.style.display = 'block';
-		errBlock.getElementsByTagName('p')[0].innerHTML = err;
-		document.getElementsByClassName('createCampBtn')[0].setAttribute('disabled', true);
-	} else {
-		document.getElementById('err-block').style.display = 'none';
-		if (document.getElementsByClassName('createCampBtn')[0].hasAttribute('disabled'))
-			document.getElementsByClassName('createCampBtn')[0].removeAttribute('disabled');
-	}
+window.onload = () => {
+	document.getElementById('title').onkeyup = () => {
+		document.getElementById('charNum').innerHTML = 20 - document.getElementById('title').value.length;
+		if (20 - document.getElementById('title').value.length < 0) {
+			let err = 'Title is too long';
+			let errBlock = document.getElementById('err-block');
+			errBlock.style.display = 'block';
+			errBlock.getElementsByTagName('p')[0].innerHTML = err;
+			document.getElementsByClassName('createCampBtn')[0].setAttribute('disabled', true);
+		} else {
+			document.getElementById('err-block').style.display = 'none';
+			if (document.getElementsByClassName('createCampBtn')[0].hasAttribute('disabled'))
+				document.getElementsByClassName('createCampBtn')[0].removeAttribute('disabled');
+		}
+	};
 };
 
 //-----------------------------------------------------//
@@ -111,7 +113,7 @@ window.onload = () => {
 		}
 		let body = (document.getElementsByTagName('body')[0].style.overflowY = 'hidden');
 		spinnerFunc();
-		document.getElementsByClassName('spinnerContainer')[0].scrollIntoView();
+		// document.getElementsByClassName('spinnerContainer')[0].scrollIntoView();
 		document.getElementsByClassName('createCampClose')[0].click();
 		document.getElementsByClassName('createCampSubBtn')[0].click();
 	});

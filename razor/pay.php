@@ -10,7 +10,7 @@
     // Docs: https://docs.razorpay.com/docs/orders
     //
     
-    $shopping_id = rand() * 10 + $_POST["campid"];
+    $shopping_id = rand(10000,99999999) * rand(10,200) + $_POST["campid"];
 
     $orderData = [
         'receipt'         => $shopping_id,

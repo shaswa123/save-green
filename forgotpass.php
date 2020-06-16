@@ -13,6 +13,14 @@
     $err = '';
 
     if(isset($_POST["password"]) && isset($_POST["email"])){
+
+        //GET EMAIL DETAILS FROM DB
+        $EMAIL_DETAILS = $db->get_from_email()[1];
+        $EMAIL['EMAIL_FROM'] = $EMAIL_DETAILS['address'];
+        $EMAIL['EMAIL_PASS'] = $EMAIL_DETAILS['pass'];
+        $EMAIL['SUBJECT'] = $EMAIL_DETAILS['subject'];
+        $EMAIL['BODY'] = $EMAIL_DETAILS['body'];
+        
         //CHECK FOR USER WITH EMAIL IN DB
         $user = $db->get_one_user_by_email($_POST["email"]);
         print_r($user);
@@ -23,9 +31,10 @@
             $db->update_user_pass($user[0]["userID"], $encrpyt_pass);
             $email_code = get_email_code($user[0]["firstName"]);
             $db->unset_verify($user[0]["userID"], $email_code);
-            if(confirmation_email($user[0]["emailId"], $user[0]["firstName"], $email_code)){
+            if(confirmation_email($EMAIL, $email_code)){
                 //REDIRECT TO LOGIN 
-                header("Location : login.php");    
+                header("Location : login.php");
+                return;
             }else{
                 echo("OOPS");
             }

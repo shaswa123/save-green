@@ -11,6 +11,14 @@
     $err = "Please check name, email and password again.";
 
     if((isset($_POST["name"]) && isset($_POST["email"])) && isset($_POST["password"])){
+
+        //GET FROM_EMAIL, FROM_PASSWORD AND FROM_PASSWORD FROM DB
+        $EMAIL_DETAILS = $db->get_from_email()[1];
+        $EMAIL['EMAIL_FROM'] = $EMAIL_DETAILS['address'];
+        $EMAIL['EMAIL_PASS'] = $EMAIL_DETAILS['pass'];
+        $EMAIL['SUBJECT'] = $EMAIL_DETAILS['subject'];
+        $EMAIL['BODY'] = $EMAIL_DETAILS['body'];
+
         // AUTHENTICATE NAME EMAIL AND PASSWORD
 
         if(strcmp($_POST["name"], "") == 0)
@@ -42,9 +50,10 @@
             $user = $db->get_one_user($_POST["email"],$pass);
             $user = $user[0];
             $code = get_email_code($_POST["name"]);
+            $EMAIL['EMAIL_TO'] = $_POST['email'];
             $db->insert_into_verify($user, $code);
             $code = str_split($code,10)[0];
-            if(confirmation_email($_POST["email"],$_POST["name"], $code)){
+            if(confirmation_email($EMAIL, $code)){
                 $_SESSION["isverified"] = false;
                 header("Location: signupconfirm.php");
                 return;
