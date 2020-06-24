@@ -50,7 +50,7 @@
     <div class="navigation-bar">
         <nav class="navbar navbar-expand-lg navbar-dark">
             <a class="navbar-brand" href="<?php 
-              if($file == "dashboard" || $file == "ngo_detail"){
+              if($file == "dashboard" || $file == "ngo_detail" || $file == "requests"){   // SAVE-GREEN LOGO SHOULD HAVE THE FOLLOWING LINK
                 echo("dashboard.php");
               }else{
                 echo("index.php");
@@ -64,8 +64,8 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
               <ul class="nav navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link" href="<?php  
-                      if($file == "dashboard" || $file == "ngo_detail"){
+                  <a class="nav-link" href="<?php
+                      if($file == "dashboard" || $file == "ngo_detail" || $file == "requests"){
                         echo("dashboard.php");
                       }else{
                         echo("index.php");
@@ -73,11 +73,8 @@
                   ?>">Home</a>
                 </li>
                 <?php 
-                  if(isset($_SESSION["adminid"])){
+                  if(isset($_SESSION["adminid"]) || (isset($can_allow) && $can_allow == 1)){
                     echo ('
-                      <li class="nav-item">
-                        <a class="nav-link" href="ngo_detail.php">NGO details</a>
-                      </li>
                       <li class="nav-item camp_requests">
                         <div clas="number_of_requests" style="  color: black;
                           position: absolute;
@@ -88,17 +85,21 @@
                           height: 20px;
                           border-radius: 50%;
                           background-color: white;">'.$db->get_all_unconfirmed_campagins()[0]["COUNT(*)"].'</div>
-                        <a class="nav-link" href="requests.php">Campaign requests</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="website_dashboard.php">Website dashboard</a>
-                      </li>
-                    ');
+                              <a class="nav-link" href="requests.php">Campaign requests</a>
+                        </li>
+                          ');
+                        if(isset($_SESSION['adminid'])){
+                          echo('
+                            <li class="nav-item">
+                              <a class="nav-link" href="ngo_detail.php">NGO details</a>
+                            </li>
+                          ');    
+                        }
                   }
                 
                 ?>
                 <?php
-                    if($file != "dashboard" && $file != "ngo_detail"){
+                    if($file == "index" || $file == 'campaign-info' || $file == 'contact' || $file == 'thankyou'){
                       echo('
                         <li class="nav-item">
                           <a class="nav-link" href="contact.php">Contact Us</a>

@@ -1,0 +1,152 @@
+/* CAMPAIGN CARD CSS */
+/* CAMPAIGN CARD CSS */
+.campaign-container {
+	width: 100%;
+	margin-top: 1em;
+}
+
+.card {
+	height: fit-content;
+	box-sizing: border-box;
+}
+
+.author img {
+	border-radius: 100px;
+	border: 2px solid #fff;
+	box-shadow: 2px 2px 6px rgba(0, 0, 0, .1);
+	height: auto;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+img {
+	margin-bottom: -1px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	height: 250px;
+	max-width: 100%;
+	border: none;
+	box-sizing: border-box;
+}
+
+.card {
+	height: 580px;
+	width: 22rem;
+}
+
+.card .but a {
+	display: inline-block;
+	position: relative;
+	bottom: 220px;
+	line-height: 1;
+	margin: 0 7px 5px 0;
+	font-size: 10px;
+	color: #2e3c4b;
+	font-weight: 600;
+	background: #fed857;
+	text-transform: uppercase;
+	letter-spacing: .2em;
+	padding: 10px 14px;
+	border-radius: 4px;
+	box-shadow: 0 0 6px rgba(0, 0, 0, .04);
+	box-sizing: border-box;
+	left: 20px;
+}
+
+.card .but a:hover {
+	background: #ffffff !important;
+}
+
+.card .avatar a img {
+	position: relative;
+	border-radius: 100px;
+	border: 2px solid #fff;
+	box-shadow: 2px 2px 6px rgba(0, 0, 0, .1);
+	height: 40px;
+	bottom: 25px;
+	left: 30px;
+}
+
+.card .avatar a .text {
+	position: relative;
+	bottom: 27px;
+	font-family: 'Barlow', sans-serif;
+	font-style: italic;
+	font-size: 15px;
+	left: 30px;
+	color: gray;
+	width: fit-content;
+}
+
+.card .card-body h2 a {
+	position: relative;
+	bottom: 55px;
+	font-family: 'Barlow', sans-serif;
+	color: #2e3c4b !important;
+	font-style: normal;
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.card .card-body h2 a:hover {
+	color: #00b964 !important;
+}
+
+.card .card-body .progress {
+	position: absolute;
+	width: 90%;
+	height: 6px;
+	border-radius: 50px;
+	top: 400px;
+}
+
+.card-body .progress .progress-bar {
+	position: absolute;
+	width: 100px;
+	height: 6px;
+	background: #00b964;
+	border-radius: 50px;
+}
+
+.card .stat-text {
+	position: relative;
+	bottom: 10px;
+	left: 25px;
+	color: #2e3c4b;
+	font-family: 'Barlow', sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.card .stat-text .perc {
+	position: relative;
+	left: 77%;
+	width: fit-content;
+	top: -50.5px;
+}
+.card .stat-text .text-muted {
+	font-weight: lighter;
+	font-size: 14px;
+	width: fit-content;
+}
+
+.card ul {
+	position: relative;
+	bottom: 5%;
+}
+
+.card ul li {
+	position: relative;
+	color: #2e3c4b;
+	font-family: 'Barlow', sans-serif;
+	font-style: normal;
+	font-weight: bold;
+}
+
+.minidesc {
+	position: relative;
+	top: -65px;
+	width: 100%;
+	z-index: 1;
+}

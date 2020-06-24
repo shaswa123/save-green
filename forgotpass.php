@@ -29,7 +29,7 @@
             //UPDATE THE PASSWORD AND ISVERFIED IN DB and SEND A CONFIRMATION MAIL
             $encrpyt_pass = get_encrypt_pass($_POST["password"]);
             $db->update_user_pass($user[0]["userID"], $encrpyt_pass);
-            $email_code = get_email_code($user[0]["firstName"]);
+            $email_code = get_email_code($user[0]["name"]);
             $db->unset_verify($user[0]["userID"], $email_code);
             if(confirmation_email($EMAIL, $email_code)){
                 //REDIRECT TO LOGIN 

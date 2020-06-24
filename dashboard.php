@@ -8,23 +8,39 @@
   session_start();
   $db = new DB;
   $db_obj = $db->create_db(3306,"fundraising","root","");
+  
 
-  // If logged in check if admin or not
+  // If logged in or not
   if(!isset($_SESSION["adminid"]) && !isset($_SESSION["userid"]))
   {
-      header("Location: login.php");
-      return;
+    // IF not logged in
+    header("Location: login.php");
+    return;
   }
+
   $userID;
+  $isAdmin = false;
+  $all_users;
+  
   if(isset($_SESSION["adminid"])){
     $userID = $_SESSION["adminid"];
+    $isAdmin = true;
+    // GET ALL USERS
+    $all_users = $db->get_all_users();
   }else{
     $userID = $_SESSION["userid"];
   }
+
+
   // GET the user
   $user = $db->get_user_by_id($userID)[0];
   // GET phone numbers
   $phoneNum = $db->get_phone_numbers($userID);
+  // CAN CREATE
+  $can_create = $user["can_create"];
+  // CAN ALLOW
+  $can_allow = $user["can_allow"];
+
   // GET all the fund raisers associated to the user
   $all_camp = $db->get_campaigns_by_user($userID);
   // print_r($all_camp);
@@ -36,8 +52,8 @@
   }
 
 
-  if(isset($_POST["emailId"]) && isset($_POST["firstName"])){
-    $res = $db->update_user_details($userID, htmlentities($_POST["firstName"]), htmlentities($_POST["lastName"]),htmlentities($_POST["emailId"]));
+  if(isset($_POST["emailId"]) && isset($_POST["name"])){
+    $res = $db->update_user_details($userID, htmlentities($_POST["name"]),htmlentities($_POST["emailId"]));
     $res2 = $db->update_phone_number($userID, htmlentities($_POST["phonenum"]));
     if(!$res || !res2){
       echo("Error!");
@@ -149,64 +165,70 @@
                     <p>Home / Dashboard</p>
                 </div>
         </div>
-        <!-- MODAL FOR CREATING NEW CAMPAGINS -->
-        <div class="modal fade" id="createCampModal" tabindex="-1" role="dialog" aria-labelledby="createCampModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Create campagin</h5>
-                <button style="color:white;" type="button" class="close createCampClose" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+        <?php 
+          if($can_create){
+            echo('
+              <!-- MODAL FOR CREATING NEW CAMPAGINS -->
+              <div class="modal fade" id="createCampModal" tabindex="-1" role="dialog" aria-labelledby="createCampModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Create campagin</h5>
+                      <button style="color:white;" type="button" class="close createCampClose" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <h3 style="text-align:center;">Please enter campaign details below.</h3>
+                      <form action = "create_camp.php" method = "POST">
+                          <div id="err-block">
+                            <p></p>
+                          </div>
+                          <div class="form-group">
+                            <label for="title">Campaign title</label>
+                            <input type="text" maxlength="20" name="camp_title" class="form-control" id="title" placeholder="Campaign title">
+                            <small class="text-muted">Characters left: <span style="color:#aa0000;" id="charNum">20<span></small>
+                          </div>
+                          <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" name="camp_location" class="form-control" id="location" placeholder="Campaign location">
+                          </div>
+                          <div class="form-group">
+                            <label for="sdate">Start date</label>
+                            <input type="date" min="'.date("Y-m-d").'" name="camp_start_date" class="form-control" id="sdate" placeholder="Campaign start date">
+                          </div>
+                          <div class="form-group">
+                            <label for="edate">End date</label>
+                            <input type="date" min="'.date("Y-m-d").'" name="camp_end_date" class="form-control" id="edate" placeholder="Campaign end date">
+                          </div>
+                          <div class="form-group">
+                            <label for="camp_desc">Campaign description</label>
+                            <textarea name="camp_desc" id="camp_desc" style="width:100%; height:100px; overflow-y:auto;white-space: pre-wrap;"></textarea>
+                          </div>
+                          <div class="form-group">
+                            <label for="total_amt">Total amount</label>
+                            <input type="number" class="form-control" id="total_amt" name="camp_total_amt" placeholder="Campaign total amount">
+                          </div>
+                          <input type="hidden" name="userid" value="<?= $userID ?>">
+                          <div class="form-group">
+                            <label for="total_amt">Upload images</label>
+                            <div class="field" align="left">
+                              <input type="file" id="files" name="files">
+                            </div>
+                            <p class="text-muted" style="font-size:13px;">You have uploaded <span class="uploaded_images" style="color:green;">0</span> images</p>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn w-100 createCampBtn" id="create_camp">Create now</button>
+                          <button type="submit" class="createCampSubBtn" style="display:none;"></button>
+                        </div>
+                      </form>
+                  </div>
+                </div>
               </div>
-              <div class="modal-body">
-                <h3 style="text-align:center;">Please enter campaign details below.</h3>
-                <form action = "create_camp.php" method = "POST">
-                    <div id="err-block">
-                      <p></p>
-                    </div>
-                    <div class="form-group">
-                      <label for="title">Campaign title</label>
-                      <input type="text" maxlength="20" name="camp_title" class="form-control" id="title" placeholder="Campaign title">
-                      <small class="text-muted">Characters left: <span style="color:#aa0000;" id="charNum">20<span></small>
-                    </div>
-                    <div class="form-group">
-                      <label for="location">Location</label>
-                      <input type="text" name="camp_location" class="form-control" id="location" placeholder="Campaign location">
-                    </div>
-                    <div class="form-group">
-                      <label for="sdate">Start date</label>
-                      <input type="date" min="<?= date('Y-m-d') ?>" name="camp_start_date" class="form-control" id="sdate" placeholder="Campaign start date">
-                    </div>
-                    <div class="form-group">
-                      <label for="edate">End date</label>
-                      <input type="date" min="<?= date('Y-m-d') ?>" name="camp_end_date" class="form-control" id="edate" placeholder="Campaign end date">
-                    </div>
-                    <div class="form-group">
-                      <label for="camp_desc">Campaign description</label>
-                      <textarea name="camp_desc" id="camp_desc" style="width:100%; height:100px; overflow-y:auto;white-space: pre-wrap;"></textarea>
-                    </div>
-                    <div class="form-group">
-                      <label for="total_amt">Total amount</label>
-                      <input type="number" class="form-control" id="total_amt" name="camp_total_amt" placeholder="Campaign total amount">
-                    </div>
-                    <input type="hidden" name="userid" value="<?= $userID ?>">
-                    <div class="form-group">
-                      <label for="total_amt">Upload images</label>
-                      <div class="field" align="left">
-                        <input type="file" id="files" name="files">
-                      </div>
-                      <p class="text-muted" style="font-size:13px;">You have uploaded <span class="uploaded_images" style="color:green;">0</span> images</p>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn w-100 createCampBtn" id="create_camp">Create now</button>
-                    <button type="submit" class="createCampSubBtn" style="display:none;"></button>
-                  </div>
-                </form>
-            </div>
-          </div>
-        </div>
+            ');
+          }
+        ?>
         <!-- DASHBOARD's MAIN SECTION -->
         <section>
         <div class="container mt-4">
@@ -242,11 +264,17 @@
           <div class="my-projects">
               <div class="d-flex justify-content-between">
                 <h2>My projects</h2>
-                <button data-toggle="modal" id = "addProject" data-target="#createCampModal">
-                    <div class="but-text">
-                    ADD NEW PROJECT
-                    </div>
-                </button>
+                <?php 
+                  if($can_create){
+                    echo('
+                      <button data-toggle="modal" id = "addProject" data-target="#createCampModal">
+                          <div class="but-text">
+                          ADD NEW PROJECT
+                          </div>
+                      </button>
+                    ');
+                  }
+                ?>
               </div>
               <?php  
                   if(isset($all_camp) == false){
@@ -302,26 +330,16 @@
                 </div>              
                 <div class="personalDetails">
                   <div class="nameContainer">
-                      <p id="name">First Name</p>
-                      <p style="font-weight:500;"><?= $user["firstName"]?></p>
+                      <p id="name">Name</p>
+                      <p style="font-weight:500;"><?= $user["name"]?></p>
                   </div>
-                  <?php 
-                    if($user["lastName"] != ""){
-                      echo('
-                            <div class="nameContainer">
-                              <p id="name">Last Name</p>
-                              <p style="font-weight:500;">'.$user["lastName"].'</p>
-                            </div>
-                      ');
-                    }
-                  ?>
                   <div class="emailContainer">
                       <p id="email">Email</p>
                       <p style="font-weight:500;"><?= $user["emailId"]?></p>
                   </div>
                   <div class="nameContainer">
                     <p id="name">Phone Number</p>
-                    <p style="font-weight:500;"><?= $phoneNum[0]["phonenum"] ?></p>
+                    <p style="font-weight:500;"><?= isset($phoneNum[0]["phonenum"]) ? $phoneNum[0]["phonenum"] : 'No phone number added.' ?></p>
                   </div>
                 </div>
               </div>
@@ -343,20 +361,16 @@
                         <div class="modal-body">
                           <form method="POST">
                             <div class="nameContainer">
-                              <p id="name">First Name</p>
-                              <input class="form-control mr-sm-2" type="text" name="firstName" value="<?= $user["firstName"]?>" placeholder="first name" aria-label="text">
+                              <p id="name">Name</p>
+                              <input class="form-control mr-sm-2" type="text" name="name" value="<?= $user["name"]?>" placeholder="first name" aria-label="text">
                             </div>
-                            <div class="emailContainer">
-                                <p id="email">Last Name</p>
-                                <input class="form-control mr-sm-2" type="text" name="lastName" value="<?= $user["lastName"]?>" placeholder="Last name" aria-label="text">
-                            </div> 
                             <div class="emailContainer">
                                 <p id="email">Email</p>
                                 <input class="form-control mr-sm-2" type="email" name="emailId" value="<?=$user["emailId"]?>" placeholder="Email ID" aria-label="text">
                             </div>
                             <div class="nameContainer">
                               <p id="name">Phone Number</p>
-                              <input class="form-control mr-sm-2" name="phonenum" type="text" placeholder="Phone number" value="<?= $phoneNum[0]["phonenum"]?>" aria-label="text">
+                              <input class="form-control mr-sm-2" name="phonenum" type="text" placeholder="Phone number" value="<?= isset($phoneNum[0]["phonenum"]) ? $phoneNum[0]["phonenum"] : '' ?>" aria-label="text">
                             </div>
                             <button id="save-changes" class="btn btn-primary mt-2 w-100">Save changes</button>
                           </form>
@@ -368,6 +382,42 @@
           </div>
         </div>
       </div>
+      <?php 
+        // CHECK IF ADMIN OR NOT
+        if($isAdmin){
+          // LIST OF ALL USERS
+          echo('
+          <div class="container mt-4 users" style="max-height: 250px; overflow-y: auto;">
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email id</th>
+                  <th scope="col">Can approve/disapprove</th>
+                  <th scope="col">Can create campaign</th>
+                  <th scope="col">Admin</th>
+                </tr>
+              </thead>
+              <tbody>');
+          for($i = 0; $i < count($all_users); $i++){
+            $ENCRYPTED_ID = get_encrypted_id($all_users[$i]["userID"]);
+            echo('
+                  <tr>
+                    <td>'.$all_users[$i]['name'].'</td>
+                    <td>'.$all_users[$i]['emailId'].'</td>
+                    <td>'.($all_users[$i]['can_allow'] == 0 ? 'No <a href="can_allow.php?id='.$ENCRYPTED_ID.'" method="POST">Allow now!</a>' : 'YES <a href="can_allow.php?id='.$ENCRYPTED_ID.'" method="POST">Disallow now!</a>').'</td>
+                    <td>'.($all_users[$i]['can_create'] == 0 ? 'No <a href="can_create.php?id='.$ENCRYPTED_ID.'" method="POST">Allow now!</a>' : 'Yes <a href="can_create.php?id='.$ENCRYPTED_ID.'" method="POST">Disallow now!</a>').'</td>
+                    <td>'.($all_users[$i]['can_create'] == 0 ? 'No <a href="make_admin.php?id='.$ENCRYPTED_ID.'" method="POST">Make admin now!</a>' : 'Admin').'</td>
+                  </tr>
+                ');
+          }
+
+          echo('
+              </tbody>
+            </table>
+          </div>');
+        }          
+      ?>
     </section>
 
     <?php require_once("templates/footer.php"); ?>

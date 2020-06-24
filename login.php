@@ -28,8 +28,8 @@
             $isverified = $db->get_from_verify((int)$user[0]["userID"]);
             if($isverified["isverified"] == 0){
                 $_SESSION["isverified"] = false;
-                header("Location: signupconfirm.php");
                 $_SESSION["userid"] = $user[0]["userID"];
+                header("Location: signupconfirm.php");
                 return;
             }else{
                 $_SESSION["isverified"] = true;
@@ -47,6 +47,9 @@
             else if(isset($user[0]["userID"])){
                 // Normal user
                 $_SESSION["userid"] = (int)$user[0]["userID"];
+                if($user[0]["can_allow"])
+                    $_SESSION["can_allow"] = 1;
+                else $_SESSION["can_allow"] = 0;
                 header("Location: dashboard.php");
                 return;
             }
@@ -70,11 +73,11 @@
     <script>
             function login(e){
                 if(e == "emailInput"){
-                    document.getElementById("email").style.top="27%";
+                    document.getElementById("email").style.top="31%";
                     document.getElementById(e).style.borderBottom="2px solid green";
                 }
                 if(e == "passInput"){
-                    document.getElementById("pass").style.top="41%";
+                    document.getElementById("pass").style.top="46%";
                     document.getElementById(e).style.borderBottom="2px solid green";
                 }
             }
@@ -83,7 +86,7 @@
             if(e == "emailInput"){
                 //If not input was made
                 if(document.getElementById(e).value == ""){
-                    document.getElementById("email").style.top="34%";
+                    document.getElementById("email").style.top="37%";
                     document.getElementById(e).style.borderBottom="2px solid red";
                     emailFlag = false;
                 }
@@ -91,7 +94,7 @@
             if(e == "passInput"){
                 //If not input was made
                 if(document.getElementById(e).value == ""){
-                    document.getElementById("pass").style.top="48%";
+                    document.getElementById("pass").style.top="51%";
                     document.getElementById(e).style.borderBottom="2px solid red";
                     passFlag = false;
                 }
@@ -115,7 +118,7 @@
     <div class="loginbox shadow">
         
         <h1>Login</h1>
-        <form method="post">
+        <form method="post" class="mt-4">
             <div class="emailContainer">
                 <p id="email">Email Address</p>
                 <input type="text" id="emailInput" onfocusout="loginOut(this.id)" onfocus="login(this.id)" name="email">

@@ -10,19 +10,18 @@
         //                          USERS TABLE                               //
         //--------------------------------------------------------------------//
         public function get_all_users(){
-            $stmt = $this->pdo->prepare("SELECT * FROM users");
+            $stmt = $this->pdo->prepare("SELECT * FROM users WHERE userID != (SELECT id FROM admins)");
             $stmt->execute(); 
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $data;
         }
 
-        public function insert_user($firstName, $lastName, $emailId, $pass)
+        public function insert_user($name, $emailId, $pass)
         {
-            $sql = "INSERT INTO users (firstName,lastName,emailId,pass) VALUES (:firstname, :lastname, :email, :pass)";
+            $sql = "INSERT INTO users (name,emailId,pass) VALUES (:name, :email, :pass)";
             $stml = $this->pdo->prepare($sql);
             $result = $stml->execute(array(
-                ':firstname' =>htmlentities($firstName, ENT_QUOTES, 'UTF-8'),
-                ':lastname' =>htmlentities($lastName, ENT_QUOTES, 'UTF-8'),
+                ':name' =>htmlentities($name, ENT_QUOTES, 'UTF-8'),
                 ':email'=>htmlentities($emailId, ENT_QUOTES, 'UTF-8'),
                 ':pass' =>htmlentities($pass, ENT_QUOTES, 'UTF-8')
             ));
@@ -37,11 +36,10 @@
                 ':email' => $emailId
             ));
         }
-        public function update_user_details($id, $firstName, $lastName, $emailId){
-            $sql = 'UPDATE users SET firstName = :firstName, lastName = :lastName, emailId = :emailId WHERE userID = :id';
+        public function update_user_details($id, $name, $emailId){
+            $sql = 'UPDATE users SET name = :name, emailId = :emailId WHERE userID = :id';
             $stml = $this->pdo->prepare($sql);
-            $stml->bindParam(":firstName",htmlentities($firstName, ENT_QUOTES, 'UTF-8'),PDO::PARAM_STR);
-            $stml->bindParam(":lastName",htmlentities($lastName,ENT_QUOTES, 'UTF-8'),PDO::PARAM_STR);
+            $stml->bindParam(":name",htmlentities($name, ENT_QUOTES, 'UTF-8'),PDO::PARAM_STR);
             $stml->bindParam(":emailId",htmlentities($emailId,ENT_QUOTES, 'UTF-8'),PDO::PARAM_STR);
             $stml->bindParam(":id",htmlentities($id,ENT_QUOTES, 'UTF-8'),PDO::PARAM_INT);
             $stml->execute();
@@ -79,6 +77,23 @@
             return $data;
         }
 
+        public function enable_create($id, $v){
+            $stml = $this->pdo->prepare("UPDATE users SET can_create = :v WHERE userID = :id");
+            return $stml->execute(array(
+                ':v' => $v,
+                ':id' => $id
+            ));
+        }
+
+        public function enable_allow($id, $v){
+            $stml = $this->pdo->prepare("UPDATE users SET can_allow = :v WHERE userID = :id");
+            return $stml->execute(array(
+                ':v' => $v,
+                ':id' => $id
+            ));
+        }
+
+        
         //--------------------------------------------------------------//
         //                      PHONE NUMBER TABLE                      //
         //--------------------------------------------------------------//
@@ -108,6 +123,13 @@
             $stml->execute();
             $result = $stml->fetchAll(PDO::FETCH_ASSOC); 
             return $result;
+        }
+
+        public function insert_into_admin($id){
+            $stml = $this->pdo->prepare("INSERT INTO admins(id) VALUES(:id)");
+            return $stml->execute(array(
+                ':id' => $id
+            ));
         }
 
         //------------------------------------------------------//
@@ -140,7 +162,7 @@
             $sql = "UPDATE emailverify SET isverified = 1 WHERE userid = :userid";
             $stml = $this->pdo->prepare($sql);
             $result = $stml->execute(array(
-                ':firstname' => $userid
+                ':userid' => $userid
             ));
             return $result;
         }
@@ -183,6 +205,11 @@
             $result = $stml->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }
+        public function get_all_campaigns_request(){
+            $stml = $this->pdo->prepare("SELECT * FROM campaigns WHERE status = 2 ORDER BY startdate DESC");
+            $stml->execute();
+            return $stml->fetchAll(PDO::FETCH_ASSOC);
+        }
         public function get_campaigns_by_id($id){
             $stml = $this->pdo->prepare("SELECT * FROM campaigns where id = :id");
             $stml->execute(array(':id' => $id));
@@ -217,6 +244,24 @@
             $stml = $this->pdo->prepare("UPDATE campaigns SET status = 1 WHERE id = :id");
             return $stml->excute(array(':id' => $id));
         }
+
+        public function get_status_changed_by($id){
+            $stml = $this->pdo->prepare("SELECT * FROM users WHERE userID = (SELECT status_changed_by FROM campaigns WHERE id = :id)");
+            $stml->execute(array(
+                ':id' => $id
+            ));
+            return $stml->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function change_status_campaign($campid, $userid, $stat){
+            $stml = $this->pdo->prepare("UPDATE campaigns SET status = :stat, status_changed_by = :userid WHERE id = :id ");
+            return $stml->execute(array(
+                ':stat' => $stat,
+                ':userid' => $userid,
+                ':id' => $campid
+            ));
+        }
+
         //--------------------------------------------------//
         //                  IMAGES TABLE                    //
         //--------------------------------------------------//

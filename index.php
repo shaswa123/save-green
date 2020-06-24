@@ -11,7 +11,7 @@
   $camp_to_username;
   $camp_to_img;
   foreach($all_camp as $camp){
-    $userName = $db->get_user_by_id($camp["userID"])[0]["firstName"];
+    $userName = $db->get_user_by_id($camp["userID"])[0]["name"];
     $campIMG = $db->get_images($camp["id"]);
     if(isset(($campIMG)[0]["imgurl"])){
       $camp_to_img[$camp["id"]] = $campIMG[0]["imgurl"];

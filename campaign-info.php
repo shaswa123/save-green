@@ -19,7 +19,7 @@
     $total_images = count($imgs);
 
     //GET the details of the CAMPAIGN creater
-    $user_name = $db->get_user_by_id($camp[0]["userID"])[0]["firstName"];
+    $user_name = $db->get_user_by_id($camp[0]["userID"])[0]["name"];
 
     //GET donor id list from DB
     $donations = $db->get_all_donations($campid);
@@ -79,8 +79,44 @@
     
     //CHECK IF LOGIN
     $userid;
+    $isAdmin = isset($_SESSION["adminid"]);
     if(isset($_SESSION["userid"]) || isset($_SESSION["adminid"])){
       $userid = isset($_SESSION["userid"]) == true ? $_SESSION["userid"] : $_SESSION["adminid"];
+    }
+
+    // CHECK IF HE CAN APPROVE/DISAPPROVE THIS CAMPAIGN
+
+    // CHECK IF APPROVED/DISAPPROVED
+    $approved_by = $db->get_status_changed_by($camp[0]["id"]);
+    $isApproved;
+    if(isset($approved_by[0]) == false){
+      // NOT APPROVED
+      $isApproved = false;
+    }else{
+      // APPROVED GET USER's NAME
+      $isApproved = true;
+      $approved_by = $approved_by[0]["name"];
+    }
+
+    //IF POST
+    if(isset($_POST["pass"]) && isset($_POST["status"])){
+      //CHECK THE PASSWORD USING THE USERID
+      $user = $db->get_user_by_id($userid)[0];
+      $pass = get_encrypt_pass($_POST["pass"]);
+      if($user["pass"] == $pass){
+        //CHANGE STATUS
+        if($_POST["status"] == 'approve'){
+          if($db->change_status_campaign($campid, $userid, 1) == false){
+            $err = 'Please try again!';
+          }
+        }else{
+          if($db->change_status_campaign($campid, $userid, 0) == false){
+            $err = 'Please try again!';
+          }
+        }
+      }else{
+        $err = "Incorect password, please try again!";
+      }
     }
 
 ?>
@@ -163,7 +199,7 @@
                                 </a>
                             </div>
                             <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: <?php echo(floor($camp[0]["currentamount"]*100 / $camp[0]["amount"])) ?>%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar" role="progressbar" style="width: <?php echo( $camp[0]["amount"] != 0 ? floor($camp[0]["currentamount"]*100 / $camp[0]["amount"]) : 0 ); ?>%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                             <div class="stat-text d-flex justify-cotent-between">
                                 <div class="d-flex">
@@ -173,14 +209,32 @@
                                   </div>
                                 </div>
                                 <div class="perc">
-                                <p><?= (floor($camp[0]["currentamount"] * 100 / $camp[0]["amount"]))."%" ?></p>
+                                <p><?= ( $camp[0]["amount"] != 0 ? floor($camp[0]["currentamount"] * 100 / $camp[0]["amount"]) : 0 )."%" ?></p>
                                 </div>
                             </div>
                             <div class="sidebar">
-                                <div class="formz">
-                                <form method="post" class="cart">
+                                <div  class="<?= $isAdmin == true ? 'formz d-flex justify-content-between' : 'formz' ?>">
+                                <form method="post" class="cart" style="display: <?= isset($userid) ? 'none' : 'block' ?>">
                                     <button type="button" data-toggle="modal" data-target="#personalInfoModal" class="donate-button">Donate to Campaign</button>
                                 </form>
+                                <?php 
+                                  if($isAdmin){
+                                    echo('
+                                      <button type="button" class="btn btn-success approveBtn" data-toggle="modal" data-target="#approveModal">APPROVE</button>
+                                      <button type="button" class="btn btn-danger disapproveBtn" data-toggle="modal" data-target="#approveModal">DISAPPROVE</button>
+                                    ');
+                                  }
+                                
+                                ?>
+                                </div>
+                                <div>
+                                  <?php 
+                                    if($isApproved == true){
+                                      if($camp[0]["status"] == 1)
+                                        echo('<h6 class="mt-3">Approved by: '.$approved_by.'</h6>');
+                                      else  echo('<h6 class="mt-3">Disapproved by: '.$approved_by.'</h6>');
+                                    }
+                                  ?>
                                 </div>
                             </div>
                         </div>
@@ -188,7 +242,29 @@
                 </div>
             </div> 
         </div>
-        <!-- Modal -->
+        <!-- MODAL APPROVE/DISAPPROVE -->
+        <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Enter your password</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form method="POST">
+              <div class="modal-body">
+                <input type="password" class="form-control" name="pass" placeholder="Enter your password">
+                <input type="hidden" name="status" class="modalInput">
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary w-100">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+        <!-- Modal PERSONAL INFORMATION -->
         <div class="modal fade" id="personalInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -212,8 +288,8 @@
                     <input type="number" name="donateAmount" required class="form-control" placeholder = "Enter donation amount">
                   </div>
                   <div class="form-group">
-                    <label for="firstName">Name</label>
-                    <input type="text" name="name" require class="form-control" id="firstName" placeholder="Enter your name">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" require class="form-control" id="name" placeholder="Enter your name">
                   </div>
                   <div class="form-group">
                     <label for="emailId">Email address</label>
@@ -316,7 +392,14 @@
         let spinnerContainer = document.getElementsByClassName("spinnerContainer")[0].style.display = "none";
         let main_body = document.getElementsByClassName("main-body-section")[0].style.display = "block";
       },2000)
-      
+      window.onload = () => {
+        document.getElementsByClassName('approveBtn')[0].addEventListener('click', () => {
+          document.getElementsByClassName('modalInput')[0].value = "approve";
+        });
+        document.getElementsByClassName('disapproveBtn')[0].addEventListener('click', () => {
+          document.getElementsByClassName('modalInput')[0].value = "disapprove";
+        });
+      }
     </script>
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

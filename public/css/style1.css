@@ -98,13 +98,13 @@ body {
 
 #email {
 	position: absolute;
-	top: 34%;
+	top: 37%;
 	transition: 0.2s linear;
 }
 
 #pass {
 	position: absolute;
-	top: 48%;
+	top: 51%;
 	transition: 0.2s linear;
 }
 
